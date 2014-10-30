@@ -1,0 +1,19 @@
+<div class="page" id="mainPage">
+  <h3> {{'add_complex'| translate}}</h3>
+  <table class="listTable">
+    <thead>
+      <tr>
+        <th>Organization Unit</th>
+        <th>Urbanization Name</th> 
+        <th>Number of Buildings</th> 
+      </tr>
+    </thead>
+    <tbody id="list">
+      <tr class = 'listRow' ng-repeat = "urbanization in tableCtrl.tableContents">
+        <td class='text-column'>{{urbanization.orgunit}}</td>
+        <td class='text-column'>{{urbanization.name}}</td>
+        <td class='text-column'>{{urbanization.numBuildings}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

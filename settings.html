@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>District Health Information Software 2</title>
+
+    <meta name="viewport" content="width=device-width">
+	
+	<!-- JQuery -->
+	  <script type="text/javascript" src="/dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>        
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/jQuery/jquery.tmpl.js"></script>      
+    <link rel="stylesheet" type="text/css" href="/dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css"/>  
+	
+	<!-- Bootstrap -->
+	  <script type="text/javascript" src="/dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>        
+        
+  <!-- Angular -->
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/angular.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/angular-resource.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/angular-route.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/angular-cookies.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/angular-animate.js"></script>  
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/ui-bootstrap-tpls-0.10.0-draggable-modal.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/moment/moment-with-langs.min.js"></script>
+       
+	<!-- AngularPlugins -->
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/plugins/angular-translate.min.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-static-files.min.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-url.min.js"></script>
+
+	<!-- Menu scripts -->
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/dhis2/dhis2.menu.js"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js"></script>
+
+	<!-- Menu styles -->
+    <link type="text/css" rel="stylesheet" href="/dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
+    <link type="text/css" rel="stylesheet" media="screen" href="/dhis-web-commons/css/light_blue/light_blue.css"/>
+    <link type="text/css" rel="stylesheet" media="screen" href="/dhis-web-commons/css/widgets.css"/>     
+    <link type="text/css" rel="stylesheet" media="screen" href="/dhis-web-commons/css/menu.css"/>
+	
+	<!-- App scripts -->
+    <script type="text/javascript" src="scripts/settings.js"></script>
+
+</head>
+
+<body>
+  <div id="header">
+    <img id="headerBanner" src="/dhis-web-commons/css/light_blue/logo_banner.png" onclick="window.location.href='/dhis-web-dashboard-integration/index.action'" style="cursor:pointer" title="View home page">
+    <span id="headerText" onclick="window.location.href='/dhis-web-dashboard-integration/index.action'" style="cursor:pointer" title="View home page">District Health Information Software 2</span>
+    <div id="headerMessage" class="bold"></div>        
+    <div id="dhisDropDownMenu"></div>
+  </div>
+  <div id="leftBar">
+     <div id="hideLeftBar">
+        <a href="" title="Show main menu" id="showMainMenuLink">
+          <img src="/images/home_small.png" width="16" height="16" /></a>
+        <a href="" title="Hide menu" id="hideMainMenuLink">
+          <img src="/images/hide_menu.png" width="16" height="16" /></a>
+        <a href="" title="Extend menu" id="extendMainMenuLink">
+          <img src="/images/extend_menu.png" width="16" height="16" /></a>
+      </div>
+      <div id="leftBarContents">
+        <h2>Health Infrastructures Inventory</h2>
+        <ul>
+            <li><a href="index.html">View Infrastructures</a></li>
+            <li><a href="">Add infrastructures</a></li>
+            <li><a href="">Settings</a></li>
+        </ul>
+      </div>    
+  </div>
+  <div class="page" id="mainPage">
+      <h2> Settings </h2>
+      <p id = "pSettings">Click the button below to deploy the basic metadata for the app. You need to be superuser in order to do this. </p>
+      <button id="buttonInstall" type="button">Install Metadata</button>
+  </div>
+</body>
+
+</html>

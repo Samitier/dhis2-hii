@@ -1,0 +1,42 @@
+<div id="leftBar">
+      <div id="leftBarContents">
+        <h2>{{'app_title'| translate}}</h2>
+        <ul>
+            <li><a href="">{{'add_complex'| translate}}</a></li>
+            <li><a href="settings.html">{{'settings'| translate}}</a></li>
+        </ul>
+        <br>
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+              jQuery("#searchIcon").click(function(){
+                jQuery("#searchSpan").toggle();
+                jQuery("#searchField").focus();
+              });
+              
+              jQuery("#searchField").autocomplete({
+                  source: "/dhis-web-commons/ouwt/getOrganisationUnitsByName.action",
+                  select: function(event,ui) {
+                      jQuery("#searchField").val(ui.item.value);
+                      selection.findByName();
+                  }
+              });
+            });
+            var i18n_find = '';
+        </script>
+
+        <img id="searchIcon" src="/images/search.png" style="cursor: pointer" title="{{'search_org_unit'| translate}}">
+
+        <span id="searchSpan" style="width:100%;display:none;">
+          <input type="text" id="searchField" name="key" style="width:160px" />
+          <input type="button" value="{{'find'| translate}}" onclick="selection.findByName()" />
+        </span>
+
+        <div id="orgUnitTreeContainer">
+          <div id="orgUnitTree">
+            <ul>
+            </ul>
+          </div>
+          <img id="ouwt_loader" src="/images/ajax-loader-bar.gif"/>
+        </div>
+      </div>    
+</div>
