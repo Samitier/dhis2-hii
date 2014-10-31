@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody id="list">
-      <tr class = 'listRow' ng-repeat = "urbanization in tableCtrl.tableContents">
+      <tr class = 'listRow' ng-repeat = "urbanization in tableCtrl.tableContents" ng-click="setPage(2)">
         <td class='text-column'>{{urbanization.orgunit}}</td>
         <td class='text-column'>{{urbanization.name}}</td>
         <td class='text-column'>{{urbanization.numBuildings}}</td>

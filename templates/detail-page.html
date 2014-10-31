@@ -1,0 +1,44 @@
+<div class="page" id ="mainPage">
+    <h3><a name="mainPagelink" ng-click = 'setPage(0)'> {{'add_complex'| translate}} </a>
+		&#8226; {{detailCtrl.info[0].value}}</h3>
+	<br>
+    
+
+    		<ul class="nav nav-tabs" role="tablist">
+  			<li role="presentation" class="active"><a href="#">General Information</a></li>
+  			<li role="presentation"><a href="#">State</a></li>
+  			<li role="presentation"><a href="#">Buildings</a></li>
+			</ul>
+<div class="panel panel-default" style="padding-top: -10px">
+  <div class="panel-body">
+		    <table>
+			    <tbody>
+			    <tr>
+			    	<td style="vertical-align: top">
+			    		<div class="info-box">
+							<p class="header"> General information </p>
+							<div class="contentTable">
+								<table ng-repeat = "info in detailCtrl.info">
+							   		<tbody>
+							        	<tr>
+									    	<td style="text-align: left"> {{info.name}} </td> <td style="text-align: left"> {{info.value}} </td>
+							        	</tr>
+						    		</tbody>
+								</table>
+							</div>
+						</div>
+					</td>
+					<td style="vertical-align: top">
+						<div class="info-box">
+							<p class="header"> Image </p>
+							<div class="imageTable">
+							</div>
+						</div>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+  </div>
+</div>
+</div>
+

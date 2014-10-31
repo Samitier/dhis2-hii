@@ -21,7 +21,7 @@
             templateUrl: 'templates/dhis-left-bar.html',
             controller: function($scope) {
                 $scope.curPage = 0;
-                this.setPage = function(page) {
+                $scope.setPage = function(page) {
                     $scope.curPage = page;
                 };
             },
@@ -33,7 +33,7 @@
         return {
             restrict : 'E',
             templateUrl: 'templates/main-page.html',
-            controller: function() {
+            controller: function($scope) {
                 this.tableContents = [
                     {orgunit :'Cumbana', name : 'Cumbana Urbanization', numBuildings : 19},
                     {orgunit : 'Inhambane', name : 'Hospital Provincial de Inhambane', numBuildings : 19}
@@ -53,6 +53,25 @@
             controllerAs: 'settingsCtrl'
         };
     });
+
+    hiiDirectives.directive('detailPage', function() {
+        return {
+            restrict : 'E',
+            templateUrl: 'templates/detail-page.html',
+            controller: function() {
+                this.info =[
+                    {name:"Organization Unit:", value:"Lorem ipsum"}, 
+                    {name: "Description:", value :"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor."}, 
+                    {name: "Number of Buildings:", value :222}, 
+                    {name: "Area:", value: 222}, 
+                    {name: "Creation Date:", value : 222},  
+                    {name: "Director Plan:", value :"yes"}];
+                this.buildings = ["Lorem", "ipsum" ,"dolor", "sit", "amet", "consectetur", "adipisicing elit", "sed", "do", "eiusmod"];
+            },
+            controllerAs: 'detailCtrl'
+        };
+    });
+
 
 })();
 
