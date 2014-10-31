@@ -10,7 +10,7 @@
             prefix: 'i18n/',
             suffix: '.json'
         });
-
+        
         $translateProvider.preferredLanguage('es');
     });
 

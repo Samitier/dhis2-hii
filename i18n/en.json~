@@ -6,7 +6,9 @@
 	"add_complex": "Find/Add Health Complex",
 	"settings": "Settings",
 	"search_org_unit": "Search Organization Unit",
-	"search": "Search"
+	"find": "Find",
 	
+	"settings_text" : "Click the button below to deploy the basic metadata for the app. You need to be superuser in order to do this.",
+	"settings_button": "Install metadata"
 
 }

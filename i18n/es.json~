@@ -1,12 +1,12 @@
 {
 	"dhis2_home" : "District Health Information Software 2",
-	"view_homepage" : "View homepage",
+	"view_homepage" : "Ir a la pagina principal",
 	
-	"app_title" : "Health Infrastructure Inventory",
-	"add_complex": "Find/Add Health Complex",
-	"settings": "Settings",
-	"search_org_unit": "Search Organization Unit",
-	"find": "Find"
+	"app_title" : "Inventario de Infrastructuras Sanitarias",
+	"add_complex": "Busca/Añade Complejos Sanitarios",
+	"settings": "Ajustes",
+	"search_org_unit": "Busca Unidades Organizativas",
+	"find": "Busca"
 	
 
 }

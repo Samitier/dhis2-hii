@@ -6,7 +6,8 @@
 	"add_complex": "Busca/Añade Complejos Sanitarios",
 	"settings": "Ajustes",
 	"search_org_unit": "Busca Unidades Organizativas",
-	"find": "Busca"
+	"find": "Busca",
 	
-
+	"settings_text" : "Apreita el botón inferior para instalar los metadatos básicos de esta app. Necesitas ser superusuario.",
+	"settings_button": "Instala metadatos"
 }
