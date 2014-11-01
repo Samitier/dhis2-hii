@@ -67,6 +67,13 @@
                     {name: "Creation Date:", value : 222},  
                     {name: "Director Plan:", value :"yes"}];
                 this.buildings = ["Lorem", "ipsum" ,"dolor", "sit", "amet", "consectetur", "adipisicing elit", "sed", "do", "eiusmod"];
+                this.tab =1;
+                this.isTab = function(tab) {
+                    return this.tab ==tab;
+                };
+                this.setTab = function(tab) {
+                    this.tab = tab;
+                };
             },
             controllerAs: 'detailCtrl'
         };
