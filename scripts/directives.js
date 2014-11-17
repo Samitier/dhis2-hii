@@ -33,11 +33,25 @@
         return {
             restrict : 'E',
             templateUrl: 'templates/main-page.html',
-            controller: function($scope) {
-                this.tableContents = [
-                    {orgunit :'Cumbana', name : 'Cumbana Urbanization', numBuildings : 19},
-                    {orgunit : 'Inhambane', name : 'Hospital Provincial de Inhambane', numBuildings : 19}
-                ];
+            controller: function($scope, $http) {
+                var ctrl = this;
+                $http.get('/api/programs.json').success(function(json){
+                        for(var i=0; i<json.programs.length;++i) {
+                            if(json.programs[i].name == 'Sanitary Complex Basic Info') ctrl.programId = json.programs[i].id;
+                        }
+                        $http.get('/api/trackedEntityInstances.json?ouMode=ALL&program='+ ctrl.programId).success(function(json2){
+                            ctrl.tableHeaders = json2.headers;
+                            ctrl.tableContents = json2.rows;
+                        });
+                });
+                this.setBasicInfoPanel = function(attrs, val) {
+                    $scope.detailData = [];
+                    for(var i=5; i<attrs.length-1;++i) $scope.detailData.push({name:attrs[i].column, value: val[i]});
+                    $scope.complexImage = val[attrs.length-1];
+                    $scope.setTab(1);
+                    $scope.setPage(2);
+                };
+                
             },
             controllerAs: 'tableCtrl'
         };
@@ -58,20 +72,13 @@
         return {
             restrict : 'E',
             templateUrl: 'templates/detail-page.html',
-            controller: function() {
-                this.info =[
-                    {name:"Organization Unit:", value:"Lorem ipsum"}, 
-                    {name: "Description:", value :"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor."}, 
-                    {name: "Number of Buildings:", value :222}, 
-                    {name: "Area:", value: 222}, 
-                    {name: "Creation Date:", value : 222},  
-                    {name: "Director Plan:", value :"yes"}];
+            controller: function($scope) {
                 this.buildings = ["Lorem", "ipsum" ,"dolor", "sit", "amet", "consectetur", "adipisicing elit", "sed", "do", "eiusmod"];
-                this.tab =1;
-                this.isTab = function(tab) {
+                $scope.tab =1;
+                $scope.isTab = function(tab) {
                     return this.tab ==tab;
                 };
-                this.setTab = function(tab) {
+                $scope.setTab = function(tab) {
                     this.tab = tab;
                 };
             },

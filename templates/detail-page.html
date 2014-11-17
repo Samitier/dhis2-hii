@@ -1,23 +1,21 @@
 <div class="page" id ="mainPage" style="padding-right: 25px">
     <h3><a name="mainPagelink" ng-click = 'setPage(0)'> {{'add_complex'| translate}} </a>
-		&#8226; {{detailCtrl.info[0].value}}</h3>
+		&#8226; {{detailData[0].value}}</h3>
 	<br>
 
 
 <div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
 	<ul role="tablist" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(1),'ui-tabs-active': detailCtrl.isTab(1)}"><a class="ui-tabs-anchor" ng-click="detailCtrl.setTab(1)" style="cursor: pointer">General Information</a></li>
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(2),'ui-tabs-active': detailCtrl.isTab(2)}"><a class="ui-tabs-anchor" ng-click="detailCtrl.setTab(2)" style="cursor: pointer">State</a></li>
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(3),'ui-tabs-active': detailCtrl.isTab(3)}"><a class="ui-tabs-anchor" ng-click="detailCtrl.setTab(3)" style="cursor: pointer">Buildings</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(1),'ui-tabs-active': isTab(1)}"><a class="ui-tabs-anchor" ng-click="setTab(1)" style="cursor: pointer">General Information</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(2),'ui-tabs-active': isTab(2)}"><a class="ui-tabs-anchor" ng-click="setTab(2)" style="cursor: pointer">State</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(3),'ui-tabs-active': isTab(3)}"><a class="ui-tabs-anchor" ng-click="setTab(3)" style="cursor: pointer">Buildings</a></li>
 	</ul>
-    <table ng-show="detailCtrl.isTab(1)">
-	    <tbody>
-	    <tr>
-	    	<td style="vertical-align: top">
+    <div ng-show="isTab(1)">
+
 	    		<div class="info-box">
-					<p class="header"> General information </p>
+					<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right"></img></p>
 					<div class="contentTable">
-						<table ng-repeat = "info in detailCtrl.info">
+						<table ng-repeat = "info in detailData">
 					   		<tbody>
 					        	<tr>
 							    	<td style="text-align: left"> {{info.name}} </td> <td style="text-align: left"> {{info.value}} </td>
@@ -26,128 +24,343 @@
 						</table>
 					</div>
 				</div>
-			</td>
-			<td style="vertical-align: top">
+
 				<div class="info-box">
-					<p class="header"> Image </p>
-					<div class="imageTable">
-					</div>
+					<p class="header"> Image <img src = "img/edit2.png" height="18" width="18" style="float: right"></p> 
+					<img ng-src={{"img/"+complexImage}} height="430" width="570"></img>
 				</div>
-			</td>
-		</tr>
-		</tbody>
-	</table>
-	<table ng-show="detailCtrl.isTab(2)">
+	</div>
+	<div ng-show="isTab(2)">
+		<table>
 	    <tbody>
-	    <tr> <td> <div class="info-box"> <p class="header"> Last report : 26 August 2014  <button> Add new Report </button></p> </div></td></tr>
-	    <tr>
-	    	<td style="vertical-align: top">
+	    <tr> <td> <div class="info-box"> <p class="header"> Mostrar reporte :  <select>
+				  <option value="1">26 Agosto 2013</option>
+				  <option value="2">7 Octubre 2013</option>
+				  <option value="3">13 Enero 2014</option>
+				  <option value="4">5 Mayo 2014</option> 
+				</select> &nbsp &nbsp &nbsp <button> Añadir reporte nuevo </button></p> </div></td></tr>
+	    <tr><td>
+	    <div>
 	    		<div class="info-box">
 					<p class="header"> Muro Perimetral </p>
 					<div class="contentTable">
 						<table>
 					   		<tbody>
 					        	<tr>
-							    	<td > Estado </td> <td style="text-align: left"> Funcional </td>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Intervencion </td> <td style="text-align: left"> Manenimiento de rutina </td>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Prioridad </td> <td style="text-align: left"> Baja </td>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Comentarios </td> <td style="text-align: left"> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
 					        	</tr>
 				    		</tbody>
 						</table>
 					</div>
 				</div>
-			</td>
-			<td style="vertical-align: top">
 				<div class="info-box">
 					<p class="header"> Pasajes Cubiertos </p>
 					<div class="contentTable">
 						<table>
 					   		<tbody>
 					        	<tr>
-							    	<td style="text-align: left"> Estado </td> <td style="text-align: left"> Funcional </td>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Intervencion </td> <td style="text-align: left"> Manenimiento de rutina </td>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Prioridad </td> <td style="text-align: left"> Baja </td>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Comentarios </td> <td style="text-align: left"> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
 					        	</tr>
 				    		</tbody>
 						</table>
 					</div>
 				</div>
-			</td>
-		</tr>
-		<tr>
-	    	<td style="vertical-align: top">
 	    		<div class="info-box">
 					<p class="header"> Areas de Espera </p>
 					<div class="contentTable">
 						<table>
 					   		<tbody>
 					        	<tr>
-							    	<td style="text-align: left"> Estado </td> <td style="text-align: left"> Funcional </td>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Intervencion </td> <td style="text-align: left"> Manenimiento de rutina </td>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Prioridad </td> <td style="text-align: left"> Baja </td>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Comentarios </td> <td style="text-align: left"> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
 					        	</tr>
 				    		</tbody>
 						</table>
 					</div>
 				</div>
-			</td>
-			<td style="vertical-align: top">
 				<div class="info-box">
 					<p class="header"> Pavimentacion Exterior </p>
 					<div class="contentTable">
 						<table>
 					   		<tbody>
 					        	<tr>
-							    	<td style="text-align: left"> Estado </td> <td style="text-align: left"> Funcional </td>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Intervencion </td> <td style="text-align: left"> Manenimiento de rutina </td>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Prioridad </td> <td style="text-align: left"> Baja </td>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
 					        	</tr>
 					        	<tr>
-							    	<td style="text-align: left"> Comentarios </td> <td style="text-align: left"> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
 					        	</tr>
 				    		</tbody>
 						</table>
 					</div>
 				</div>
-			</td>
-		</tr>
+								<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+				</div>
+								<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+				</div>
+								<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+				</div>
+								<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+				</div>
+								<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+		</td></tr>
 		</tbody>
-	</table>
-	<div class="info-box" ng-show="detailCtrl.isTab(3)">
-	<p class="header"> Building name </p>
-	<table class="listTable" ng-show="detailCtrl.isTab(3)">
-    <tbody id="list">
-      <tr class = 'listRow' ng-repeat = "building in detailCtrl.buildings">
-        <td class='text-column'>{{building}}</td>
-      </tr>
-    </tbody>
-  </table>
+		</table>
+	</div>
+	<div ng-show="isTab(3)">
+		<table>
+		<tr> <td style = "vertical-align:top">
+		<div class="info-box" >
+			<p class="header"> Building name </p>
+			<table class="listTable" ng-show="detailCtrl.isTab(3)">
+	    	<tbody id="list">
+	    	<tr class = 'listRow'><td> <input type="submit" value="Add Building"> </td></tr>
+	      	<tr class = 'listRow' ng-repeat = "building in detailCtrl.buildings">
+	        <td class='text-column'>{{building}}</td>
+	      	</tr>
+	    	</tbody>
+	  		</table>
+	  	</div>
+	  </td>
+	  <td style = "vertical-align:top">
+	  	<div class = info-box>
+	  		<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+			</div>
+				  		<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+			</div>
+				  		<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+			</div>
+				  		<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+			</div>
+				  		<div class="info-box">
+					<p class="header"> Pasajes Cubiertos </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr>
+							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
+					        	</tr>
+					        	<tr>
+							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
+			</div>
+			
 
-</div>
+	  	</div>
+	  </td></tr></table>
+	</div>
 </div> 
 

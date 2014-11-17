@@ -8,9 +8,11 @@ div.info-box
   padding-top:1px;
   padding-right:1px;
   padding-left:1px;
-  padding-bottom:5px;
+  padding-bottom:1px;
   overflow:auto;
+  vertical-align: top;
 }
+
 
 p.header
 {
@@ -25,7 +27,7 @@ p.header
 
 .contentTable
 {
-  width:350px;
+  width:290px;
   overflow-y:auto;
   overflow-x:auto;
 }
@@ -34,6 +36,11 @@ p.header
 {
   width:100%;
   table-layout: fixed;
+}
+
+td.leftTableContent 
+{
+  width:95px;
 }
 
 .contentTable td
@@ -46,8 +53,6 @@ p.header
 
 .imageTable
 {
-  height:200px;
-  width:400px;
   overflow-y:hide;
   overflow-x:hide;
 }
