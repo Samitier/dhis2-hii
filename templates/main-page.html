@@ -8,11 +8,11 @@
   <table class="listTable">
     <thead>
       <tr>
-        <th>{{tableCtrl.tableHeaders[5].column}}</th>
+        <th>{{complexData.tableHeaders[5].column}}</th>
       </tr>
     </thead>
     <tbody id="list">
-      <tr class = 'listRow' ng-repeat = "urbanization in tableCtrl.tableContents" ng-click="tableCtrl.setBasicInfoPanel(tableCtrl.tableHeaders, urbanization)">
+      <tr class = 'listRow' ng-repeat = "urbanization in complexData.tableContents" ng-click="tableCtrl.setBasicInfoPanel($index)">
         <td class='text-column'>{{urbanization[5]}}</td>
       </tr>
     </tbody>

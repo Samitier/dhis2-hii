@@ -2,7 +2,8 @@
     
     var app = angular.module('infrastructureInventory', ['hiiDirectives',
         'd2Menu',
-        'pascalprecht.translate'])
+        'pascalprecht.translate',
+        'hiiServices'])
 
     .config(function($translateProvider) {
         

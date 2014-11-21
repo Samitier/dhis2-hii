@@ -27,7 +27,7 @@ p.header
 
 .contentTable
 {
-  width:290px;
+  width:295px;
   overflow-y:auto;
   overflow-x:auto;
 }
@@ -40,7 +40,7 @@ p.header
 
 td.leftTableContent 
 {
-  width:95px;
+  width:100px;
 }
 
 .contentTable td

@@ -11,23 +11,25 @@
 		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(3),'ui-tabs-active': isTab(3)}"><a class="ui-tabs-anchor" ng-click="setTab(3)" style="cursor: pointer">Buildings</a></li>
 	</ul>
     <div ng-show="isTab(1)">
-
 	    		<div class="info-box">
-					<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right"></img></p>
+					<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "detailCtrl.setEditing(!detailCtrl.isEditing())"></img></p>
 					<div class="contentTable">
-						<table ng-repeat = "info in detailData">
-					   		<tbody>
-					        	<tr>
-							    	<td style="text-align: left"> {{info.name}} </td> <td style="text-align: left"> {{info.value}} </td>
-					        	</tr>
-				    		</tbody>
+						<table>
+							<form novalidate>
+						   		<tbody>
+						        	<tr  ng-repeat = "i in [5,6,7,8,9]">
+								    	<td class= "leftTableContent"> {{complexData.tableHeaders[i].column}} </td> <td ng-hide='detailCtrl.isEditing()&&i!=5'> {{complexData.tableContents[indexComplex][i]}}</td> <td ng-show = 'detailCtrl.isEditing()&&i!=5'> <input type ='text' value = {{info.value}} ng-model="detailCtrl.inputInfo[i]"> </input></td>
+						        	</tr>
+						        	<tr ng-show = 'detailCtrl.isEditing()'> <td class= "leftTableContent" ng-show = "detailCtrl.showError">Incorrect Data!</td><td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "detailCtrl.send()"> </input> </td> <tr>
+					    		</tbody>
+				    		</form>
 						</table>
 					</div>
 				</div>
 
 				<div class="info-box">
 					<p class="header"> Image <img src = "img/edit2.png" height="18" width="18" style="float: right"></p> 
-					<img ng-src={{"img/"+complexImage}} height="430" width="570"></img>
+					<img ng-src={{"img/"+detailData[detailData.length-1].value}} height="430" width="570"></img>
 				</div>
 	</div>
 	<div ng-show="isTab(2)">

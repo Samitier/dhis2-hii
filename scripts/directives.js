@@ -33,21 +33,22 @@
         return {
             restrict : 'E',
             templateUrl: 'templates/main-page.html',
-            controller: function($scope, $http) {
-                var ctrl = this;
-                $http.get('/api/programs.json').success(function(json){
-                        for(var i=0; i<json.programs.length;++i) {
-                            if(json.programs[i].name == 'Sanitary Complex Basic Info') ctrl.programId = json.programs[i].id;
-                        }
-                        $http.get('/api/trackedEntityInstances.json?ouMode=ALL&program='+ ctrl.programId).success(function(json2){
-                            ctrl.tableHeaders = json2.headers;
-                            ctrl.tableContents = json2.rows;
-                        });
+            controller: function($scope,dhis2APIService) {
+                dhis2APIService.getProgramId('Sanitary Complex Basic Info').then(function(data) {
+                    $scope.complexProgramID = data;
+                    dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramID).then(function(dat){
+                        $scope.complexData = dat;
+                    })
                 });
-                this.setBasicInfoPanel = function(attrs, val) {
-                    $scope.detailData = [];
-                    for(var i=5; i<attrs.length-1;++i) $scope.detailData.push({name:attrs[i].column, value: val[i]});
-                    $scope.complexImage = val[attrs.length-1];
+                this.setBasicInfoPanel = function(index) {
+                    $scope.indexComplex = index;
+                    $scope.complexDataForm = [];
+                    //$scope.selectedComplexInfo = {id:val[0], orgunit:val[3], trackedEntity:val[4]}; //la tracked entiy hauria de ser un valor global al inicialitzar
+                    /*for(var i=5; i<$scope.complexData.tableHeaders.length;++i) {
+                        $scope.complexDataForm.push({id:$scope.complexData.tableHeaders[i], 
+                            value: $scope.complexData.tableContents[$scope.indexComplex][i]});
+                    }
+                    console.dir($scope.complexDataForm);*/
                     $scope.setTab(1);
                     $scope.setPage(2);
                 };
@@ -72,14 +73,36 @@
         return {
             restrict : 'E',
             templateUrl: 'templates/detail-page.html',
-            controller: function($scope) {
-                this.buildings = ["Lorem", "ipsum" ,"dolor", "sit", "amet", "consectetur", "adipisicing elit", "sed", "do", "eiusmod"];
+            controller: function($scope, dhis2APIService) {
                 $scope.tab =1;
+                this.editing=false;
+                this.showError = false;
+                this.inputInfo =[];
+                this.send = function() {
+                    var message = {trackedEntity: $scope.complexData.tableContents[$scope.indexComplex][4], 
+                                   orgUnit: $scope.complexData.tableContents[$scope.indexComplex][3], 
+                                   attributes: []};
+                    for(var i=5; i< this.inputInfo.length; ++i) {
+                        message.attributes.push({attribute:$scope.complexData.tableHeaders[i].name, value: this.inputInfo[i]});
+                    }
+                    console.dir(message);
+                    dhis2APIService.updateComplexInfo($scope.complexData.tableContents[$scope.indexComplex][0],message).then(function(dat){
+                        console.dir(dat);
+                    });
+                };
+                this.isEditing = function() {
+                    return this.editing;
+                };
+                this.setEditing = function(edit){
+                    this.editing = edit;
+                    showError = false;
+                    if(this.editing) for(var i=5; i<11;++i) this.inputInfo[i] = $scope.complexData.tableContents[$scope.indexComplex][i];
+                };
                 $scope.isTab = function(tab) {
-                    return this.tab ==tab;
+                    return $scope.tab ==tab;
                 };
                 $scope.setTab = function(tab) {
-                    this.tab = tab;
+                    $scope.tab = tab;
                 };
             },
             controllerAs: 'detailCtrl'
