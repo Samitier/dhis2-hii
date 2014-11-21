@@ -59,7 +59,7 @@
   <!-- Menu scripts -->
     <script type="text/javascript" src="/dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
     <script type="text/javascript" src="/dhis-web-commons/javascripts/dhis2/dhis2.menu.js"></script>
-    <script type="text/javascript" src="/dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js"></script>
+    <script type="text/javascript" src="scripts/dhis2.menu.ui.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
 
 
@@ -78,20 +78,15 @@
     <script type="text/javascript" src="scripts/app.js"></script>
     <script type="text/javascript" src="scripts/directives.js"></script>
     <script type="text/javascript" src="scripts/services.js"></script>
-    <script type="text/javascript" src= "scripts/main.js"></script>
-
-
-
-  <!-- DHIS2 Settings initialization for a baseUrl that is used for the menu -->
-    <script>
-      window.dhis2 = window.dhis2 || {};
-      dhis2.settings = dhis2.settings || {};
-      dhis2.settings.baseUrl = "/apps/dhis2-hii";
-    </script>
-
 </head>
 
 <body>
+    <!-- DHIS2 Settings initialization for a baseUrl that is used for the menu -->
+    <script>
+      window.dhis2 = window.dhis2 || {};
+      dhis2.settings = dhis2.settings || {};
+      dhis2.settings.baseUrl = "../../";
+    </script>
   <dhis-header></dhis-header>
   <dhis-left-bar></dhis-left-bar>
   <main-page ng-show = 'curPage == 0'> </main-page>
