@@ -33,12 +33,16 @@
         return {
             restrict : 'E',
             templateUrl: 'templates/main-page.html',
-            controller: function($scope,dhis2APIService) {
+            controller: function($scope,$translate, dhis2APIService) {
                 dhis2APIService.getProgramId('Sanitary Complex Basic Info').then(function(data) {
                     $scope.complexProgramID = data;
                     dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramID).then(function(dat){
                         $scope.complexData = dat;
                     })
+                });
+                dhis2APIService.getUserUiLocale().then(function(dat){
+                    var locale = dat;
+                    $translate.uses(locale);
                 });
                 this.setBasicInfoPanel = function(index) {
                     $scope.indexComplex = index;

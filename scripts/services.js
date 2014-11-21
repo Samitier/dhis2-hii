@@ -31,5 +31,13 @@ hiiServices.factory('dhis2APIService', function($http){
       return promise;
     };
 
+    serviceFactory.getUserUiLocale = function(){
+      var promise = $http.get('/api/me/profile').then(function(response){
+        if(response.data.settings.keyUiLocale == null) return 'en';
+        else return response.data.settings.keyUiLocale;
+      });
+      return promise;
+    };
+
     return serviceFactory;
   });
