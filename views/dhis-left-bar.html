@@ -2,8 +2,8 @@
       <div id="leftBarContents">
         <h2>{{'app_title'| translate}}</h2>
         <ul>
-            <li><a ng-click = 'setPage(0)'>{{'add_complex'| translate}}</a></li>
-            <li><a ng-click = 'setPage(1)'>{{'settings'| translate}}</a></li>
+            <li><a href='#/list'>{{'add_complex'| translate}}</a></li>
+            <li><a href='#/settings'>{{'settings'| translate}}</a></li>
         </ul>
         <br>
         <script type="text/javascript">
@@ -24,14 +24,14 @@
             var i18n_find = '';
         </script>
 
-        <img id="searchIcon" src="/images/search.png" style="cursor: pointer" title="{{'search_org_unit'| translate}}" ng-show= 'curPage ==0'>
+        <img id="searchIcon" src="/images/search.png" style="cursor: pointer" title="{{'search_org_unit'| translate}}" ng-show = 'showOUWT'>
 
         <span id="searchSpan" style="width:100%;display:none;">
           <input type="text" id="searchField" name="key" style="width:160px" />
           <input type="button" value="{{'find'| translate}}" onclick="selection.findByName()" />
         </span>
 
-        <div id="orgUnitTreeContainer" ng-show = 'curPage ==0'>
+        <div id="orgUnitTreeContainer" ng-show = 'showOUWT'>
           <div id="orgUnitTree">
             <ul>
             </ul>

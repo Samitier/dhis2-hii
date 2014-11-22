@@ -76,6 +76,7 @@
 	<!-- App scripts -->
     <script type="text/javascript" src="scripts/ouwt.js"></script>
     <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/controllers.js"></script>
     <script type="text/javascript" src="scripts/directives.js"></script>
     <script type="text/javascript" src="scripts/services.js"></script>
 </head>
@@ -85,14 +86,13 @@
     <script>
       window.dhis2 = window.dhis2 || {};
       dhis2.settings = dhis2.settings || {};
-      dhis2.settings.baseUrl = "../../";
+      dhis2.settings.baseUrl = "";
     </script>
   <dhis-header></dhis-header>
   <dhis-left-bar></dhis-left-bar>
-  <main-page ng-show = 'curPage == 0'> </main-page>
-  <settings-page ng-show = 'curPage == 1'> </settings-page>
-  <detail-page ng-show = 'curPage == 2'> </detail-page>
 
+  <!-- Content -->
+  <div ng-view></div>
 
 </body>
 

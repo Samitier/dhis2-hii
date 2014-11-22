@@ -1,11 +1,11 @@
 (function() {
     
-   var hiiDirectives = angular.module('hiiDirectives', [])
+   var hiiDirectives = angular.module('hiiDirectives', []);
 
    hiiDirectives.directive('dhisHeader', function() {
         return {
             restrict: 'E',
-            templateUrl: 'templates/dhis-header.html',
+            templateUrl: 'views/dhis-header.html',
             controller: function() {
                 this.home = function(){        
                     window.location = '/dhis-web-dashboard-integration/index.action';
@@ -18,17 +18,17 @@
     hiiDirectives.directive('dhisLeftBar', function() {
         return {
             restrict: 'E',
-            templateUrl: 'templates/dhis-left-bar.html',
+            templateUrl: 'views/dhis-left-bar.html',
             controller: function($scope) {
-                $scope.curPage = 0;
-                $scope.setPage = function(page) {
-                    $scope.curPage = page;
+                $scope.showOUWT = true;
+                $scope.showOrgUnitTree = function(show) {
+                    $scope.showOUWT = show;
                 };
             },
             controllerAs:'leftBarCtrl'
         };
     });
-
+/*
     hiiDirectives.directive('mainPage', function() {
         return {
             restrict : 'E',
@@ -53,7 +53,7 @@
                             value: $scope.complexData.tableContents[$scope.indexComplex][i]});
                     }
                     console.dir($scope.complexDataForm);*/
-                    $scope.setTab(1);
+                   /* $scope.setTab(1);
                     $scope.setPage(2);
                 };
                 
@@ -112,7 +112,7 @@
             controllerAs: 'detailCtrl'
         };
     });
-
+*/
 
 })();
 

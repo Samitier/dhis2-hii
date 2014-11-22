@@ -7,17 +7,17 @@ hiiServices.factory('dhis2APIService', function($http){
     var serviceFactory={};
 
     serviceFactory.getProgramId = function (name) {
-      var promise = $http.get('/api/programs.json').then(function(json){
-        for(var i=0; i<json.data.programs.length;++i) {
-            if(json.data.programs[i].name == name) return (json.data.programs[i].id);
+      var promise = $http.get('/api/programs.json').then(function(response){
+        for(var i=0; i<response.data.programs.length;++i) {
+            if(response.data.programs[i].name == name) return (response.data.programs[i].id);
         }
       });
       return promise;
     };
 
     serviceFactory.getTrackedEntitiesByProgram = function(programId) {
-      var promise  = $http.get('/api/trackedEntityInstances.json?ouMode=ALL&program='+ programId).then(function(json2){
-        var info = {tableHeaders:json2.data.headers,tableContents:json2.data.rows};
+      var promise  = $http.get('/api/trackedEntityInstances.json?ouMode=ALL&program='+ programId).then(function(response){
+        var info = {tableHeaders:response.data.headers,tableContents:response.data.rows};
         return info;
       });
       return promise;
@@ -35,6 +35,13 @@ hiiServices.factory('dhis2APIService', function($http){
       var promise = $http.get('/api/me/profile').then(function(response){
         if(response.data.settings.keyUiLocale == null) return 'en';
         else return response.data.settings.keyUiLocale;
+      });
+      return promise;
+    };
+
+    serviceFactory.getTrackedEntityById =function (id) {
+      var promise = $http.get('/api/trackedEntityInstances/'+id).then(function(response){
+        return response.data;
       });
       return promise;
     };

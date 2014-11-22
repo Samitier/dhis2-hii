@@ -1,24 +1,28 @@
-<div class="page" id ="mainPage" style="padding-right: 25px">
-    <h3><a name="mainPagelink" ng-click = 'setPage(0)'> {{'add_complex'| translate}} </a>
-		&#8226; {{detailData[0].value}}</h3>
+<div class="page" id ="mainPage" style="padding-right: 25px" ng-init = 'detailCtrl.init()'>
+    <h3><a href="#/list"> {{'add_complex'| translate}} </a>
+		&#8226; {{complexInfo.attributes[0].value}}
+	    <a title="Help" href=""><i class="fa fa-question-circle"></i></a>
+
+	</h3>
 	<br>
 
 
 <div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
 	<ul role="tablist" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(1),'ui-tabs-active': isTab(1)}"><a class="ui-tabs-anchor" ng-click="setTab(1)" style="cursor: pointer">General Information</a></li>
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(2),'ui-tabs-active': isTab(2)}"><a class="ui-tabs-anchor" ng-click="setTab(2)" style="cursor: pointer">State</a></li>
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(3),'ui-tabs-active': isTab(3)}"><a class="ui-tabs-anchor" ng-click="setTab(3)" style="cursor: pointer">Buildings</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(1),'ui-tabs-active': detailCtrl.isTab(1)}"><a class="ui-tabs-anchor" ng-click="detailCtrl.setTab(1)" style="cursor: pointer">General Information</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(2),'ui-tabs-active': detailCtrl.isTab(2)}"><a class="ui-tabs-anchor" ng-click="detailCtrl.setTab(2)" style="cursor: pointer">State</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(3),'ui-tabs-active': detailCtrl.isTab(3)}"><a class="ui-tabs-anchor" ng-click="detailCtrl.setTab(3)" style="cursor: pointer">Buildings</a></li>
 	</ul>
-    <div ng-show="isTab(1)">
+
+    <div ng-show="detailCtrl.isTab(1)">
 	    		<div class="info-box">
 					<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "detailCtrl.setEditing(!detailCtrl.isEditing())"></img></p>
 					<div class="contentTable">
 						<table>
 							<form novalidate>
 						   		<tbody>
-						        	<tr  ng-repeat = "i in [5,6,7,8,9]">
-								    	<td class= "leftTableContent"> {{complexData.tableHeaders[i].column}} </td> <td ng-hide='detailCtrl.isEditing()&&i!=5'> {{complexData.tableContents[indexComplex][i]}}</td> <td ng-show = 'detailCtrl.isEditing()&&i!=5'> <input type ='text' value = {{info.value}} ng-model="detailCtrl.inputInfo[i]"> </input></td>
+						        	<tr  ng-repeat = "i in [0,1,2,3,4]">
+								    	<td class= "leftTableContent"> {{complexInfo.attributes[i].displayName}} </td> <td ng-hide='detailCtrl.isEditing()&&i!=0'> {{complexInfo.attributes[i].value}}</td> <td ng-show = 'detailCtrl.isEditing()&&i!=0'> <input type ='text' value = {{editForm.attributes[i].value}} ng-model="editForm.attributes[i].value"> </input></td>
 						        	</tr>
 						        	<tr ng-show = 'detailCtrl.isEditing()'> <td class= "leftTableContent" ng-show = "detailCtrl.showError">Incorrect Data!</td><td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "detailCtrl.send()"> </input> </td> <tr>
 					    		</tbody>
@@ -29,10 +33,10 @@
 
 				<div class="info-box">
 					<p class="header"> Image <img src = "img/edit2.png" height="18" width="18" style="float: right"></p> 
-					<img ng-src={{"img/"+detailData[detailData.length-1].value}} height="430" width="570"></img>
+					<img ng-src={{"img/"+complexInfo.attributes[5].value}} height="430" width="570"></img>
 				</div>
 	</div>
-	<div ng-show="isTab(2)">
+	<div ng-show="detailCtrl.isTab(2)">
 		<table>
 	    <tbody>
 	    <tr> <td> <div class="info-box"> <p class="header"> Mostrar reporte :  <select>
@@ -237,7 +241,7 @@
 		</tbody>
 		</table>
 	</div>
-	<div ng-show="isTab(3)">
+	<div ng-show="detailCtrl.isTab(3)">
 		<table>
 		<tr> <td style = "vertical-align:top">
 		<div class="info-box" >
