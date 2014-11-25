@@ -23,7 +23,7 @@ hiiServices.factory('dhis2APIService', function($http){
       return promise;
     };
 
-    serviceFactory.updateComplexInfo = function(id,message){
+    serviceFactory.updateTEIInfo = function(id,message){
       var promise = $http.put('/api/trackedEntityInstances/'+id, JSON.stringify(message)).then(function(response){
         if(response.data.status =="SUCCESS") return true;
         else if(response.data.status == "ERROR") return false;

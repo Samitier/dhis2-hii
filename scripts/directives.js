@@ -36,11 +36,9 @@
             controller: function($scope, dhis2APIService) {
                 
                 $scope.editForm = {};
-                $scope.editing=false;
                 this.showError = false;
-                
                 this.send = function() {
-                    dhis2APIService.updateComplexInfo($scope.complexId,$scope.editForm).then(function(dat){
+                    dhis2APIService.updateTEIInfo($scope.editForm.trackedEntityInstance,$scope.editForm).then(function(dat){
                         if(dat) {
                             $scope.complexInfo = $scope.editForm;
                             $scope.editing = false;
@@ -78,9 +76,41 @@
         return {
             restrict: 'E',
             templateUrl: 'views/buildings-tab.html',
-            controller: function($scope) {
+            controller: function($scope,dhis2APIService) {
+
+                this.isBuildingSelected = false;
+                $scope.buildingSelected =0;
+                $scope.editForm = {};
+                this.showError = false;
+
+                this.selectBuilding = function(index){
+                    this.isBuildingSelected = true;
+                    $scope.buildingSelected = index;
+                };
+
+                
+                this.send = function() {
+                    dhis2APIService.updateTEIInfo($scope.editForm.trackedEntityInstance,$scope.editForm).then(function(dat){
+                        if(dat) {
+                            $scope.buildings[$scope.buildingSelected] = $scope.editForm;
+                            $scope.editing = false;
+                        }
+                        else this.showError= true; //currently not showing error
+                    });
+                };
+
+                this.isEditing = function() {
+                    return $scope.editing;
+                };
+
+                this.setEditing = function(edit){
+                    $scope.editing = edit;
+                    showError = false;
+                    $scope.editForm={};
+                    if($scope.editing) angular.copy($scope.buildings[$scope.buildingSelected], $scope.editForm);
+                };
             },
-            controllerAs:'buildingsTab'
+            controllerAs:'buildingsCtrl'
         };
     });
 

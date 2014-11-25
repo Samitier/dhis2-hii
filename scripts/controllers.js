@@ -24,9 +24,23 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 
 hiiControllers.controller('detailController', function($scope, $routeParams, dhis2APIService) {
 	this.init = function() {
-	    $scope.complexId = $routeParams.complexId;
+		$scope.editing=false;
+	    //getting sanitary complex info
 	    dhis2APIService.getTrackedEntityById($routeParams.complexId).then(function(dat){
 	        $scope.complexInfo = dat;
+	        //getting buildings info
+	        $scope.buildings = [];
+	        if($scope.complexInfo.relationships != null) {
+	        	for(var i=0;i<$scope.complexInfo.relationships.length;++i) {
+	        		if($scope.complexInfo.relationships[i].displayName == "Buildings of Sanitary Complex") {
+	        			dhis2APIService.getTrackedEntityById($scope.complexInfo.relationships[i].trackedEntityInstanceA).then(
+	        				function(dat){
+	        					$scope.buildings.push(dat);
+	        				}
+	        			);
+	        		}
+	        	}
+	        }
 	    }); 
 		$scope.showOrgUnitTree(false);
 	    this.tab =1;
@@ -36,6 +50,7 @@ hiiControllers.controller('detailController', function($scope, $routeParams, dhi
     };
     this.setTab = function(tab) {
         this.tab = tab;
+        $scope.editing = false;
     };
 });
 
