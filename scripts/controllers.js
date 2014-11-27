@@ -2,17 +2,31 @@
 
 hiiControllers.controller('listController', function($scope, $location, $translate, dhis2APIService) {
 	this.init = function() {
-		$scope.showOrgUnitTree(true);
-
+	    //get the id for the sanitary complex program
 	    dhis2APIService.getProgramId('Sanitary Complex Basic Info').then(function(data) {
 	        $scope.complexProgramID = data;
-	        dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramID).then(function(dat){
-	            $scope.complexList = dat;
-	        })
+	        $scope.fillList();
 	    });
-
+	    //set the language for the translations
 	    dhis2APIService.getUserUiLocale().then(function(dat){
 	        $translate.uses(dat);
+	    });
+
+	    $scope.isComplexOrgunit = false;
+	    $scope.complexList={};
+
+	    //watch for changes in the selected orgunit and filter the content
+	    $scope.$watch('selectedOrgUnit', function() {
+       		if($scope.selectedOrgUnit && $scope.complexProgramID) $scope.fillList();
+   		});
+	};
+
+	$scope.fillList =function() {
+		dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramID, $scope.selectedOrgUnit).then(function(dat){
+	        $scope.complexList = dat;
+	    });
+	    dhis2APIService.getOrganizationUnitInfo($scope.selectedOrgUnit).then(function(dat) {
+	    	$scope.isComplexOrgunit = (dat.children.length==0);
 	    });
 	};
 
@@ -42,7 +56,6 @@ hiiControllers.controller('detailController', function($scope, $routeParams, dhi
 	        	}
 	        }
 	    }); 
-		$scope.showOrgUnitTree(false);
 	    this.tab =1;
 	};
     this.isTab = function(tab) {
@@ -56,5 +69,4 @@ hiiControllers.controller('detailController', function($scope, $routeParams, dhi
 
 
 hiiControllers.controller('settingsController', function($scope){
-	$scope.showOrgUnitTree(false);
 });

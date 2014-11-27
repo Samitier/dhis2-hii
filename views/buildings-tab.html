@@ -3,7 +3,7 @@
 		<p class="header"> Building name </p>
 		<table class="listTable" ng-show="detailCtrl.isTab(3)">
 			<tbody id="list">
-				<tr class = 'listRow'><td> <input type="submit" value="Add Building"> </td></tr>
+				<tr class = 'listRow'><td> <input type ='button' value = "Add building" ng-click="buildingsCtrl.addBuilding()"></input></td></tr>
   				<tr class = 'listRow' ng-repeat = "building in buildings" >
     			<td class='text-column' ng-click="buildingsCtrl.selectBuilding($index)">{{building.attributes[0].value}}</td></tr>
 			</tbody>

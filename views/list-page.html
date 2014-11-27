@@ -13,7 +13,8 @@
       <tr class = 'listRow' ng-repeat = "urbanization in complexList.tableContents" ng-click="listCtrl.setBasicInfoPanel($index)">
         <td class='text-column'>{{urbanization[5]}}</td>
       </tr>
+      <tr ng-show ='complexList.tableContents.length==0 && !isComplexOrgunit'> <td> There are no Sanitary Complexes inside this Organization Unit </td></tr>
+      <tr ng-show ='isComplexOrgunit && complexList.tableContents.length==0'> <td> <button type="button">Add new sanitary complex</button> </td></tr>
     </tbody>
   </table>
-  <button type="button" style ="margin-top:10px">Add new sanitary complex</button>
 </div>
