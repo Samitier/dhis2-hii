@@ -1,4 +1,4 @@
-<div class="page" id ="mainPage" style="padding-right: 25px" ng-init = 'detailCtrl.init()'>
+<div class="page" id ="mainPage" style="padding-right: 25px">
     <h3><a href="#/list"> {{'add_complex'| translate}} </a>
 		&#8226; {{complexInfo.attributes[0].value}}
 	    <a title="Help" href=""><i class="fa fa-question-circle"></i></a>
@@ -9,14 +9,12 @@
 
 <div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
 	<ul role="tablist" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(1),'ui-tabs-active': detailCtrl.isTab(1)}"><a class="ui-tabs-anchor" ng-click="detailCtrl.setTab(1)" style="cursor: pointer">General Information</a></li>
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(2),'ui-tabs-active': detailCtrl.isTab(2)}"><a class="ui-tabs-anchor" ng-click="detailCtrl.setTab(2)" style="cursor: pointer">State</a></li>
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':detailCtrl.isTab(3),'ui-tabs-active': detailCtrl.isTab(3)}"><a class="ui-tabs-anchor" ng-click="detailCtrl.setTab(3)" style="cursor: pointer">Buildings</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a class="ui-tabs-anchor" ng-click="setTab(1)" style="cursor: pointer">General Information</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':true,'ui-tabs-active': true}"><a class="ui-tabs-anchor" style="cursor: pointer">State</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a class="ui-tabs-anchor" ng-click="setTab(3)" style="cursor: pointer">Buildings</a></li>
 	</ul>
-
-    <basic-info-tab ng-show="detailCtrl.isTab(1)"> </basic-info-tab>
 	
-	<div ng-show="detailCtrl.isTab(2)">
+	<div>
 		<table>
 	    <tbody>
 	    <tr> <td> <div class="info-box"> <p class="header"> Mostrar reporte :  <select>
@@ -221,6 +219,5 @@
 		</tbody>
 		</table>
 	</div>
-	<buildings-tab ng-show="detailCtrl.isTab(3)"> </buildings-tab>
 </div> 
 

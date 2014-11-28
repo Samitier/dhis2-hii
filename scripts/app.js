@@ -14,15 +14,30 @@
             controller: 'listController',
             controllerAs: 'listCtrl'
         })
-        .when('/detail/:complexId',{
-            templateUrl:'views/detail-page.html',
-            controller: 'detailController',
-            controllerAs: 'detailCtrl'
-        })
         .when('/settings',{
-            templateUrl:'views/settings.html',
+            templateUrl:'views/settings-page.html',
             controller: 'settingsController',
             controllerAs: 'settingsCtrl'
+        })
+        .when('/basicInfo/:complexId',{
+            templateUrl:'views/basic-info-page.html',
+            controller: 'basicInfoController',
+            controllerAs: 'basicInfoCtrl'
+        })
+        .when('/addBasicInfo/:complexId',{
+            templateUrl:'views/basic-info-page.html',
+            controller: 'addBasicInfoController',
+            controllerAs: 'addBasicInfoCtrl'
+        })
+        .when('/reports/:complexId',{
+            templateUrl:'views/reports-page.html',
+            controller: 'reportsController',
+            controllerAs: 'reportsCtrl'
+        })
+        .when('/buildings/:complexId',{
+            templateUrl:'views/buildings-page.html',
+            controller: 'buildingsController',
+            controllerAs: 'buildingsCtrl'
         })
         .otherwise({
             redirectTo : '/list'

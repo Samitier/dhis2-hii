@@ -44,7 +44,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 	};
 
     this.setBasicInfoPanel = function(index) {
-        $location.path('/detail/' + $scope.complexList.tableContents[index][0]);
+        $location.path('/basicInfo/' + $scope.complexList.tableContents[index][0]);
     };      
 
     this.createComplex = function(){
@@ -63,37 +63,131 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 });
 
 
-hiiControllers.controller('detailController', function($scope, $routeParams, dhis2APIService) {
-	this.init = function() {
-		$scope.editing=false;
-	    //getting sanitary complex info
-	    dhis2APIService.getTrackedEntityById($routeParams.complexId).then(function(dat){
-	        $scope.complexInfo = dat;
-	        //getting buildings info
-	        $scope.buildings = [];
-	        if($scope.complexInfo.relationships != null) {
-	        	for(var i=0;i<$scope.complexInfo.relationships.length;++i) {
-	        		if($scope.complexInfo.relationships[i].displayName == "Buildings of Sanitary Complex") {
-	        			dhis2APIService.getTrackedEntityById($scope.complexInfo.relationships[i].trackedEntityInstanceA).then(
-	        				function(dat){
-	        					$scope.buildings.push(dat);
-	        				}
-	        			);
-	        		}
-	        	}
-	        }
-	    }); 
-	    this.tab =1;
-	};
-    this.isTab = function(tab) {
-        return this.tab ==tab;
+hiiControllers.controller('basicInfoController', function($scope, $location, $routeParams, dhis2APIService){
+	$scope.editing=false;
+    //getting sanitary complex info
+    dhis2APIService.getTrackedEntityById($routeParams.complexId).then(function(dat){
+        $scope.complexInfo = dat;
+        //getting buildings info
+        $scope.buildings = [];
+        if($scope.complexInfo.relationships != null) {
+        	for(var i=0;i<$scope.complexInfo.relationships.length;++i) {
+        		if($scope.complexInfo.relationships[i].displayName == "Buildings of Sanitary Complex") {
+        			dhis2APIService.getTrackedEntityById($scope.complexInfo.relationships[i].trackedEntityInstanceA).then(
+        				function(dat){
+        					$scope.buildings.push(dat);
+        				}
+        			);
+        		}
+        	}
+        }
+    });
+    $scope.editForm = {};
+    this.showError = false;
+    this.send = function() {
+        dhis2APIService.updateTEIInfo($scope.editForm.trackedEntityInstance,$scope.editForm).then(function(dat){
+            if(dat) {
+                $scope.complexInfo = $scope.editForm;
+                $scope.editing = false;
+            }
+            else this.showError= true; //currently not showing error
+        });
     };
-    this.setTab = function(tab) {
-        this.tab = tab;
-        $scope.editing = false;
+
+    this.isEditing = function() {
+        return $scope.editing;
+    };
+
+    this.setEditing = function(edit){
+        $scope.editing = edit;
+        showError = false;
+        $scope.editForm={};
+        if($scope.editing) angular.copy($scope.complexInfo, $scope.editForm);
+    };
+
+    $scope.setTab = function(n) {
+    	if(n==2) $location.path('/reports/' + $routeParams.complexId);
+    	else if(n==3) $location.path('/buildings/' + $routeParams.complexId);
     };
 });
 
+hiiControllers.controller('addBasicInfoController', function($scope, $location, $routeParams, dhis2APIService){
+	$scope.setTab = function(n) {
+    	if(n==2) $location.path('/reports/' + $routeParams.complexId);
+    	else if(n==3) $location.path('/buildings/' + $routeParams.complexId);
+    };
+});
+
+hiiControllers.controller('reportsController', function($scope, $location, $routeParams, dhis2APIService){
+	$scope.setTab = function(n) {
+    	if(n==1) $location.path('/basicInfo/' + $routeParams.complexId);
+    	else if(n==3) $location.path('/buildings/' + $routeParams.complexId);
+    };
+});
+
+hiiControllers.controller('buildingsController', function($scope, $location, $routeParams, dhis2APIService){
+	$scope.complexID = $routeParams.complexId;
+	dhis2APIService.getTrackedEntityById($routeParams.complexId).then(function(dat){
+        $scope.complexInfo = dat;
+        //getting buildings info
+        $scope.buildings = [];
+        if($scope.complexInfo.relationships != null) {
+        	for(var i=0;i<$scope.complexInfo.relationships.length;++i) {
+        		if($scope.complexInfo.relationships[i].displayName == "Buildings of Sanitary Complex") {
+        			dhis2APIService.getTrackedEntityById($scope.complexInfo.relationships[i].trackedEntityInstanceA).then(
+        				function(dat){
+        					$scope.buildings.push(dat);
+        				}
+        			);
+        		}
+        	}
+        }
+    });
+    this.isBuildingSelected = false;
+    $scope.buildingSelected =0;
+    $scope.editForm = {};
+    this.showError = false;
+
+    this.selectBuilding = function(index){
+        this.isBuildingSelected = true;
+        $scope.buildingSelected = index;
+    };
+
+    this.addBuilding = function(){
+        dhis2APIService.getTrackedEntityId("Building").then(function(dat) {
+            $scope.buildingTEid = dat;
+            dhis2APIService.createTEI(dat, $scope.complexInfo.orgUnit);
+        });
+        this.isBuildingSelected = true;
+    };
+
+    
+    this.send = function() {
+        dhis2APIService.updateTEIInfo($scope.editForm.trackedEntityInstance,$scope.editForm).then(function(dat){
+            if(dat) {
+                $scope.buildings[$scope.buildingSelected] = $scope.editForm;
+                $scope.editing = false;
+            }
+            else this.showError= true; //currently not showing error
+        });
+    };
+
+    this.isEditing = function() {
+        return $scope.editing;
+    };
+
+    this.setEditing = function(edit){
+        $scope.editing = edit;
+        showError = false;
+        $scope.editForm={};
+        if($scope.editing) angular.copy($scope.buildings[$scope.buildingSelected], $scope.editForm);
+    };
+    $scope.setTab = function(n) {
+    	if(n==1) $location.path('/basicInfo/' + $routeParams.complexId);
+    	else if(n==2) $location.path('/reports/' + $routeParams.complexId);
+    };
+});
 
 hiiControllers.controller('settingsController', function($scope){
 });
+

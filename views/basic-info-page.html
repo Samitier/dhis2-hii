@@ -1,0 +1,40 @@
+<div class="page" id ="mainPage" style="padding-right: 25px">
+    <h3><a href="#/list"> {{'add_complex'| translate}} </a>
+		&#8226; {{complexInfo.attributes[0].value}}
+	    <a title="Help" href=""><i class="fa fa-question-circle"></i></a>
+
+	</h3>
+	<br>
+
+
+<div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<ul role="tablist" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':true,'ui-tabs-active': true}"><a class="ui-tabs-anchor" style="cursor: pointer">General Information</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a class="ui-tabs-anchor" ng-click="setTab(2)" style="cursor: pointer">State</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a class="ui-tabs-anchor" ng-click="setTab(3)" style="cursor: pointer">Buildings</a></li>
+	</ul>
+
+    <div>
+		<div class="info-box">
+			<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "basicInfoCtrl.setEditing(!basicInfoCtrl.isEditing())"></img></p>
+			<div class="contentTable">
+				<table>
+					<form novalidate>
+				   		<tbody>
+				        	<tr  ng-repeat = "i in [0,1,2,3,4]">
+						    	<td class= "leftTableContent"> {{complexInfo.attributes[i].displayName}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=0'> {{complexInfo.attributes[i].value}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=0'> <input type ='text' value = {{editForm.attributes[i].value}} ng-model="editForm.attributes[i].value"> </input></td>
+				        	</tr>
+				        	<tr ng-show = 'basicInfoCtrl.isEditing()'> <td class= "leftTableContent" ng-show = "basicInfoCtrl.showError">Incorrect Data!</td><td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "basicInfoCtrl.send()"> </input> </td> <tr>
+			    		</tbody>
+		    		</form>
+				</table>
+			</div>
+		</div>
+
+		<div class="info-box">
+			<p class="header"> Image <img src = "img/edit2.png" height="18" width="18" style="float: right"></p> 
+			<img ng-src={{"img/"+complexInfo.attributes[5].value}} height="430" width="570"></img>
+		</div>
+	</div>
+</div> 
+
