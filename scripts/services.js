@@ -15,8 +15,15 @@ hiiServices.factory('dhis2APIService', function($http){
       return promise;
     };
 
+    serviceFactory.getProgramData = function(id) {
+      var promise = $http.get('/api/programs/'+id).then(function(response){
+        return response.data;
+      });
+      return promise;
+    };
+
     serviceFactory.getTrackedEntitiesByProgram = function(programId, orgunit) {
-      var promise  = $http.get('/api/trackedEntityInstances.json?ou=' + orgunit.substr(1,orgunit.length-2) + '&ouMode=DESCENDANTS&program='+ programId).then(function(response){
+      var promise  = $http.get('/api/trackedEntityInstances.json?ou=' + orgunit.substr(1,orgunit.length-2) + '&ouMode=SELECTED&program='+ programId).then(function(response){
         var info = {tableHeaders:response.data.headers,tableContents:response.data.rows};
         return info;
       });
@@ -63,10 +70,18 @@ hiiServices.factory('dhis2APIService', function($http){
       return promise;
     };
 
-    serviceFactory.createTEI = function(teid, orgunit) {
-      var message = { "trackedEntity": teid, "orgUnit": orgunit,"attributes": []};
-      var promise = $http.post('/api/trackedEntityInstances/', JSON.stringify(message)).then(function(response){
-        console.dir(response.data);
+    serviceFactory.createTEI = function(msg) {
+      var promise = $http.post('/api/trackedEntityInstances/', JSON.stringify(msg)).then(function(response){
+        return response.data.reference;
+      });
+      return promise;
+    };
+
+    serviceFactory.enrollTEI = function(TEIid, programid){
+      var msg = {"trackedEntityInstance": TEIid, "program": programid, "dateOfEnrollment": "2013-09-17", "dateOfIncident": "2013-09-17"};
+      var promise = $http.post('/api/enrollments/', JSON.stringify(msg)).then(function(response){
+        console.log(response);
+        return response;
       });
       return promise;
     };

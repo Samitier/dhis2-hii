@@ -19,16 +19,8 @@
         return {
             restrict: 'E',
             templateUrl: 'views/dhis-left-bar.html',
-            controller: function($scope, $location, $route, $rootScope, $interval) {
+            controller: function($scope, $location, $route, $rootScope) {
                 $scope.showOUWT = true;
-                $scope.selectedOrgUnit = sessionStorage.ouSelected;
-                
-                //this interval will work as a $watch for the outside variable sessionStorage.ouSelected
-                $interval(function() {
-                        if(sessionStorage.ouSelected != $scope.selectedOrgUnit) {
-                            $scope.selectedOrgUnit = sessionStorage.ouSelected;
-                        }
-                }, 400);
 
                 //if we are in the listpage, show OUWT
                 $rootScope.$on("$routeChangeStart", function(args){
