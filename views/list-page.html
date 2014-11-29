@@ -3,15 +3,18 @@
   <a title="Help" href=""><i class="fa fa-question-circle"></i></a>
 </h3>
   <br>
-  <table class="listTable">
+  <img ng-show ="loadingList" src ='/images/ajax-loader-circle.gif' >
+  <table class="listTable" ng-hide = "loadingList">
     <thead>
       <tr>
         <th>{{complexList.tableHeaders[5].column}}</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody id="list">
-      <tr class = 'listRow' ng-repeat = "urbanization in complexList.tableContents" ng-click="listCtrl.setBasicInfoPanel($index)">
-        <td class='text-column'>{{urbanization[5]}}</td>
+      <tr class = 'listRow' ng-repeat = "urbanization in complexList.tableContents">
+        <td class='text-column' ng-click="listCtrl.gotoBasicInfoPanel($index)">{{urbanization[5]}}</td>
+        <td ng-show='isComplexOrgunit && complexList.tableContents.length!=0'> <img ng-click ="listCtrl.deleteComplex($index)" src ='/images/delete.png' ></td>
       </tr>
       <tr ng-show ='complexList.tableContents.length==0 && !isComplexOrgunit'> <td> There are no Sanitary Complexes inside this Organization Unit </td></tr>
       <tr ng-show ='isComplexOrgunit && complexList.tableContents.length==0'> <td> <button type="button" ng-click='listCtrl.createComplex()'>Add new sanitary complex</button> </td></tr>
