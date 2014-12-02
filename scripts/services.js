@@ -22,9 +22,9 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
-      getTrackedEntitiesByProgram : function(programId, orgunit) {
-        var promise  = $http.get('/api/trackedEntityInstances.json?ou=' + orgunit.substr(1,orgunit.length-2) 
-          + '&ouMode=SELECTED&program='+ programId).then(function(response){
+      getTrackedEntitiesByProgram : function(programId, orgunit, oumode) {
+        var promise  = $http.get('/api/trackedEntityInstances.json?ou=' + orgunit
+          + '&ouMode=' + oumode +'&program='+ programId).then(function(response){
           var info = {tableHeaders:response.data.headers,tableContents:response.data.rows};
           return info;
         });
@@ -38,7 +38,18 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
-      updateTEIInfo : function(id,message){
+      updateTEIInfo : function(id, te, ou, atts){
+        var message = { "trackedEntity": te,
+                        "orgUnit": ou,
+                        "attributes": atts
+        };
+        var promise = $http.put('/api/trackedEntityInstances/'+id, JSON.stringify(message)).then(function(response){
+          return (response.data.status =="SUCCESS");
+        });
+        return promise;
+      },
+
+      updateTEIInfromCopy : function(id,message){
         var promise = $http.put('/api/trackedEntityInstances/'+id, JSON.stringify(message)).then(function(response){
           return (response.data.status =="SUCCESS");
         });

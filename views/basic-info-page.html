@@ -22,7 +22,7 @@
 					<form novalidate>
 				   		<tbody>
 				        	<tr  ng-repeat = "i in [0,1,2,3,4]">
-						    	<td class= "leftTableContent"> {{complexInfo.attributes[i].displayName}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=0'> {{complexInfo.attributes[i].value}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=0'> <input type ='text' value = {{editForm.attributes[i].value}} ng-model="editForm.attributes[i].value"> </input></td>
+						    	<td class= "leftTableContent"> {{complexInfo.attributes[i].displayName}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=0'> {{complexInfo.attributes[i].value}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=0'> <input type ='text' ng-model="editForm.attributes[i].value"> </input></td>
 				        	</tr>
 				        	<tr ng-show = 'basicInfoCtrl.isEditing()'> <td class= "leftTableContent" ng-show = "basicInfoCtrl.showError">Incorrect Data!</td><td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "basicInfoCtrl.send()"> </input> </td> <tr>
 			    		</tbody>

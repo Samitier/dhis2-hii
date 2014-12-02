@@ -20,8 +20,8 @@ hiiDirectives.directive('dhisLeftBar', function() {
         restrict: 'E',
         templateUrl: 'views/directives/dhis-left-bar.html',
         controller: function($scope, $location, $route, $rootScope) {
-            $scope.showOUWT = true;
-
+            $scope.showOUWT = false;
+            if($location.path() == '/list') $scope.showOUWT = true;
             //if we are in the listpage, show OUWT
             $rootScope.$on("$routeChangeStart", function(args){
                 if($location.path() == '/list') $scope.showOUWT = true;
