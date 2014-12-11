@@ -1,6 +1,6 @@
 <div class="page" id ="mainPage" style="padding-right: 25px">
     <h3><a href="#/list"> {{'add_complex'| translate}} </a>
-		&#8226; {{complexInfo.attributes[0].value}}
+		&#8226; {{complexInfo.tableContents[0][5]}}
 	    <a title="Help" href=""><i class="fa fa-question-circle"></i></a>
 
 	</h3>
@@ -17,205 +17,28 @@
 	<div>
 		<table>
 	    <tbody>
-	    <tr> <td> <div class="info-box"> <p class="header"> Mostrar reporte :  <select>
-				  <option value="1">26 Agosto 2013</option>
-				  <option value="2">7 Octubre 2013</option>
-				  <option value="3">13 Enero 2014</option>
-				  <option value="4">5 Mayo 2014</option> 
-				</select> &nbsp &nbsp &nbsp <button> Añadir reporte nuevo </button></p> </div></td></tr>
-	    <tr><td>
-	    <div>
-	    		<div class="info-box">
-					<p class="header"> Muro Perimetral </p>
-					<div class="contentTable">
-						<table>
-					   		<tbody>
-					        	<tr>
-							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
-					        	</tr>
-				    		</tbody>
-						</table>
-					</div>
+	    <tr ng-hide='reportsCtrl.isEditing()'> <td> <div class="info-box"> <p class="header"> Mostrar reporte :  <select>
+				  <option ng-repeat = "report in reports | orderBy:sortingPredicate:true" ng-click='selectReport(report)'>{{report.eventDate}}</option> 
+				</select> &nbsp &nbsp &nbsp <button ng-click = 'reportsCtrl.newReport()'> Añadir reporte </button></p> </div></td></tr>
+	   	<tr ng-show='reportsCtrl.isEditing()'> <td> <div class="info-box"> <p class="header"> Fecha reporte :
+				<input type ='text' ng-model="reportDate"> </input> </p> </div> </td></tr>
+		<tr><td>
+	    <div ng-show = 'selectedReport !=-1'>
+    		<div class="info-box" ng-repeat = "sections in programStageData | orderBy:sortingPredicate2:reverse">
+				<p class="header"> {{sections.name}} </p>
+				<div class="contentTable">
+					<table>
+				   		<tbody>
+				        	<tr ng-repeat = "dataElement in sections.dataElement">
+						    	<td class = "leftTableContent"> {{dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input type ='text' ng-model="reportForm[dataElement.id]"> </input></td>
+				        	</tr>
+			    		</tbody>
+					</table>
 				</div>
-				<div class="info-box">
-					<p class="header"> Pasajes Cubiertos </p>
-					<div class="contentTable">
-						<table>
-					   		<tbody>
-					        	<tr>
-							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
-					        	</tr>
-				    		</tbody>
-						</table>
-					</div>
-				</div>
-	    		<div class="info-box">
-					<p class="header"> Areas de Espera </p>
-					<div class="contentTable">
-						<table>
-					   		<tbody>
-					        	<tr>
-							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
-					        	</tr>
-				    		</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="info-box">
-					<p class="header"> Pavimentacion Exterior </p>
-					<div class="contentTable">
-						<table>
-					   		<tbody>
-					        	<tr>
-							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
-					        	</tr>
-				    		</tbody>
-						</table>
-					</div>
-				</div>
-								<div class="info-box">
-					<p class="header"> Pasajes Cubiertos </p>
-					<div class="contentTable">
-						<table>
-					   		<tbody>
-					        	<tr>
-							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
-					        	</tr>
-				    		</tbody>
-						</table>
-					</div>
-				</div>
-								<div class="info-box">
-					<p class="header"> Pasajes Cubiertos </p>
-					<div class="contentTable">
-						<table>
-					   		<tbody>
-					        	<tr>
-							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
-					        	</tr>
-				    		</tbody>
-						</table>
-					</div>
-				</div>
-								<div class="info-box">
-					<p class="header"> Pasajes Cubiertos </p>
-					<div class="contentTable">
-						<table>
-					   		<tbody>
-					        	<tr>
-							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
-					        	</tr>
-				    		</tbody>
-						</table>
-					</div>
-				</div>
-								<div class="info-box">
-					<p class="header"> Pasajes Cubiertos </p>
-					<div class="contentTable">
-						<table>
-					   		<tbody>
-					        	<tr>
-							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
-					        	</tr>
-				    		</tbody>
-						</table>
-					</div>
-				</div>
-								<div class="info-box">
-					<p class="header"> Pasajes Cubiertos </p>
-					<div class="contentTable">
-						<table>
-					   		<tbody>
-					        	<tr>
-							    	<td class = "leftTableContent"> Estado </td> <td> Funcional </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Intervencion </td> <td> Manenimiento de rutina </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Prioridad </td> <td> Baja </td>
-					        	</tr>
-					        	<tr>
-							    	<td class = "leftTableContent"> Comentarios </td> <td> "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor." </td>
-					        	</tr>
-				    		</tbody>
-						</table>
-					</div>
-				</div>
+			</div>
 		</div>
 		</td></tr>
+		<tr ng-show='reportsCtrl.isEditing()'> <td style='text-align:right'><button ng-click = 'reportsCtrl.sendReport()'> Enviar </button> </td></tr>
 		</tbody>
 		</table>
 	</div>

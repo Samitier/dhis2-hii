@@ -19,17 +19,17 @@ app.config(function($translateProvider, $routeProvider) {
         controller: 'settingsController',
         controllerAs: 'settingsCtrl'
     })
-    .when('/basicInfo/:complexId',{
+    .when('/basicInfo/:orgUnitId',{
         templateUrl:'views/basic-info-page.html',
         controller: 'basicInfoController',
         controllerAs: 'basicInfoCtrl'
     })
-    .when('/reports/:complexId',{
+    .when('/reports/:orgUnitId',{
         templateUrl:'views/reports-page.html',
         controller: 'reportsController',
         controllerAs: 'reportsCtrl'
     })
-    .when('/buildings/:complexId',{
+    .when('/buildings/:orgUnitId',{
         templateUrl:'views/buildings-page.html',
         controller: 'buildingsController',
         controllerAs: 'buildingsCtrl'

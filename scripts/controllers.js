@@ -1,28 +1,36 @@
-
-
 var hiiControllers = angular.module('hiiControllers', []);
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+// The controller for initializing the metadata-related variables and the language of the app //
+////////////////////////////////////////////////////////////////////////////////////////////////
 hiiControllers.controller('mainController', function($scope, $translate, dhis2APIService){
     //set the language for the translations
     dhis2APIService.getUserUiLocale().then(function(dat){
         $translate.uses(dat);
     });
-    //get the id for the sanitary complex basic info program
-    dhis2APIService.getProgramId('Sanitary Complex Basic Info').then(function(data) {
+    //get the id for the sanitary complex program
+    dhis2APIService.getProgramId('Sanitary Complex hii Program').then(function(data) {
         $scope.complexProgramID = data;
         //get the program data (for the attributes)
         dhis2APIService.getProgramData($scope.complexProgramID).then(function(dat){ $scope.complexProgramData = dat;});
     });
     //get the id for the buildings basic info program
-    dhis2APIService.getProgramId('Building Basic Info').then(function(data) {
+    dhis2APIService.getProgramId('Building hii Program').then(function(data) {
         $scope.buildingProgramID = data;
     });
-
+    //get the id of the Sanitary Complex tracked entity
+    dhis2APIService.getTrackedEntityId("Sanitary Complex").then(function(data) {
+        $scope.complexTEid = data;
+    });
+    //get the id of the building tracked entity
     dhis2APIService.getTrackedEntityId("Building").then(function(data) {
     	$scope.buildingTEid = data;
     });
 });
+
+
+
 
 hiiControllers.controller('listController', function($scope, $location, $translate, $interval, dhis2APIService) {
 	this.init = function() {
@@ -64,14 +72,10 @@ hiiControllers.controller('listController', function($scope, $location, $transla
     	var orgunit = $scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2); //we have to erase the "" of the orgunit id
     	var attributes = [{ "attribute": $scope.complexProgramData.programTrackedEntityAttributes[0].trackedEntityAttribute.id,
     						 "value": $scope.selectedOrgUnitName}];
-    	//we put "-" to all attributes, so DHIS2 saves them in the TEI
-    	for(var i=1; i< $scope.complexProgramData.programTrackedEntityAttributes.length;++i){
-    		attributes.push({ "attribute": $scope.complexProgramData.programTrackedEntityAttributes[i].trackedEntityAttribute.id,"value": "-"});
-    	}
     	//we create a new complex with the name of the orgunit and enroll it to the basic info program
 		dhis2APIService.createTEI(teid, orgunit, attributes).then(function(data){
 			dhis2APIService.enrollTEI(data, $scope.complexProgramData.id).then (function(dat){
-				if(dat) $location.path('/basicInfo/' + data);
+				if(dat) $location.path('/basicInfo/' + $scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2));
 				else alert("Error");
 			});
 		});
@@ -85,31 +89,36 @@ hiiControllers.controller('listController', function($scope, $location, $transla
     };
 
     this.gotoBasicInfoPanel = function(index) {
-        $location.path('/basicInfo/' + $scope.complexList.tableContents[index][0]);
+        $location.path('/basicInfo/' + $scope.complexList.tableContents[index][3]);
     };   
 });
 
 
+
+
 hiiControllers.controller('basicInfoController', function($scope, $location, $routeParams, dhis2APIService){
-	$scope.editing=false;
-    $scope.editForm = {};
-    this.showError = false;
 
     //getting sanitary complex info
-    dhis2APIService.getTrackedEntityById($routeParams.complexId).then(function(dat){
-        $scope.complexInfo = dat;
-    });
+    $scope.getTableContents = function(){
+        dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramID, $routeParams.orgUnitId, 'SELECTED').then(function(dat){
+            $scope.complexInfo = dat;
+            //we wait for the response
+            if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
+        },
+        //if someone modifies the url we return to the list page 
+        function(dat) { $location.path('/list')});
+    };
+
+    $scope.editing=false;
+    $scope.editForm = [];
+    $scope.getTableContents();
 
     this.send = function() {
-    	for(var i =0; i< $scope.editForm.attributes.length;++i) {
-        		if($scope.editForm.attributes[i].value == "") $scope.editForm.attributes[i].value = "-";
-        }
-        dhis2APIService.updateTEIInfo($scope.editForm.trackedEntityInstance,$scope.editForm).then(function(dat){
-            if(dat) {
-                $scope.complexInfo = $scope.editForm;
+        var attrs = [];
+        for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.complexInfo.tableHeaders[i].name ,"value": $scope.editForm[i]});
+        dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.complexTEid,$routeParams.orgUnitId,attrs).then(function(dat){
+                $scope.getTableContents();
                 $scope.editing = false;
-            }
-            else this.showError= true; //currently not showing error
         });
     };
 
@@ -120,45 +129,125 @@ hiiControllers.controller('basicInfoController', function($scope, $location, $ro
     this.setEditing = function(edit){
         $scope.editing = edit;
         showError = false;
-        $scope.editForm={};
-        if($scope.editing) {
-        	//we copy the attributes into the new form and erase the "-"
-        	angular.copy($scope.complexInfo, $scope.editForm);
-        	for(var i =0; i< $scope.complexInfo.attributes.length;++i) {
-        		if($scope.complexInfo.attributes[i].value == "-") $scope.editForm.attributes[i].value = "";
-        	}
-        }
+        $scope.editForm=[];
+        if($scope.editing) angular.copy($scope.complexInfo.tableContents[0], $scope.editForm);
     };
 
     $scope.setTab = function(n) {
-    	if(n==2) $location.path('/reports/' + $routeParams.complexId);
-    	else if(n==3) $location.path('/buildings/' + $routeParams.complexId);
+    	if(n==2) $location.path('/reports/' + $routeParams.orgUnitId);
+    	else if(n==3) $location.path('/buildings/' + $routeParams.orgUnitId);
     };
 });
 
-hiiControllers.controller('reportsController', function($scope, $location, $routeParams, dhis2APIService){
+
+
+
+hiiControllers.controller('reportsController', function($scope, $location, $routeParams, dhis2APIService,$http){
+
+
+    $scope.sortingPredicate= 'eventDate';
+    $scope.sortingPredicate2= 'name';
+    $scope.complexInfo = {};
+
+    $scope.selectedReport = -1;
+    $scope.reports=[];
+    $scope.programStageData = {}; 
+    $scope.selectedReportDataValues =[];
+    $scope.editing = false;
+    $scope.reportForm = [];
+    $scope.reportDate = "";
+
+    //getting sanitary complex info
+    dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramID, $routeParams.orgUnitId, 'SELECTED').then(function(dat){
+        $scope.complexInfo = dat;
+        //we wait for the response
+        if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
+    },
+    //if someone modifies the url we return to the list page 
+    function(dat) { $location.path('/list')});
+
+    //set the program metadata;
+    dhis2APIService.getProgramStageId("Sanitary Complex Infrastructure Report").then(function(dat) { 
+        $scope.programStageId = dat;
+        dhis2APIService.getProgramStage(dat).then(function(data) { 
+           $scope.programStageData = data.programStageSections;
+           for (var i=0; i<$scope.programStageData.length; ++i) {
+               $scope.programStageData[i].dataElement = [];
+               for(var j=0; j<data.programStageDataElements.length; ++j) {
+                  if(data.programStageDataElements[j].dataElement.name.indexOf($scope.programStageData[i].name) == 0) {
+                     var nam = data.programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
+                     data.programStageDataElements[j].dataElement.name = nam;
+                     $scope.programStageData[i].dataElement.push(data.programStageDataElements[j].dataElement);
+                  }
+               }
+           }
+        });
+    });
+
+    $scope.fillReportList = function() {
+        dhis2APIService.getTECompletedEvents($scope.complexProgramID, $routeParams.orgUnitId).then(function(dat){
+            $scope.reports = dat; //we have to sort this for date from newest to oldest
+            var max='0';
+            for(var i=0; i<$scope.reports.length;++i) {
+                $scope.reports[i].eventDate = $scope.reports[i].eventDate.replace('00:00:00.0','');
+                if(max<$scope.reports[i].eventDate){
+                    max = $scope.reports[i].eventDate;
+                    $scope.selectedReport=i;
+                }
+            } 
+            if($scope.reports.length!=0)$scope.selectReport($scope.reports[$scope.selectedReport]);
+        },function(err){console.dir(err)});
+    }
+    $scope.fillReportList();
+
+    this.isEditing = function() {
+        return $scope.editing ==true;
+    };
+
+    this.newReport = function() {
+        $scope.selectedReport = 0;
+        $scope.editing = true;
+        $scope.reportForm =[];
+        $scope.reportDate="";
+    };
+
+    this.sendReport = function() {
+        var values = [];
+        for (var i=0; i<$scope.programStageData.length; ++i) {
+            for(var j=0; j<$scope.programStageData[i].dataElement.length; ++j) {
+                var id = $scope.programStageData[i].dataElement[j].id;
+                values.push({"dataElement": id, "value": $scope.reportForm[id]});
+            }
+        }
+        dhis2APIService.sendEvent($scope.complexInfo.tableContents[0][0], $scope.complexProgramID, $scope.programStageId,$routeParams.orgUnitId, $scope.reportDate, values).then(function(data) {
+            $scope.fillReportList();
+        }, function(err){ console.dir(err)});
+    };
+
+    $scope.selectReport= function(item) {
+
+        $scope.editing = false;
+        $scope.selectedReport = $scope.reports.indexOf(item);
+        $scope.selectedReportDataValues = [];
+        for(var i=0; i<$scope.reports[$scope.selectedReport].dataValues.length;++i) {
+            $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
+        }
+    };
+
 	$scope.setTab = function(n) {
-    	if(n==1) $location.path('/basicInfo/' + $routeParams.complexId);
-    	else if(n==3) $location.path('/buildings/' + $routeParams.complexId);
+    	if(n==1) $location.path('/basicInfo/' + $routeParams.orgUnitId);
+    	else if(n==3) $location.path('/buildings/' + $routeParams.orgUnitId);
     };
 });
+
+
+
 
 hiiControllers.controller('buildingsController', function($scope, $location, $routeParams, dhis2APIService){
 
-    $scope.isBuildingSelected = false;
-    $scope.buildingSelected =-1;
-    $scope.editing = false;
-    this.showError = false;
-    this.isCreating = false;
-    $scope.buildings = [];  
-
-	dhis2APIService.getTrackedEntityById($routeParams.complexId).then(function(dat){
-        $scope.complexInfo = dat;
-        $scope.fillBuildingList();
-    });
-
+    $scope.orgUnitId = $routeParams.orgUnitId;
     $scope.fillBuildingList = function (selected) {
-    	dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramID, $scope.complexInfo.orgUnit, 'SELECTED').then(function(dat){
+    	dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramID, $scope.orgUnitId, 'SELECTED').then(function(dat){
         	$scope.buildings = dat;
         	if(selected) {
         		$scope.editing = false;
@@ -166,18 +255,39 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ro
         			if(selected == $scope.buildings.tableContents[i][5]) $scope.buildingSelected=i;
         		}
         	}
-        });
+        },
+        //if someone modifies the url we return to the list page 
+        function(dat) { $location.path('/list')});
+    };
+
+    $scope.isBuildingSelected = false;
+    $scope.buildingSelected =-1;
+    $scope.editing = false;
+    this.showError = false;
+    $scope.isCreating = false;
+    $scope.buildings = [];  
+    $scope.fillBuildingList();
+    this.showInfoTab = true;
+
+    this.setBasicInfoTab = function(tab) {
+        this.showInfoTab = tab;
+    }
+
+    this.isBasicInfoTab = function() {
+        return this.showInfoTab == true;
     }
 
     this.selectBuilding = function(index){
+        this.showInfoTab = true;
         $scope.isBuildingSelected = true;
-        this.isCreating = false;
+        $scope.isCreating = false;
         $scope.editing = false;
         $scope.buildingSelected = index;
     };
 
     this.addBuilding = function(){
-    	this.isCreating = true;
+        this.showInfoTab = true;
+    	$scope.isCreating = true;
         $scope.isBuildingSelected = true;
         $scope.buildingSelected = $scope.buildings.length;
         $scope.editing = true;
@@ -186,56 +296,149 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ro
         	$scope.editForm[i]='';
         }
     };
-
-    this.deleteBuilding = function() {
-    	dhis2APIService.deleteTEI($scope.buildings.tableContents[$scope.buildingSelected][0]).then(function(dat) {
-    		if(!dat) alert("Error!");
-    		else {
-    			$scope.fillBuildingList();
-    			$scope.isBuildingSelected = false;
-    			$scope.buildingSelected =-1;
-    		}
-    	});
-    }
-
     
-    this.send = function() {
-    	var attrs = [];
-    	for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.buildings.tableHeaders[i].name ,"value": $scope.editForm[i]});
-    	
-    	if(this.isCreating){
-    		dhis2APIService.createTEI($scope.buildingTEid, $scope.complexInfo.orgUnit, attrs).then(function(dat){
-		        if(dat) {
-		        	dhis2APIService.enrollTEI(dat, $scope.buildingProgramID).then(function(data) {
-		        		$scope.fillBuildingList(attrs[0].value);
-		        	});
-		        }
-		        else this.showError= true; //currently not showing error
-		    });
-    		this.isCreating=false;
-    	}
-    	else {
-		    dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.buildingTEid,$scope.complexInfo.orgUnit,attrs).then(function(dat){
-		        $scope.fillBuildingList(attrs[0].value);
-		    });
-		}
-    };
-
     this.isEditing = function() {
         return $scope.editing;
     };
 
     this.setEditing = function(edit){
-        if(!this.isCreating) {
+        if(!$scope.isCreating) {
         	$scope.editing = edit;
         	showError = false;
         	$scope.editForm=[];
         	if($scope.editing) angular.copy($scope.buildings.tableContents[$scope.buildingSelected], $scope.editForm);
         }
     };
+    $scope.setCreating = function(cr) {
+        $scope.isCreating = cr;
+    };
+    $scope.unselectBuilding = function() {
+        $scope.isBuildingSelected = false;
+        $scope.buildingSelected =-1;
+    };
     $scope.setTab = function(n) {
-    	if(n==1) $location.path('/basicInfo/' + $routeParams.complexId);
-    	else if(n==2) $location.path('/reports/' + $routeParams.complexId);
+    	if(n==1) $location.path('/basicInfo/' + $routeParams.orgUnitId);
+    	else if(n==2) $location.path('/reports/' + $routeParams.orgUnitId);
+    };
+});
+
+hiiControllers.controller('buildingBasicInfoController', function($scope, dhis2APIService){
+
+    this.deleteBuilding = function() {
+        dhis2APIService.deleteTEI($scope.buildings.tableContents[$scope.buildingSelected][0]).then(function(dat) {
+            if(!dat) alert("Error!");
+            else {
+                $scope.fillBuildingList();
+                $scope.unselectBuilding();
+            }
+        });
+    }
+
+    
+    this.send = function() {
+        var attrs = [];
+        for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.buildings.tableHeaders[i].name ,"value": $scope.editForm[i]});
+        
+        if($scope.isCreating){
+            dhis2APIService.createTEI($scope.buildingTEid, $scope.orgUnitId, attrs).then(function(dat){
+                if(dat) {
+                    dhis2APIService.enrollTEI(dat, $scope.buildingProgramID).then(function(data) {
+                        $scope.fillBuildingList(attrs[0].value);
+                    });
+                }
+                else this.showError= true; //currently not showing error
+            });
+            $scope.setCreating(false);
+        }
+        else {
+            dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.buildingTEid,$scope.orgUnitId,attrs).then(function(dat){
+                $scope.fillBuildingList(attrs[0].value);
+            });
+        }
+    };
+
+});
+
+hiiControllers.controller('buildingReportController', function($scope, dhis2APIService){
+
+    $scope.sortingPredicate= 'eventDate';
+    $scope.sortingPredicate2= 'name';
+    $scope.complexInfo = {};
+
+    $scope.selectedReport = -1;
+    $scope.reports=[];
+    $scope.programStageData = {}; 
+    $scope.selectedReportDataValues =[];
+    $scope.editing = false;
+    $scope.reportForm = [];
+    $scope.reportDate = "";
+
+    //set the program metadata;
+    dhis2APIService.getProgramStageId("Building Infrastructure Report").then(function(dat) { 
+        $scope.programStageId = dat;
+        dhis2APIService.getProgramStage(dat).then(function(data) { 
+           $scope.programStageData = data.programStageSections;
+           for (var i=0; i<$scope.programStageData.length; ++i) {
+               $scope.programStageData[i].dataElement = [];
+               for(var j=0; j<data.programStageDataElements.length; ++j) {
+                  if(data.programStageDataElements[j].dataElement.name.indexOf($scope.programStageData[i].name) == 0) {
+                     var nam = data.programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
+                     data.programStageDataElements[j].dataElement.name = nam;
+                     $scope.programStageData[i].dataElement.push(data.programStageDataElements[j].dataElement);
+                  }
+               }
+           }
+        });
+    });
+
+    $scope.fillReportList = function() {
+        dhis2APIService.getTECompletedEvents($scope.buildingProgramID, $scope.orgUnitId).then(function(dat){
+            $scope.reports = dat; //we have to sort this for date from newest to oldest
+            var max='0';
+            for(var i=0; i<$scope.reports.length;++i) {
+                $scope.reports[i].eventDate = $scope.reports[i].eventDate.replace('00:00:00.0','');
+                if(max<$scope.reports[i].eventDate){
+                    max = $scope.reports[i].eventDate;
+                    $scope.selectedReport=i;
+                }
+            } 
+            if($scope.reports.length!=0)$scope.selectReport($scope.reports[$scope.selectedReport]);
+        },function(err){console.dir(err)});
+    }
+    $scope.fillReportList();
+
+    this.isEditing = function() {
+        return $scope.editing ==true;
+    };
+
+    this.newReport = function() {
+        $scope.selectedReport = 0;
+        $scope.editing = true;
+        $scope.reportForm =[];
+        $scope.reportDate="";
+    };
+
+    this.sendReport = function() {
+        var values = [];
+        for (var i=0; i<$scope.programStageData.length; ++i) {
+            for(var j=0; j<$scope.programStageData[i].dataElement.length; ++j) {
+                var id = $scope.programStageData[i].dataElement[j].id;
+                values.push({"dataElement": id, "value": $scope.reportForm[id]});
+            }
+        }
+        dhis2APIService.sendEvent($scope.buildings.tableContents[$scope.buildingSelected][0], $scope.buildingProgramID, $scope.programStageId,$scope.orgUnitId, $scope.reportDate, values).then(function(data) {
+            $scope.fillReportList();
+        }, function(err){ console.dir(err)});
+    };
+
+    $scope.selectReport= function(item) {
+
+        $scope.editing = false;
+        $scope.selectedReport = $scope.reports.indexOf(item);
+        $scope.selectedReportDataValues = [];
+        for(var i=0; i<$scope.reports[$scope.selectedReport].dataValues.length;++i) {
+            $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
+        }
     };
 });
 

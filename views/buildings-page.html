@@ -27,28 +27,71 @@
 		</div>
 
 		<div class = info-box ng-show="isBuildingSelected" style='width: 78%'>
-			<h3 style="text-align: center"><a> Basic Information </a> &#8226; Reports </h3> 
-			<div class="info-box">
-				<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "buildingsCtrl.setEditing(!buildingsCtrl.isEditing())"></img></p>
-				<div class="contentTable">
-					<table>
-						<form novalidate>
-					   		<tbody>
-					        	<tr ng-repeat = "i in [5,6,7,8,9,10]">
-							    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input type ='text' ng-model="editForm[i]"> </input></td>
-					        	</tr>
-					        	<tr ng-show = 'buildingsCtrl.isEditing()'> <td class= "leftTableContent" ng-show = "buildingsCtrl.showError">Incorrect Data!</td><td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "buildingsCtrl.send()"> </input> </td> <tr>
-				    		</tbody>
-						</form>
-					</table>
+			<h3 style="text-align: center; cursor:pointer;"><a ng-click ="buildingsCtrl.setBasicInfoTab(true)"> Basic Information </a> &#8226; 
+				<a ng-click ="buildingsCtrl.setBasicInfoTab(false)" ng-hide= 'isCreating'>Reports</a></h3> 
+			<div ng-if="buildingsCtrl.isBasicInfoTab()" ng-controller = "buildingBasicInfoController as basicInfoCtrl" >
+				<div class="info-box">
+					<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "buildingsCtrl.setEditing(!buildingsCtrl.isEditing())"></img></p>
+					<div class="contentTable">
+						<table>
+							<form novalidate>
+						   		<tbody>
+						        	<tr ng-repeat = "i in [5,6,7,8,9,10]">
+								    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input type ='text' ng-model="editForm[i]"> </input></td>
+						        	</tr>
+						        	<tr ng-show = 'buildingsCtrl.isEditing()'> <td class= "leftTableContent" ng-show = "buildingsCtrl.showError">Incorrect Data!</td><td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "basicInfoCtrl.send()"> </input> </td> <tr>
+					    		</tbody>
+							</form>
+						</table>
+					</div>
 				</div>
+				<div class="info-box">
+					<p class="header"> Image <img src = "img/edit2.png" height="18" width="18" style="float: right"></p> 
+					<img ng-src={{"img/"+buildings[buildingSelected].attributes[6].value}} height="230" width="370"></img>
+				</div>
+				<input type ='button' value = "Delete building" ng-click="basicInfoCtrl.deleteBuilding()"></input>
 			</div>
-			<div class="info-box">
-				<p class="header"> Image <img src = "img/edit2.png" height="18" width="18" style="float: right"></p> 
-				<img ng-src={{"img/"+buildings[buildingSelected].attributes[6].value}} height="230" width="370"></img>
-			</div>
-			<input type ='button' value = "Delete building" ng-click="buildingsCtrl.deleteBuilding()"></input>
 
+
+			<div ng-if="!buildingsCtrl.isBasicInfoTab()" ng-controller = "buildingReportController as reportsCtrl" >
+				<table>
+			    <tbody>
+			    <tr ng-hide='reportsCtrl.isEditing()'> 
+			    	<td> <div class="info-box"> <p class="header"> Mostrar reporte :  <select>
+						  <option ng-repeat = "report in reports | orderBy:sortingPredicate:true" ng-click='selectReport(report)'>{{report.eventDate}}</option> 
+						</select> &nbsp &nbsp &nbsp <button ng-click = 'reportsCtrl.newReport()'> Añadir reporte </button></p> </div>
+					</td>
+				</tr>
+			   	<tr ng-show='reportsCtrl.isEditing()'> 
+			   		<td> <div class="info-box"> <p class="header"> Fecha reporte :
+						<input type ='text' ng-model="reportDate"> </input> </p> </div> 
+					</td>
+				</tr>
+				<tr>
+					<td>
+					    <div ng-show = 'selectedReport !=-1'>
+				    		<div class="info-box" ng-repeat = "sections in programStageData | orderBy:sortingPredicate2:reverse">
+								<p class="header"> {{sections.name}} </p>
+								<div class="contentTable">
+									<table>
+								   		<tbody>
+								        	<tr ng-repeat = "dataElement in sections.dataElement">
+										    	<td class = "leftTableContent"> {{dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input type ='text' ng-model="reportForm[dataElement.id]"> </input></td>
+								        	</tr>
+							    		</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr ng-show='reportsCtrl.isEditing()'> 
+					<td style='text-align:right'><button ng-click = 'reportsCtrl.sendReport()'> Enviar </button> 
+					</td>
+				</tr>
+				</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div> 
