@@ -117,13 +117,20 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
       getProgramStage: function (id) {
-        var promise = $http.get('/api/programStages/'+id).then(function(response){
+        var promise = $http.get('/api/programStages/'+id + '?fields=programStageSections[id,name,programStageDataElements[dataElement[id,name]]]').then(function(response){
           return response.data;
         });
         return promise;
       },
       getTECompletedEvents: function(program, orgunit){
         var promise = $http.get('/api/events?program='+program+'&orgUnit='+orgunit + '&satus=COMPLETED').then(function(response){
+          if(response.data.events)return response.data.events;
+          else return [];
+        });
+        return promise;
+      },
+      getTEICompletedEvents: function(program, instance, orgunit){
+        var promise = $http.get('/api/events?program='+program+'&orgUnit='+orgunit + '&trackedEntityInstance=' + instance +'&satus=COMPLETED').then(function(response){
           if(response.data.events)return response.data.events;
           else return [];
         });
@@ -138,7 +145,6 @@ hiiServices.factory('dhis2APIService', function($http){
                     "status": "COMPLETED",             
                     "dataValues": values};
         var promise = $http.post('/api/events/', JSON.stringify(msg)).then (function(response) {
-            console.dir(response);
             return response;
         });
         return promise;

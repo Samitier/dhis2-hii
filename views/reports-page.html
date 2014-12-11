@@ -29,8 +29,8 @@
 				<div class="contentTable">
 					<table>
 				   		<tbody>
-				        	<tr ng-repeat = "dataElement in sections.dataElement">
-						    	<td class = "leftTableContent"> {{dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input type ='text' ng-model="reportForm[dataElement.id]"> </input></td>
+				        	<tr ng-repeat = "element in sections.programStageDataElements">
+						    	<td class = "leftTableContent"> {{element.dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[element.dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input type ='text' ng-model="reportForm[element.dataElement.id]"> </input></td>
 				        	</tr>
 			    		</tbody>
 					</table>

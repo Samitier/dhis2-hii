@@ -172,13 +172,9 @@ hiiControllers.controller('reportsController', function($scope, $location, $rout
         dhis2APIService.getProgramStage(dat).then(function(data) { 
            $scope.programStageData = data.programStageSections;
            for (var i=0; i<$scope.programStageData.length; ++i) {
-               $scope.programStageData[i].dataElement = [];
-               for(var j=0; j<data.programStageDataElements.length; ++j) {
-                  if(data.programStageDataElements[j].dataElement.name.indexOf($scope.programStageData[i].name) == 0) {
-                     var nam = data.programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
-                     data.programStageDataElements[j].dataElement.name = nam;
-                     $scope.programStageData[i].dataElement.push(data.programStageDataElements[j].dataElement);
-                  }
+               for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
+                var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
+                $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
                }
            }
         });
@@ -214,8 +210,8 @@ hiiControllers.controller('reportsController', function($scope, $location, $rout
     this.sendReport = function() {
         var values = [];
         for (var i=0; i<$scope.programStageData.length; ++i) {
-            for(var j=0; j<$scope.programStageData[i].dataElement.length; ++j) {
-                var id = $scope.programStageData[i].dataElement[j].id;
+            for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
+                var id = $scope.programStageData[i].programStageDataElements[j].dataElement.id;
                 values.push({"dataElement": id, "value": $scope.reportForm[id]});
             }
         }
@@ -225,7 +221,6 @@ hiiControllers.controller('reportsController', function($scope, $location, $rout
     };
 
     $scope.selectReport= function(item) {
-
         $scope.editing = false;
         $scope.selectedReport = $scope.reports.indexOf(item);
         $scope.selectedReportDataValues = [];
@@ -373,26 +368,23 @@ hiiControllers.controller('buildingReportController', function($scope, dhis2APIS
     $scope.reportForm = [];
     $scope.reportDate = "";
 
+
     //set the program metadata;
     dhis2APIService.getProgramStageId("Building Infrastructure Report").then(function(dat) { 
         $scope.programStageId = dat;
         dhis2APIService.getProgramStage(dat).then(function(data) { 
            $scope.programStageData = data.programStageSections;
            for (var i=0; i<$scope.programStageData.length; ++i) {
-               $scope.programStageData[i].dataElement = [];
-               for(var j=0; j<data.programStageDataElements.length; ++j) {
-                  if(data.programStageDataElements[j].dataElement.name.indexOf($scope.programStageData[i].name) == 0) {
-                     var nam = data.programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
-                     data.programStageDataElements[j].dataElement.name = nam;
-                     $scope.programStageData[i].dataElement.push(data.programStageDataElements[j].dataElement);
-                  }
+               for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
+                var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
+                $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
                }
            }
         });
     });
 
     $scope.fillReportList = function() {
-        dhis2APIService.getTECompletedEvents($scope.buildingProgramID, $scope.orgUnitId).then(function(dat){
+        dhis2APIService.getTEICompletedEvents($scope.buildingProgramID, $scope.buildings.tableContents[$scope.buildingSelected][0], $scope.orgUnitId).then(function(dat){
             $scope.reports = dat; //we have to sort this for date from newest to oldest
             var max='0';
             for(var i=0; i<$scope.reports.length;++i) {
@@ -421,8 +413,8 @@ hiiControllers.controller('buildingReportController', function($scope, dhis2APIS
     this.sendReport = function() {
         var values = [];
         for (var i=0; i<$scope.programStageData.length; ++i) {
-            for(var j=0; j<$scope.programStageData[i].dataElement.length; ++j) {
-                var id = $scope.programStageData[i].dataElement[j].id;
+            for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
+                var id = $scope.programStageData[i].programStageDataElements[j].dataElement.id;
                 values.push({"dataElement": id, "value": $scope.reportForm[id]});
             }
         }
@@ -432,7 +424,6 @@ hiiControllers.controller('buildingReportController', function($scope, dhis2APIS
     };
 
     $scope.selectReport= function(item) {
-
         $scope.editing = false;
         $scope.selectedReport = $scope.reports.indexOf(item);
         $scope.selectedReportDataValues = [];
@@ -440,6 +431,7 @@ hiiControllers.controller('buildingReportController', function($scope, dhis2APIS
             $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
         }
     };
+
 });
 
 hiiControllers.controller('settingsController', function($scope){
