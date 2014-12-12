@@ -86,6 +86,12 @@ hiiControllers.controller('listController', function($scope, $location, $transla
     		if(!dat) alert("Error!");
     		else $scope.fillList();
     	});
+        dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramID, $scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'SELECTED').then(function(dat){
+            var buildings = dat;
+            for(var i=0; i<buildings.tableContents.length;++i) {
+                dhis2APIService.deleteTEI(buildings.tableContents[i][0]) ;
+            }
+        });
     };
 
     this.gotoBasicInfoPanel = function(index) {
@@ -304,27 +310,14 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ro
         	if($scope.editing) angular.copy($scope.buildings.tableContents[$scope.buildingSelected], $scope.editForm);
         }
     };
-    $scope.setCreating = function(cr) {
-        $scope.isCreating = cr;
-    };
-    $scope.unselectBuilding = function() {
-        $scope.isBuildingSelected = false;
-        $scope.buildingSelected =-1;
-    };
-    $scope.setTab = function(n) {
-    	if(n==1) $location.path('/basicInfo/' + $routeParams.orgUnitId);
-    	else if(n==2) $location.path('/reports/' + $routeParams.orgUnitId);
-    };
-});
-
-hiiControllers.controller('buildingBasicInfoController', function($scope, dhis2APIService){
 
     this.deleteBuilding = function() {
         dhis2APIService.deleteTEI($scope.buildings.tableContents[$scope.buildingSelected][0]).then(function(dat) {
             if(!dat) alert("Error!");
             else {
                 $scope.fillBuildingList();
-                $scope.unselectBuilding();
+                $scope.isBuildingSelected = false;
+                $scope.buildingSelected =-1;
             }
         });
     }
@@ -343,7 +336,7 @@ hiiControllers.controller('buildingBasicInfoController', function($scope, dhis2A
                 }
                 else this.showError= true; //currently not showing error
             });
-            $scope.setCreating(false);
+            $scope.isCreating = false;
         }
         else {
             dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.buildingTEid,$scope.orgUnitId,attrs).then(function(dat){
@@ -352,7 +345,12 @@ hiiControllers.controller('buildingBasicInfoController', function($scope, dhis2A
         }
     };
 
+    $scope.setTab = function(n) {
+    	if(n==1) $location.path('/basicInfo/' + $routeParams.orgUnitId);
+    	else if(n==2) $location.path('/reports/' + $routeParams.orgUnitId);
+    };
 });
+
 
 hiiControllers.controller('buildingReportController', function($scope, dhis2APIService){
 
