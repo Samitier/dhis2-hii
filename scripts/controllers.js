@@ -433,5 +433,6 @@ hiiControllers.controller('buildingReportController', function($scope, dhis2APIS
 });
 
 hiiControllers.controller('settingsController', function($scope){
+    
 });
 
