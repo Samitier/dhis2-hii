@@ -22,6 +22,20 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
+      gethiiProgramsInfo: function(pnames) {
+        var pnames = ['Sanitary Complex hii Program', 'Building hii Program'];
+        var promise = $http.get('/api/programs?fields=name,id,trackedEntity[id],programTrackedEntityAttributes[trackedEntityAttribute],programStages').then(function(response){
+          result = {building:null,complex:null};
+          for(var i=0; i<response.data.programs.length;++i) {
+              if(response.data.programs[i].name == pnames[0]) result.complex = response.data.programs[i];
+              else if (response.data.programs[i].name == pnames[1]) result.building = response.data.programs[i];
+              if(result.building!= null && result.complex != null) return result;
+          }
+          return null;
+        });
+        return promise;
+      },
+
       getTrackedEntitiesByProgram : function(programId, orgunit, oumode) {
         var promise  = $http.get('/api/trackedEntityInstances.json?ou=' + orgunit
           + '&ouMode=' + oumode +'&program='+ programId).then(function(response){
