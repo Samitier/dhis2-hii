@@ -219,15 +219,20 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
 
     this.sendReport = function() {
         var values = [];
-        for (var i=0; i<$scope.programStageData.length; ++i) {
+        var incomplete = false;
+        for (var i=0; i<$scope.programStageData.length && !incomplete; ++i) {
             for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
                 var id = $scope.programStageData[i].programStageDataElements[j].dataElement.id;
+                if($scope.reportForm[id]==undefined) { incomplete=true; break;}
                 values.push({"dataElement": id, "value": $scope.reportForm[id]});
             }
         }
-        dhis2APIService.sendEvent($scope.complexInfo.tableContents[0][0], $scope.complexProgramData.id, $scope.complexProgramData.programStages[0].id,$routeParams.orgUnitId, $scope.reportDate, values).then(function(data) {
-            $scope.fillReportList();
-        }, function(err){ console.dir(err)});
+        if($scope.reportDate =='' || incomplete) alert("Please fill all the fields");
+        else {
+            dhis2APIService.sendEvent($scope.complexInfo.tableContents[0][0], $scope.complexProgramData.id, $scope.complexProgramData.programStages[0].id,$routeParams.orgUnitId, $scope.reportDate, values).then(function(data) {
+                $scope.fillReportList();
+            }, function(err){ console.dir(err)});
+        }
     };
 
     $scope.selectReport= function(item) {
@@ -346,15 +351,18 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.buildings.tableHeaders[i].name ,"value": $scope.editForm[i]});
         
         if($scope.isCreating){
-            dhis2APIService.createTEI($scope.buildingProgramData.trackedEntity.id, $scope.orgUnitId, attrs).then(function(dat){
-                if(dat) {
-                    dhis2APIService.enrollTEI(dat, $scope.buildingProgramData.id).then(function(data) {
-                        $scope.isCreating = false;
-                        $scope.fillBuildingList(attrs[0].value);
-                    });
-                }
-                else alert("There are incorrect fields!");
-            });
+            if(!$scope.editForm[5]) alert("Please put a name for the building.");
+            else {
+                dhis2APIService.createTEI($scope.buildingProgramData.trackedEntity.id, $scope.orgUnitId, attrs).then(function(dat){
+                    if(dat) {
+                        dhis2APIService.enrollTEI(dat, $scope.buildingProgramData.id).then(function(data) {
+                            $scope.isCreating = false;
+                            $scope.fillBuildingList(attrs[0].value);
+                        });
+                    }
+                    else alert("There are incorrect fields!");
+                });
+            }
         }
         else {
             dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.buildingProgramData.trackedEntity.id,$scope.orgUnitId,attrs).then(function(dat){
@@ -432,15 +440,20 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
 
     this.sendReport = function() {
         var values = [];
-        for (var i=0; i<$scope.programStageData.length; ++i) {
+        var incomplete = false;
+        for (var i=0; i<$scope.programStageData.length && !incomplete; ++i) {
             for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
                 var id = $scope.programStageData[i].programStageDataElements[j].dataElement.id;
+                if($scope.reportForm[id] == undefined) {incomplete = true; break;}
                 values.push({"dataElement": id, "value": $scope.reportForm[id]});
             }
         }
-        dhis2APIService.sendEvent($scope.buildings.tableContents[$scope.buildingSelected][0], $scope.buildingProgramData.id, $scope.buildingProgramData.programStages[0].id,$scope.orgUnitId, $scope.reportDate, values).then(function(data) {
-            $scope.fillReportList();
-        }, function(err){ console.dir(err)});
+        if(incomplete || $scope.reportDate =='') alert('Please fill all the fields');
+        else {
+            dhis2APIService.sendEvent($scope.buildings.tableContents[$scope.buildingSelected][0], $scope.buildingProgramData.id, $scope.buildingProgramData.programStages[0].id,$scope.orgUnitId, $scope.reportDate, values).then(function(data) {
+                $scope.fillReportList();
+            }, function(err){ console.dir(err)});
+        }
     };
 
     $scope.selectReport= function(item) {
