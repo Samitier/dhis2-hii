@@ -13,7 +13,6 @@ hiiControllers.controller('mainController', function($scope, $translate, dhis2AP
     dhis2APIService.gethiiProgramsInfo().then(function(data) {
         $scope.buildingProgramData = data.building;
         $scope.complexProgramData = data.complex;
-        console.dir($scope.buildingProgramData);
     });
 });
 
@@ -25,7 +24,6 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 	    $scope.complexList={};
         $scope.selectedOrgUnit;
         $scope.loadingList = true;
-
         //this interval will work as an artificial $watch for the outside variable sessionStorage.ouSelected
         $interval(function() {
             if(sessionStorage.ouSelected != $scope.selectedOrgUnit) {
@@ -89,29 +87,40 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 
 
 
-hiiControllers.controller('basicInfoController', function($scope, $location, $routeParams, dhis2APIService){
+hiiControllers.controller('basicInfoController', function($scope, $timeout, $location, $routeParams, dhis2APIService){
+
+    this.init = function() {
+        $scope.editing=false;
+        $scope.editForm = [];
+        $scope.imageEditing = false;
+        $scope.getTableContents();
+    };
 
     //getting sanitary complex info
     $scope.getTableContents = function(){
-        dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramData.id, $routeParams.orgUnitId, 'SELECTED').then(function(dat){
-            $scope.complexInfo = dat;
-            //we wait for the response
-            if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
-        },
-        //if someone modifies the url we return to the list page 
-        function(dat) { $location.path('/list')});
+        //we wait for the program data
+        if($scope.complexProgramData==undefined) $timeout($scope.getTableContents, 500);
+        else {
+            dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramData.id, $routeParams.orgUnitId, 'SELECTED').then(function(dat){
+                $scope.complexInfo = dat;
+                //we wait for the response (there's a delay on the server when creating a complex)
+                if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
+                else if($scope.complexInfo.tableContents[0][10] =='') $scope.imageEditing = true;
+            },
+            //if someone modifies the url we return to the list page 
+            function(dat) { $location.path('/list')});
+        }
     };
-
-    $scope.editing=false;
-    $scope.editForm = [];
-    $scope.getTableContents();
 
     this.send = function() {
         var attrs = [];
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.complexInfo.tableHeaders[i].name ,"value": $scope.editForm[i]});
         dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.complexProgramData.trackedEntity.id,$routeParams.orgUnitId,attrs).then(function(dat){
-                $scope.getTableContents();
-                $scope.editing = false;
+                if(!dat) alert("There are incorrect fields!");
+                else {
+                    $scope.getTableContents();
+                    $scope.editing = false;
+                }
         });
     };
 
@@ -126,6 +135,10 @@ hiiControllers.controller('basicInfoController', function($scope, $location, $ro
         if($scope.editing) angular.copy($scope.complexInfo.tableContents[0], $scope.editForm);
     };
 
+    this.editImage = function() {
+        $scope.imageEditing = true;
+    };
+
     $scope.setTab = function(n) {
     	if(n==2) $location.path('/reports/' + $routeParams.orgUnitId);
     	else if(n==3) $location.path('/buildings/' + $routeParams.orgUnitId);
@@ -135,40 +148,44 @@ hiiControllers.controller('basicInfoController', function($scope, $location, $ro
 
 
 
-hiiControllers.controller('reportsController', function($scope, $location, $routeParams, dhis2APIService,$http){
+hiiControllers.controller('reportsController', function($scope, $location, $timeout, $routeParams, dhis2APIService){
 
+    this.init = function() {
+        $scope.sortingPredicate= 'eventDate';
+        $scope.sortingPredicate2= 'name';
+        $scope.complexInfo = {};
+        $scope.selectedReport = -1;
+        $scope.reports=[];
+        $scope.programStageData = {}; 
+        $scope.selectedReportDataValues =[];
+        $scope.editing = false;
+        $scope.reportForm = [];
+        $scope.reportDate = "";
+        $scope.setPageData();
+    };
 
-    $scope.sortingPredicate= 'eventDate';
-    $scope.sortingPredicate2= 'name';
-    $scope.complexInfo = {};
-
-    $scope.selectedReport = -1;
-    $scope.reports=[];
-    $scope.programStageData = {}; 
-    $scope.selectedReportDataValues =[];
-    $scope.editing = false;
-    $scope.reportForm = [];
-    $scope.reportDate = "";
-
-    //getting sanitary complex info
-    dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramData.id, $routeParams.orgUnitId, 'SELECTED').then(function(dat){
-        $scope.complexInfo = dat;
-        //we wait for the response
-        if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
-    },
-    //if someone modifies the url we return to the list page 
-    function(dat) { $location.path('/list')});
-
-    //set the program metadata;
-    dhis2APIService.getProgramStage($scope.complexProgramData.programStages[0].id).then(function(data) { 
-       $scope.programStageData = data.programStageSections;
-       for (var i=0; i<$scope.programStageData.length; ++i) {
-           for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
-            var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
-            $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
-           }
-       }
-    });
+    $scope.setPageData = function() {
+        if($scope.buildingProgramData ==undefined) $timeout($scope.setPageData, 500);
+        else {
+            dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramData.id, $routeParams.orgUnitId, 'SELECTED').then(function(dat){
+                $scope.complexInfo = dat;
+                //we wait for the response
+                if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
+            },
+            //if someone modifies the url we return to the list page 
+            function(dat) { $location.path('/list')});
+            dhis2APIService.getProgramStage($scope.complexProgramData.programStages[0].id).then(function(data) { 
+                $scope.programStageData = data.programStageSections;
+                for (var i=0; i<$scope.programStageData.length; ++i) {
+                   for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
+                    var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
+                    $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
+                    }
+                }
+            });
+            $scope.fillReportList();
+        }
+    };
 
     $scope.fillReportList = function() {
         dhis2APIService.getTECompletedEvents($scope.complexProgramData.id, $routeParams.orgUnitId).then(function(dat){
@@ -184,7 +201,7 @@ hiiControllers.controller('reportsController', function($scope, $location, $rout
             if($scope.reports.length!=0)$scope.selectReport($scope.reports[$scope.selectedReport]);
         },function(err){console.dir(err)});
     }
-    $scope.fillReportList();
+
 
     this.isEditing = function() {
         return $scope.editing ==true;
@@ -228,31 +245,37 @@ hiiControllers.controller('reportsController', function($scope, $location, $rout
 
 
 
-hiiControllers.controller('buildingsController', function($scope, $location, $routeParams, dhis2APIService){
+hiiControllers.controller('buildingsController', function($scope, $location, $timeout, $routeParams, dhis2APIService){
+    
 
     $scope.orgUnitId = $routeParams.orgUnitId;
-    $scope.fillBuildingList = function (selected) {
-    	dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramData.id, $scope.orgUnitId, 'SELECTED').then(function(dat){
-        	$scope.buildings = dat;
-        	if(selected) {
-        		$scope.editing = false;
-        		for(var i =0; i< $scope.buildings.tableContents.length;++i) {
-        			if(selected == $scope.buildings.tableContents[i][5]) $scope.buildingSelected=i;
-        		}
-        	}
-        },
-        //if someone modifies the url we return to the list page 
-        function(dat) { $location.path('/list')});
-    };
-
     $scope.isBuildingSelected = false;
     $scope.buildingSelected =-1;
     $scope.editing = false;
     this.showError = false;
     $scope.isCreating = false;
     $scope.buildings = [];  
+    this.showInfoTab = false;
+    $scope.imageEditing = false;
+    
+    $scope.fillBuildingList = function (selected) {
+        if($scope.buildingProgramData ==undefined) $timeout($scope.fillBuildingList, 500);
+        else {
+        	dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramData.id, $scope.orgUnitId, 'SELECTED').then(function(dat){
+            	$scope.buildings = dat;
+            	if(selected) {
+            		$scope.editing = false;
+            		for(var i =0; i< $scope.buildings.tableContents.length;++i) {
+            			if(selected == $scope.buildings.tableContents[i][5]) $scope.buildingSelected=i;
+            		}
+            	}
+            },
+            //if someone modifies the url we return to the list page 
+            function(dat) { $location.path('/list')});
+        }
+    };
+
     $scope.fillBuildingList();
-    this.showInfoTab = true;
 
     this.setBasicInfoTab = function(tab) {
         this.showInfoTab = tab;
@@ -268,6 +291,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ro
         $scope.isCreating = false;
         $scope.editing = false;
         $scope.buildingSelected = index;
+        if($scope.buildings.tableContents[$scope.buildingSelected][11] =='') $scope.imageEditing = true;
     };
 
     this.addBuilding = function(){
@@ -295,6 +319,10 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ro
         }
     };
 
+    this.editImage = function() {
+        $scope.imageEditing = true;
+    };
+
     this.deleteBuilding = function() {
         dhis2APIService.deleteTEI($scope.buildings.tableContents[$scope.buildingSelected][0]).then(function(dat) {
             if(!dat) alert("Error!");
@@ -315,16 +343,17 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ro
             dhis2APIService.createTEI($scope.buildingProgramData.trackedEntity.id, $scope.orgUnitId, attrs).then(function(dat){
                 if(dat) {
                     dhis2APIService.enrollTEI(dat, $scope.buildingProgramData.id).then(function(data) {
+                        $scope.isCreating = false;
                         $scope.fillBuildingList(attrs[0].value);
                     });
                 }
-                else this.showError= true; //currently not showing error
+                else alert("There are incorrect fields!");
             });
-            $scope.isCreating = false;
         }
         else {
             dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.buildingProgramData.trackedEntity.id,$scope.orgUnitId,attrs).then(function(dat){
-                $scope.fillBuildingList(attrs[0].value);
+                if(dat) $scope.fillBuildingList(attrs[0].value);
+                else alert("There are incorrect fields!");
             });
         }
     };
@@ -336,12 +365,11 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ro
 });
 
 
-hiiControllers.controller('buildingReportController', function($scope, dhis2APIService){
+hiiControllers.controller('buildingReportController', function($scope, $timeout, dhis2APIService){
 
     $scope.sortingPredicate= 'eventDate';
     $scope.sortingPredicate2= 'name';
     $scope.complexInfo = {};
-
     $scope.selectedReport = -1;
     $scope.reports=[];
     $scope.programStageData = {}; 
@@ -350,17 +378,22 @@ hiiControllers.controller('buildingReportController', function($scope, dhis2APIS
     $scope.reportForm = [];
     $scope.reportDate = "";
 
-
-    //set the program metadata;
-    dhis2APIService.getProgramStage($scope.buildingProgramData.programStages[0].id).then(function(data) { 
-       $scope.programStageData = data.programStageSections;
-       for (var i=0; i<$scope.programStageData.length; ++i) {
-           for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
-            var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
-            $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
-           }
-       }
-    });
+    $scope.setMetadata = function() {
+        //set the program metadata;
+        if($scope.buildingProgramData == undefined) $timeout($scope.setMetadata,500);
+        else {
+            dhis2APIService.getProgramStage($scope.buildingProgramData.programStages[0].id).then(function(data) { 
+               $scope.programStageData = data.programStageSections;
+               for (var i=0; i<$scope.programStageData.length; ++i) {
+                   for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
+                        var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
+                        $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
+                   }
+               }
+            });
+            if($scope.buildingSelected != -1)$scope.fillReportList();
+        }
+    };
 
     $scope.fillReportList = function() {
         dhis2APIService.getTEICompletedEvents($scope.buildingProgramData.id, $scope.buildings.tableContents[$scope.buildingSelected][0], $scope.orgUnitId).then(function(dat){
@@ -375,8 +408,10 @@ hiiControllers.controller('buildingReportController', function($scope, dhis2APIS
             } 
             if($scope.reports.length!=0)$scope.selectReport($scope.reports[$scope.selectedReport]);
         },function(err){console.dir(err)});
-    }
-    $scope.fillReportList();
+    };
+
+    $scope.setMetadata();
+
 
     this.isEditing = function() {
         return $scope.editing ==true;

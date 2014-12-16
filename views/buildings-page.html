@@ -39,17 +39,18 @@
 							<form novalidate>
 						   		<tbody>
 						        	<tr ng-repeat = "i in [5,6,7,8,9,10]">
-								    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input type ='text' ng-model="editForm[i]"> </input></td>
+								    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input ng-hide ='i==7||i==8' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8||i==7"  ng-model="editForm[i]"><option value ='true'>yes</option> <option value='false'>no</option></select> </td>
 						        	</tr>
-						        	<tr ng-show = 'buildingsCtrl.isEditing()'> <td class= "leftTableContent" ng-show = "buildingsCtrl.showError">Incorrect Data!</td><td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "buildingsCtrl.send()"> </input> </td> <tr>
+						        	<tr ng-show = 'buildingsCtrl.isEditing()'> <td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "buildingsCtrl.send()"> </input> </td> <tr>
 					    		</tbody>
 							</form>
 						</table>
 					</div>
 				</div>
 				<div class="info-box">
-					<p class="header"> Image <img src = "img/edit2.png" height="18" width="18" style="float: right"></p> 
-					<img ng-src={{"img/"+buildings[buildingSelected].attributes[6].value}} height="230" width="370"></img>
+					<p class="header"> Image <img src = "img/edit2.png" ng-click='buildingsCtrl.editImage()' height="18" width="18" style="float: right"></p> 
+					<img ng-hide = 'imageEditing' ng-src={{"img/"+buildings[buildingSelected].attributes[6].value}} height="230" width="370"></img>
+					<input ng-show ='imageEditing' type ='file' ng-model="editForm[10]"> </input>
 				</div>
 			</div>
 
@@ -77,7 +78,7 @@
 									<table>
 				   					<tbody>
 				        			<tr ng-repeat = "element in sections.programStageDataElements">
-						    			<td class = "leftTableContent"> {{element.dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[element.dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input type ='text' ng-model="reportForm[element.dataElement.id]"> </input></td>
+						    			<td class = "leftTableContent"> {{element.dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[element.dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input ng-show="!element.dataElement.optionSet" type ='text' ng-model="reportForm[element.dataElement.id]"> </input> <select ng-show="element.dataElement.optionSet" ng-model="reportForm[element.dataElement.id]"><option ng-repeat = "option in element.dataElement.optionSet.options">{{option}}</option> </select></td>
 				        			</tr>
 			    					</tbody>
 									</table>

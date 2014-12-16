@@ -14,7 +14,7 @@
 		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a class="ui-tabs-anchor" ng-click="setTab(3)" style="cursor: pointer">Buildings</a></li>
 	</ul>
 
-    <div>
+    <div ng-init='basicInfoCtrl.init()'>
 		<div class="info-box">
 			<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "basicInfoCtrl.setEditing(!basicInfoCtrl.isEditing())"></img></p>
 			<div class="contentTable">
@@ -22,7 +22,7 @@
 					<form novalidate>
 				   		<tbody>
 				        	<tr  ng-repeat = "i in [5,6,7,8,9]">
-						    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=0'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=0'> <input type ='text' ng-model="editForm[i]"> </input></td>
+						    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=5'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=5'> <input ng-show ='i!=8' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8"  ng-model="editForm[i]"><option value ='true'>yes</option> <option value='false'>no</option></select> </td>
 				        	</tr>
 				        	<tr ng-show = 'basicInfoCtrl.isEditing()'> <td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "basicInfoCtrl.send()"> </input> </td> <tr>
 			    		</tbody>
@@ -32,8 +32,9 @@
 		</div>
 
 		<div class="info-box">
-			<p class="header"> Image <img src = "img/edit2.png" height="18" width="18" style="float: right"></p> 
-			<img ng-src={{"img/"+complexInfo.attributes[5].value}} height="430" width="570"></img>
+			<p class="header"> Image <img src = "img/edit2.png" ng-click='basicInfoCtrl.editImage()' height="18" width="18" style="float: right"></p> 
+			<img ng-hide = 'imageEditing' ng-src={{"img/"+complexInfo.attributes[5].value}} height="430" width="570"></img>
+			<input ng-show ='imageEditing' type ='file' ng-model="editForm[10]"> </input>
 		</div>
 	</div>
 </div> 
