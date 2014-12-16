@@ -67,16 +67,19 @@ hiiControllers.controller('listController', function($scope, $location, $transla
     };
 
     this.deleteComplex = function(index){
-    	dhis2APIService.deleteTEI($scope.complexList.tableContents[index][0]).then(function(dat) {
-    		if(!dat) alert("Error!");
-    		else $scope.fillList();
-    	});
-        dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramData.id, $scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'SELECTED').then(function(dat){
-            var buildings = dat;
-            for(var i=0; i<buildings.tableContents.length;++i) {
-                dhis2APIService.deleteTEI(buildings.tableContents[i][0]) ;
-            }
-        });
+        var r = confirm("Are you sure you want to delete the sanitary complex and its buildings? All data and reports will be lost.");
+    	if(r) {
+            dhis2APIService.deleteTEI($scope.complexList.tableContents[index][0]).then(function(dat) {
+        		if(!dat) alert("Error!");
+        		else $scope.fillList();
+        	});
+            dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramData.id, $scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'SELECTED').then(function(dat){
+                var buildings = dat;
+                for(var i=0; i<buildings.tableContents.length;++i) {
+                    dhis2APIService.deleteTEI(buildings.tableContents[i][0]) ;
+                }
+            });
+        }
     };
 
     this.gotoBasicInfoPanel = function(index) {
@@ -324,14 +327,17 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
     };
 
     this.deleteBuilding = function() {
-        dhis2APIService.deleteTEI($scope.buildings.tableContents[$scope.buildingSelected][0]).then(function(dat) {
-            if(!dat) alert("Error!");
-            else {
-                $scope.fillBuildingList();
-                $scope.isBuildingSelected = false;
-                $scope.buildingSelected =-1;
-            }
-        });
+        var r = confirm("Are you sure you want to delete the building? All data and reports will be lost.");
+        if(r) {
+            dhis2APIService.deleteTEI($scope.buildings.tableContents[$scope.buildingSelected][0]).then(function(dat) {
+                if(!dat) alert("Error!");
+                else {
+                    $scope.fillBuildingList();
+                    $scope.isBuildingSelected = false;
+                    $scope.buildingSelected =-1;
+                }
+            });
+        }
     }
 
     
