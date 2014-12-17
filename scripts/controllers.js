@@ -9,6 +9,18 @@ hiiControllers.controller('mainController', function($scope, $translate, dhis2AP
     dhis2APIService.getUserUiLocale().then(function(dat){
         $translate.uses(dat);
     });
+    dhis2APIService.getUserPermission().then(function(dat){
+        $scope.permission = dat;
+        if(dat == 'none') {
+            alert("You have no permission to use this app, please speak with the administrator of the system");
+            window.location = '/dhis-web-dashboard-integration/index.action';
+        };
+    });
+
+    $scope.isGuest = function() {
+        return $scope.permission == 'hii-guest';
+    };
+
     //get the metadata info 
     dhis2APIService.gethiiProgramsInfo().then(function(data) {
         $scope.buildingProgramData = data.building;
@@ -252,7 +264,6 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
 
 
 
-
 hiiControllers.controller('buildingsController', function($scope, $location, $timeout, $routeParams, dhis2APIService){
     
 
@@ -467,7 +478,9 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
 
 });
 
-hiiControllers.controller('settingsController', function($scope){
-    
+hiiControllers.controller('settingsController', function($scope, dhis2APIService, metadataGetter){
+    this.installMetadata = function() {
+        metadataGetter.getTE().then(function(dat){console.dir(dat)});
+    }
 });
 

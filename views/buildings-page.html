@@ -16,13 +16,13 @@
 
     <div> 
 		<div class="info-box" style='width: 16%'>
-			<p class="header"> Building list  <img style= "padding-left:15px; cursor:pointer;" ng-click ="buildingsCtrl.addBuilding()" src ='/images/add.png' ></p>
+			<p class="header"> Building list  <img style= "padding-left:15px; cursor:pointer;" ng-hide ='isGuest()' ng-click ="buildingsCtrl.addBuilding()" src ='/images/add.png' ></p>
 			<table class="listTable">
 				<tbody id="list">
 	  				<tr class = 'listRow' ng-repeat = "building in buildings.tableContents" >
 	    			<td class='text-column' ng-click="buildingsCtrl.selectBuilding($index)"  ng-hide='buildingSelected == $index'>{{building[5]}}</td>
 	    			<td class='text-column' ng-click="buildingsCtrl.selectBuilding($index)" ng-show='buildingSelected == $index'><b>{{building[5]}}</b></td>
-	    			<td style="text-align:right" class='text-column' ng-show='buildingSelected == $index'><img style='margin-right:10px' ng-click="buildingsCtrl.deleteBuilding()" src ='/images/delete.png' ></td>
+	    			<td style="text-align:right" class='text-column' ng-show='buildingSelected == $index && !isGuest()'><img style='margin-right:10px' ng-click="buildingsCtrl.deleteBuilding()" src ='/images/delete.png' ></td>
 	    		</tr>
 				</tbody>
 			</table>
@@ -33,7 +33,7 @@
 				<a ng-click ="buildingsCtrl.setBasicInfoTab(false)" ng-hide= 'isCreating'>Reports</a></h3> 
 			<div ng-if="buildingsCtrl.isBasicInfoTab()">
 				<div class="info-box">
-					<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "buildingsCtrl.setEditing(!buildingsCtrl.isEditing())"></img></p>
+					<p class="header"> General information <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "buildingsCtrl.setEditing(!buildingsCtrl.isEditing())"></img></p>
 					<div class="contentTable">
 						<table>
 							<form novalidate>
@@ -48,7 +48,7 @@
 					</div>
 				</div>
 				<div class="info-box">
-					<p class="header"> Image <img src = "img/edit2.png" ng-click='buildingsCtrl.editImage()' height="18" width="18" style="float: right"></p> 
+					<p class="header"> Image <img ng-hide ='isGuest()' src = "img/edit2.png" ng-click='buildingsCtrl.editImage()' height="18" width="18" style="float: right"></p> 
 					<img ng-hide = 'imageEditing' ng-src={{"img/"+buildings[buildingSelected].attributes[6].value}} height="230" width="370"></img>
 					<input ng-show ='imageEditing' type ='file' ng-model="editForm[10]"> </input>
 				</div>
@@ -61,7 +61,7 @@
 			    <tr ng-hide='reportsCtrl.isEditing()'> 
 			    	<td> <div class="info-box"> <p class="header"> Mostrar reporte :  <select>
 						  <option ng-repeat = "report in reports | orderBy:sortingPredicate:true" ng-click='selectReport(report)'>{{report.eventDate}}</option> 
-						</select> &nbsp &nbsp &nbsp <button ng-click = 'reportsCtrl.newReport()'> Añadir reporte </button></p> </div>
+						</select> &nbsp &nbsp &nbsp <button ng-hide ='isGuest()' ng-click = 'reportsCtrl.newReport()'> Añadir reporte </button></p> </div>
 					</td>
 				</tr>
 			   	<tr ng-show='reportsCtrl.isEditing()'> 

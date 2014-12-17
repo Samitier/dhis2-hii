@@ -6,22 +6,6 @@ hiiServices.factory('dhis2APIService', function($http){
 
     var serviceFactory={
 
-      getProgramId : function (name) {
-        var promise = $http.get('/api/programs.json').then(function(response){
-          for(var i=0; i<response.data.programs.length;++i) {
-              if(response.data.programs[i].name == name) return (response.data.programs[i].id);
-          }
-        });
-        return promise;
-      },
-
-      getProgramData : function(id) {
-        var promise = $http.get('/api/programs/'+id).then(function(response){
-          return response.data;
-        });
-        return promise;
-      },
-
       gethiiProgramsInfo: function(pnames) {
         var pnames = ['Sanitary Complex hii Program', 'Building hii Program'];
         var promise = $http.get('/api/programs?fields=name,id,trackedEntity[id],programTrackedEntityAttributes[trackedEntityAttribute[id,name,valueType]],programStages').then(function(response){
@@ -63,13 +47,6 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
-      updateTEIInfromCopy : function(id,message){
-        var promise = $http.put('/api/trackedEntityInstances/'+id, JSON.stringify(message)).then(function(response){
-          return (response.data.status =="SUCCESS");
-        });
-        return promise;
-      },
-
       getUserUiLocale : function(){
         var promise = $http.get('/api/me/profile').then(function(response){
           if(response.data.settings.keyUiLocale == null) return 'en';
@@ -78,19 +55,15 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
-      getTrackedEntityById : function (id) {
-        var promise = $http.get('/api/trackedEntityInstances/'+id).then(function(response){
-          return response.data;
-        });
-        return promise;
-      },
-
-      getTrackedEntityId : function(te){
-        var promise = $http.get('/api/trackedEntities').then(function(response){
-          for(var i=0; i<response.data.trackedEntities.length;++i) {
-            if(response.data.trackedEntities[i].name == te) return response.data.trackedEntities[i].id;
+      getUserPermission: function() {
+        var promise = $http.get('/api/me/').then(function(response){
+          var nam = "none";
+          for(var i=0; i<response.data.userCredentials.userAuthorityGroups.length;++i){
+            if(response.data.userCredentials.userAuthorityGroups[i].name == 'hii-user') nam = 'hii-user';
+            else if(response.data.userCredentials.userAuthorityGroups[i].name == 'hii-admin') nam = 'hii-admin';
+            else if(response.data.userCredentials.userAuthorityGroups[i].name == 'hii-guest') nam = 'hii-guest';
           }
-          return 0;
+          return nam;
         });
         return promise;
       },
@@ -121,21 +94,13 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
-      getProgramStageId: function (name) {
-        var promise = $http.get('/api/programStages').then(function(response){
-          for(var i=0; i<response.data.programStages.length; ++i) {
-            if(response.data.programStages[i].name == name) return response.data.programStages[i].id;
-          }
-          return null;
-        });
-        return promise;
-      },
       getProgramStage: function (id) {
         var promise = $http.get('/api/programStages/'+id + '?fields=programStageSections[id,name,programStageDataElements[dataElement[id,name, type,optionSet[options]]]').then(function(response){
           return response.data;
         });
         return promise;
       },
+
       getTECompletedEvents: function(program, orgunit){
         var promise = $http.get('/api/events?program='+program+'&orgUnit='+orgunit + '&satus=COMPLETED').then(function(response){
           if(response.data.events)return response.data.events;
@@ -143,6 +108,7 @@ hiiServices.factory('dhis2APIService', function($http){
         });
         return promise;
       },
+
       getTEICompletedEvents: function(program, instance, orgunit){
         var promise = $http.get('/api/events?program='+program+'&orgUnit='+orgunit + '&trackedEntityInstance=' + instance +'&satus=COMPLETED').then(function(response){
           if(response.data.events)return response.data.events;
@@ -150,6 +116,7 @@ hiiServices.factory('dhis2APIService', function($http){
         });
         return promise;
       },
+
       sendEvent: function(teid, prog, stage, ou, date, values) {
         var msg = { "trackedEntityInstance": teid, 
                     "program": prog,
@@ -168,3 +135,20 @@ hiiServices.factory('dhis2APIService', function($http){
   return serviceFactory;
 });
 
+hiiServices.factory('metadataGetter', function($http){
+  var serviceFactory={
+    getTEAttributes: function(){
+      var promise = $http.get('metadata/trackedEntityAttributes.json').then(function(response){
+        return response;
+      });
+      return promise;
+    },
+    getTE: function() {
+      var promise = $http.get('metadata/trackedEntities.json').then(function(response){
+        return response;
+      });
+      return promise;
+    },
+  };
+  return serviceFactory;
+});

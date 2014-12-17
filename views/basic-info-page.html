@@ -16,7 +16,7 @@
 
     <div ng-init='basicInfoCtrl.init()'>
 		<div class="info-box">
-			<p class="header"> General information <img src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "basicInfoCtrl.setEditing(!basicInfoCtrl.isEditing())"></img></p>
+			<p class="header"> General information <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "basicInfoCtrl.setEditing(!basicInfoCtrl.isEditing())"></img></p>
 			<div class="contentTable">
 				<table>
 					<form novalidate>
@@ -32,7 +32,7 @@
 		</div>
 
 		<div class="info-box">
-			<p class="header"> Image <img src = "img/edit2.png" ng-click='basicInfoCtrl.editImage()' height="18" width="18" style="float: right"></p> 
+			<p class="header"> Image <img ng-hide ='isGuest()' src = "img/edit2.png" ng-click='basicInfoCtrl.editImage()' height="18" width="18" style="float: right"></p> 
 			<img ng-hide = 'imageEditing' ng-src={{"img/"+complexInfo.attributes[5].value}} height="430" width="570"></img>
 			<input ng-show ='imageEditing' type ='file' ng-model="editForm[10]"> </input>
 		</div>
