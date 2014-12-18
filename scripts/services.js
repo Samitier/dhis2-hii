@@ -61,6 +61,7 @@ hiiServices.factory('dhis2APIService', function($http){
           for(var i=0; i<response.data.userCredentials.userAuthorityGroups.length;++i){
             if(response.data.userCredentials.userAuthorityGroups[i].name == 'hii-user') nam = 'hii-user';
             else if(response.data.userCredentials.userAuthorityGroups[i].name == 'hii-admin') nam = 'hii-admin';
+            else if(response.data.userCredentials.userAuthorityGroups[i].name == 'Superuser') nam = 'hii-admin';
             else if(response.data.userCredentials.userAuthorityGroups[i].name == 'hii-guest') nam = 'hii-guest';
           }
           return nam;
