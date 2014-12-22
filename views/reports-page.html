@@ -15,32 +15,49 @@
 	</ul>
 	
 	<div ng-init = 'reportsCtrl.init()'>
-		<table>
-	    <tbody>
-	    <tr ng-hide='reportsCtrl.isEditing()'> <td> <div class="info-box"> <p class="header"> Mostrar reporte :  <select>
-				  <option ng-repeat = "report in reports | orderBy:sortingPredicate:true" ng-click='selectReport(report)'>{{report.eventDate}}</option> 
-				</select> &nbsp &nbsp &nbsp <button ng-hide ='isGuest()' ng-click = 'reportsCtrl.newReport()'> Añadir reporte </button></p> </div></td></tr>
-	   	<tr ng-show='reportsCtrl.isEditing()'> <td> <div class="info-box"> <p class="header"> Fecha reporte :
-				<input type="text" data-provide="datepicker" data-date-format="yyyy-mm-dd" ng-model="reportDate"> </p> </div> </td></tr>
-		<tr><td>
-	    <div ng-show = 'selectedReport !=-1'>
-    		<div class="info-box" ng-repeat = "sections in programStageData | orderBy:sortingPredicate2:reverse">
-				<p class="header"> {{sections.name}} </p>
-				<div class="contentTable">
-					<table>
-				   		<tbody>
-				        	<tr ng-repeat = "element in sections.programStageDataElements">
-						    	<td class = "leftTableContent"> {{element.dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[element.dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input ng-show="!element.dataElement.optionSet" type ='text' ng-model="reportForm[element.dataElement.id]"> </input> <select ng-show="element.dataElement.optionSet" ng-model="reportForm[element.dataElement.id]"><option ng-repeat = "option in element.dataElement.optionSet.options">{{option}}</option> </select></td>
-				        	</tr>
-			    		</tbody>
-					</table>
+		<div ng-show ='isLoading'><img src ='/images/ajax-loader-circle.gif' ></div>
+		<div ng-hide = 'isLoading'>
+			<table>
+		    <tbody>
+		    <tr ng-hide='reportsCtrl.isEditing()'> 
+		    	<td> <div class="info-box"> 
+		    		<p class="header"> Mostrar reporte :  
+			    		<select ng-model = 'reportShowing' ng-change = 'selectReport(reportShowing)'>
+						 	<option ng-repeat = "report in reports | orderBy:sortingPredicate:true" value = {{reports.indexOf(report)}}>{{report.eventDate}}</option> 
+						</select> 
+						&nbsp &nbsp &nbsp <button ng-hide ='isGuest()' ng-click = 'reportsCtrl.newReport()'> Añadir reporte </button>
+					</p> 
+				</div></td>
+			</tr>
+		   	<tr ng-show='reportsCtrl.isEditing()'> <td> <div class="info-box"> <p class="header"> Fecha reporte :
+					<input type="text" data-provide="datepicker" data-date-format="yyyy-mm-dd" ng-model="reportDate"> </p> </div> </td>
+			</tr>
+			<tr><td>
+		    <div ng-show = 'selectedReport !=-1'>
+	    		<div class="info-box" ng-repeat = "sections in programStageData | orderBy:sortingPredicate2:reverse">
+					<p class="header"> {{sections.name}} </p>
+					<div class="contentTable">
+						<table>
+					   		<tbody>
+					        	<tr ng-repeat = "element in sections.programStageDataElements">
+							    	<td class = "leftTableContent"> {{element.dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[element.dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input ng-show="!element.dataElement.optionSet" type ='text' ng-model="reportForm[element.dataElement.id]"> </input> <select ng-show="element.dataElement.optionSet" ng-model="reportForm[element.dataElement.id]"><option ng-repeat = "option in element.dataElement.optionSet.options">{{option}}</option> </select></td>
+					        	</tr>
+				    		</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
+			</td></tr>
+			<tr ng-show='reportsCtrl.isEditing()'> <td style='text-align:right'> 
+				<img ng-show="isSendingReport" src="/images/ui-anim_basic.gif">
+				<div ng-hide="isSendingReport">
+					<button class="buttonReports" ng-click = 'reportsCtrl.cancelReport()'> Cancelar </button>
+					<button class="buttonReports"ng-click = 'reportsCtrl.sendReport()'> Enviar </button> 
+				</div>
+			</td></tr>
+			</tbody>
+			</table>
 		</div>
-		</td></tr>
-		<tr ng-show='reportsCtrl.isEditing()'> <td style='text-align:right'><button ng-click = 'reportsCtrl.sendReport()'> Enviar </button> </td></tr>
-		</tbody>
-		</table>
 	</div>
 </div> 
 

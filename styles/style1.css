@@ -63,3 +63,11 @@ td.leftTableContent
   table-layout: fixed;
 }
 
+button.buttonReports 
+{
+  margin-top:7px;
+  margin-bottom:3px;
+  margin-left:5px;
+  margin-right:5px;
+}
+

@@ -15,26 +15,32 @@
 	</ul>
 
     <div ng-init='basicInfoCtrl.init()'>
-		<div class="info-box">
-			<p class="header"> General information <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right" ng-click= "basicInfoCtrl.setEditing(!basicInfoCtrl.isEditing())"></img></p>
-			<div class="contentTable">
-				<table>
-					<form novalidate>
-				   		<tbody>
-				        	<tr  ng-repeat = "i in [5,6,7,8,9]">
-						    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=5'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=5'> <input ng-show ='i!=8' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8"  ng-model="editForm[i]"><option value ='true'>yes</option> <option value='false'>no</option></select> </td>
-				        	</tr>
-				        	<tr ng-show = 'basicInfoCtrl.isEditing()'> <td style ="text-align:right"> <input type ='button'  value = "Send" style="overflow-y:hidden" ng-click = "basicInfoCtrl.send()"> </input> </td> <tr>
-			    		</tbody>
-		    		</form>
-				</table>
+    	<div ng-show ='isLoading'><img src ='/images/ajax-loader-circle.gif' ></div>
+		<div ng-hide = 'isLoading'>
+			<div class="info-box">
+				<p class="header"> General information <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right;cursor:pointer;" ng-click= "basicInfoCtrl.setEditing(!basicInfoCtrl.isEditing())"></img></p>
+				<div class="contentTable">
+					<table>
+						<form novalidate>
+					   		<tbody>
+					        	<tr  ng-repeat = "i in [5,6,7,8,9]">
+							    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=5'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=5'> <input ng-show ='i!=8' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8"  ng-model="editForm[i]"><option value ='true'>yes</option> <option value='false'>no</option></select> </td>
+					        	</tr>
+					        	<tr ng-show = 'basicInfoCtrl.isEditing()'> <td></td> <td style ="text-align:right"> 
+					        		<img ng-show="isSending" src="/images/ui-anim_basic.gif">
+					        		<input ng-hide="isSending" type ='button'  value = "Send" style="overflow-y:hidden;margin-right:5px;" ng-click = "basicInfoCtrl.send()"> </input> 
+					        	</td> <tr>
+				    		</tbody>
+			    		</form>
+					</table>
+				</div>
 			</div>
-		</div>
 
-		<div class="info-box">
-			<p class="header"> Image <img ng-hide ='isGuest()' src = "img/edit2.png" ng-click='basicInfoCtrl.editImage()' height="18" width="18" style="float: right"></p> 
-			<img ng-hide = 'imageEditing' ng-src={{"img/"+complexInfo.attributes[5].value}} height="430" width="570"></img>
-			<input ng-show ='imageEditing' type ='file' ng-model="editForm[10]"> </input>
+			<div class="info-box">
+				<p class="header"> Image <img ng-hide ='isGuest()' src = "img/edit2.png" ng-click='basicInfoCtrl.editImage()' height="18" width="18" style="float: right;cursor:pointer;"></p> 
+				<img ng-hide = 'imageEditing' ng-src={{"img/"+complexInfo.attributes[5].value}} height="430" width="570"></img>
+				<input ng-show ='imageEditing' type ='file' ng-model="editForm[10]"> </input>
+			</div>
 		</div>
 	</div>
 </div> 
