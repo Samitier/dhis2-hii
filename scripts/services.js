@@ -96,7 +96,7 @@ hiiServices.factory('dhis2APIService', function($http){
       },
 
       getProgramStage: function (id) {
-        var promise = $http.get('/api/programStages/'+id + '?fields=programStageSections[id,name,programStageDataElements[dataElement[id,name, type,optionSet[options]]]').then(function(response){
+        var promise = $http.get('/api/programStages/'+id + '?fields=programStageSections[id,name,programStageDataElements[dataElement[id,name,description,type,optionSet[options]]]').then(function(response){
           return response.data;
         });
         return promise;

@@ -31,6 +31,17 @@
 	"fill_all_fields": "Please fill all the fields.",
 	"cancel_report_msg": "You did not send this report. The data will not be saved. Do you still want to exit?",
 	"delete_building_msg" : "Are you sure you want to delete the building? All data and reports will be lost.",
-	"insert_name" : "Please write a name for the building."
+	"insert_name" : "Please write a name for the building.",
+
+	"list_help_title"	: "List of Sanitary Complexes",
+	"list_help_content"	: "Select an organization unit of the tree to see all the sanitary complexes inside it.\n\n To check the detail information of a complex, select it from the list.\n\n To delete a complex, click the trash can icon.\n\n To create a new sanitary complex, select the organization unit and then click the button Add new Sanitary Complex.",
+	"settings_help_title" : "Settings",
+	"settings_help_content" : "This is the page for installing the metadata and changing the elements of the reports.\n\n To install the metadata you must have a superuser permission.",
+	"basic_info_help_title" : "General Information of the  Sanitary Complex",
+	"basic_info_help_content" : "In this page you can view all the basic information of a Sanitary Complex.\n\n To edit the information, click the pencil button in the top right corner of the boxes.",
+	"reports_help_title" : "Reports of the Sanitary Complex",
+	"reports_help_content" : "This is the reports page, where you can check all the infrastructure reports of the complex.\n\n To see older reports select one from the dropdown menu.\n\n To add new reports, click Add New Reports button, and fill the fields.\n\n To see help about data elements of the report, click the help button in the top right corner of the box.",
+	"buildings_help_title" : "Buildings of the Sanitary Complex",
+	"buildings_help_content" : "This is the building page where you can view the Buildings of a Sanitary Complex.\n\n To view the basic info and reports of a building, select one from the list.\n\n To add a new building click the plus button on the top right corner of the box."
 
 }

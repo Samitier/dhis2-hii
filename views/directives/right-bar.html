@@ -1,0 +1,10 @@
+<div id="rightBar" ng-show="showHelp" style="display:block">
+  <span id="hideRightBar"><a href="" title="Cerrar">
+    <img id="hideRightBarImg" src="/images/hide.png" ng-click=rightBarCtrl.hide()></a>
+  </span>
+  <div id="rightBarContents">
+  	<h3>{{helpTitle}}</h3>
+  	<br>
+  	<p style="white-space: pre-line;">{{helpContent}}</p>
+  </div>
+</div>

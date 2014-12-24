@@ -31,5 +31,16 @@
 	"fill_all_fields": "Debe llenar todos los campos.",
 	"cancel_report_msg": "No ha enviado el reporte. Los datos no se guardarán ¿Está seguro que quiere salir?",
 	"delete_building_msg" : "¿Está seguro que quiere borrar este Edificio? Todos los datos y reportes se perderán.",
-	"insert_name" : "Debe introducir un nombre al Edificio."
+	"insert_name" : "Debe introducir un nombre al Edificio.",
+
+	"list_help_title"	: "Lista de Complejos Sanitarios",
+	"list_help_content"	: "Selecciona una unidad organizativa del árbol para ver todos los complejos sanitarios contenidos en esa unidad organizativa.\n\n Para ver la informacón detallada de un complejo, selecciónalo de la lista.\n\nPara borrar un complejo sanitario, clique el botón del cubo de basura.\n\n Para crear un nuevo complejo, seleccione la unidad organizativa y luego el botón Crear complejo sanitario.",
+	"settings_help_title" : "Ajustes",
+	"settings_help_content" : "Esta es la página para instalar los metadatos y cambiar los elementos de datos de los reportes.\n\n Para instalar los metadatos deberá tener permisos de superusuario.",
+	"basic_info_help_title" : "Información General del Complejo Sanitario",
+	"basic_info_help_content" : "En esta página podrá ver tods la inormación básica de un Complejo Sanitario.\n\n Para editar la información, clique el icono del lápiz de la esquina superior derecha de las cajas.",
+	"reports_help_title" : "Reportes del Complejo Sanitario",
+	"reports_help_content" : "Esta es la página de los reportes, donde podrá ver los reportes de las infrastructuras del complejo sanitario.\n\n Para ver reportes antiguos, selecciónelo del menú desplegable.\n\n Para añadir reportes nuevos, pulse Añadir Reporte y rellene los campos.\n\n Para ver la ayuda sobre los elementos del reporte, clique el botón de ayuda en la esquina superior derecha de la caja",
+	"buildings_help_title" : "Edificios del Complejo Sanitario",
+	"buildings_help_content" : "Esta es la página de los edificios de un complejo sanitario.\n\n Para ver la información general y los reportes de un edificio, seleccione uno de la lista.\n\n Para añadir un nuevo edificio, clique el símbolo más en la esquina superior derecha de la caja."
 }

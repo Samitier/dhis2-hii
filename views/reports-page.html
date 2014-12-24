@@ -29,7 +29,9 @@
 			<tr><td>
 		    <div ng-show = 'selectedReport !=-1'>
 	    		<div class="info-box box-report-complex" ng-repeat = "sections in programStageData | orderBy:sortingPredicate2:reverse">
-					<p class="header"> {{sections.name}} </p>
+					<p class="header"> {{sections.name}} 
+						<a title="Help" href ='' ng-click='setHelp(sections.name, sections.programStageDataElements[0].dataElement.description)' style='float:right'><i class="fa fa-question-circle"></i></a>
+					</p>
 					<div class="contentTable">
 						<table>
 					   		<tbody>
