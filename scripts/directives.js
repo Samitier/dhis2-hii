@@ -32,4 +32,21 @@ hiiDirectives.directive('dhisLeftBar', function() {
     };
 });
 
+hiiDirectives.directive('detailsTitle', function() {
+    return {
+        restrict: 'E',
+        templateUrl: 'views/directives/details-title.html',
+        controller: function($scope, $location) {
+            this.goBack = function() {
+                $location.path('/list');
+            };
+
+            this.showHelp = function() {
+                $scope.showHelp = true;
+            };
+        },
+        controllerAs:'detailsTitleCtrl'
+    };
+});
+
 

@@ -1,6 +1,10 @@
  <div id="header">
     <img id="headerBanner" src="/dhis-web-commons/css/light_blue/logo_banner.png" ng-click="headerCtrl.home()" style="cursor:pointer" title="{{'view_homepage'| translate}}">
     <span id="headerText" ng-click="headerCtrl.home()" style="cursor:pointer" title="{{'view_homepage'| translate}}"> {{'dhis2_home'| translate}} </span>
+    <span id="showLeftBar" style="display: inline;">
+        <a href="javascript:dhis2.leftBar.showAnimated()" title="Show menu">
+          <img src="/images/show_menu.png" width="16" height="16" alt="Show menu"></a>
+      </span>
     <div id="headerMessage" class="bold"></div>        
     <div d2-menu></div>
  </div>
