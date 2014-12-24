@@ -3,14 +3,14 @@
 
 <div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
 	<ul role="tablist" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a href="javascript:dhis2.leftBar.showAnimated()" class="ui-tabs-anchor" ng-click="setTab(1)" style="cursor: pointer">General Information</a></li>
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a href="javascript:dhis2.leftBar.showAnimated()" class="ui-tabs-anchor" ng-click="setTab(2)" style="cursor: pointer">State</a></li>
-		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':true,'ui-tabs-active': true}"><a href="javascript:dhis2.leftBar.showAnimated()" class="ui-tabs-anchor" style="cursor: pointer">Buildings</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a href="javascript:dhis2.leftBar.showAnimated()" class="ui-tabs-anchor" ng-click="setTab(1)" style="cursor: pointer">{{'general_info'| translate}}</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a href="javascript:dhis2.leftBar.showAnimated()" class="ui-tabs-anchor" ng-click="setTab(2)" style="cursor: pointer">{{'state'| translate}}</a></li>
+		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':true,'ui-tabs-active': true}"><a href="javascript:dhis2.leftBar.showAnimated()" class="ui-tabs-anchor" style="cursor: pointer">{{'buildings'| translate}}</a></li>
 	</ul>
 	<div ng-show ='isLoading'><img src ='/images/ajax-loader-circle.gif' ></div>
     <div ng-hide = 'isLoading'> 
 		<div class="info-box" style='width: 16%;min-width:120px;'>
-			<p class="header"> Building list  <img class='buttonPlus' ng-hide ='isGuest()' ng-click ="buildingsCtrl.addBuilding()" src ='/images/add.png' ></p>
+			<p class="header"> {{'buildings'| translate}}  <img class='buttonPlus' ng-hide ='isGuest()' ng-click ="buildingsCtrl.addBuilding()" src ='/images/add.png' ></p>
 			<table class="listTable">
 				<tbody id="list">
 	  				<tr class = 'listRow' ng-repeat = "building in buildings.tableContents" ng-click="buildingsCtrl.selectBuilding($index)">
@@ -25,17 +25,17 @@
 		<div class = info-box ng-show="isBuildingSelected" style='width: 81%'>
 			<div ng-if="buildingsCtrl.isBasicInfoTab()">
 				<h3 style="text-align: center; cursor:pointer;">
-					<a ng-click ="buildingsCtrl.setBasicInfoTab(true)"> <b>Basic Information</b> </a> &#8226; 
-					<a ng-click ="buildingsCtrl.setBasicInfoTab(false)" ng-hide= 'isCreating'>Reports</a>
+					<a ng-click ="buildingsCtrl.setBasicInfoTab(true)"> <b>{{'general_info'| translate}}</b> </a> &#8226; 
+					<a ng-click ="buildingsCtrl.setBasicInfoTab(false)" ng-hide= 'isCreating'>{{'state'| translate}}</a>
 				</h3> 
 				<div class="info-box" style='width:30%;min-width:190px'>
-					<p class="header"> General information <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right;cursor:pointer;" ng-click= "buildingsCtrl.setEditing(!buildingsCtrl.isEditing())"></img></p>
+					<p class="header"> {{'general_info'| translate}} <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right;cursor:pointer;" ng-click= "buildingsCtrl.setEditing(!buildingsCtrl.isEditing())"></img></p>
 					<div class="contentTable">
 						<table>
 							<form novalidate>
 						   		<tbody>
 						        	<tr ng-repeat = "i in [5,6,7,8,9,10]">
-								    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input ng-hide ='i==7||i==8' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8||i==7"  ng-model="editForm[i]"><option value ='true'>yes</option> <option value='false'>no</option></select> </td>
+								    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input ng-hide ='i==7||i==8' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8||i==7"  ng-model="editForm[i]"><option value ='true'>{{'yes'| translate}}</option> <option value='false'>{{'no'| translate}}</option></select> </td>
 						        	</tr>
 						        	<tr ng-show = 'buildingsCtrl.isEditing()'> <td></td> <td style ="text-align:right"> 
 						        		<img ng-show="isSending" src="/images/ui-anim_basic.gif">
@@ -47,7 +47,7 @@
 					</div>
 				</div>
 				<div class="info-box" style='width:66%'>
-					<p class="header"> Image <img class='img-responsive' ng-hide ='isGuest()' src = "img/edit2.png" ng-click='buildingsCtrl.editImage()' height="18" width="18" style="float: right;cursor:pointer;"></p> 
+					<p class="header"> {{'image'| translate}} <img class='img-responsive' ng-hide ='isGuest()' src = "img/edit2.png" ng-click='buildingsCtrl.editImage()' height="18" width="18" style="float: right;cursor:pointer;"></p> 
 					<img ng-hide = 'imageEditing' ng-src={{"img/"+buildings[buildingSelected].attributes[6].value}} height="230" width="370"></img>
 					<input ng-show ='imageEditing' type ='file' ng-model="editForm[10]"> </input>
 				</div>
@@ -58,23 +58,23 @@
 				<div ng-show ='isLoadingReports'><img src ='/images/ajax-loader-circle.gif' ></div>
     			<div ng-hide = 'isLoadingReports'> 
 					<h3 style="text-align: center; cursor:pointer;">
-						<a ng-click ="buildingsCtrl.setBasicInfoTab(true)"> Basic Information </a> &#8226; 
-						<a ng-click ="buildingsCtrl.setBasicInfoTab(false)" ng-hide= 'isCreating'><b>Reports</b></a>
+						<a ng-click ="buildingsCtrl.setBasicInfoTab(true)"> {{'general_info'| translate}} </a> &#8226; 
+						<a ng-click ="buildingsCtrl.setBasicInfoTab(false)" ng-hide= 'isCreating'><b>{{'state'| translate}}</b></a>
 					</h3> 
 					<table>
 				    <tbody>
 				    <tr ng-hide='reportsCtrl.isEditing()'> 
 				    	<td> <div class="info-box"> 
-				    		<p class="header"> Mostrar reporte :  
+				    		<p class="header"> {{'show_report'| translate}} :  
 					    		<select ng-model = 'reportShowing' ng-change = 'selectReport(reportShowing)'>
 								 	<option ng-repeat = "report in reports | orderBy:sortingPredicate:true" value = {{reports.indexOf(report)}}>{{report.eventDate}}</option> 
 								</select> 
-								&nbsp &nbsp &nbsp <button ng-hide ='isGuest()' ng-click = 'reportsCtrl.newReport()'> Añadir reporte </button>
+								&nbsp &nbsp &nbsp <button ng-hide ='isGuest()' ng-click = 'reportsCtrl.newReport()'> {{'add_report'| translate}} </button>
 							</p> 
 						</div> </td>
 					</tr>
 				   	<tr ng-show='reportsCtrl.isEditing()'> 
-				   		<td> <div class="info-box"> <p class="header"> Fecha reporte :
+				   		<td> <div class="info-box"> <p class="header"> {{'report_date'| translate}} :
 							<input type="text" data-provide="datepicker" data-date-format="yyyy-mm-dd" ng-model="reportDate"> </p> </div> 
 						</td>
 					</tr>
@@ -99,8 +99,8 @@
 					<tr ng-show='reportsCtrl.isEditing()'> <td style='text-align:right'> 
 						<img ng-show="isSendingReport" src="/images/ui-anim_basic.gif">
 						<div ng-hide="isSendingReport">
-							<button class="buttonReports" ng-click = 'reportsCtrl.cancelReport()'> Cancelar </button>
-							<button class="buttonReports"ng-click = 'reportsCtrl.sendReport()'> Enviar </button> 
+							<button class="buttonReports" ng-click = 'reportsCtrl.cancelReport()'> {{'cancel'| translate}} </button>
+							<button class="buttonReports"ng-click = 'reportsCtrl.sendReport()'> {{'send'| translate}} </button> 
 						</div>
 					</td></tr>
 					</tbody>

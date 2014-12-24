@@ -8,6 +8,28 @@
 	"search_org_unit": "Busca Unidades Organizativas",
 	"find": "Busca",
 	
-	"settings_text" : "Apreita el botón inferior para instalar los metadatos básicos de esta app. Necesitas ser superusuario.",
-	"settings_button": "Instala metadatos"
+	"settings_text" : "Aprieta el botón inferior para instalar los metadatos básicos de esta app. Necesitas ser superusuario.",
+	"settings_button": "Instala metadatos",
+
+	"general_info": "Información General",
+	"state": "Estado",
+	"buildings" : "Edificios",
+	"image": "Imagen",
+	"send": "Enviar",
+	"cancel" : "Cancelar",
+	"actions" : "Acciones",
+	"no_complex_list" : "No hay complejos sanitarios en esta Unidad Organizativa",
+	"add_new_complex" : "Añade Complejo Sanitario nuevo",
+	"yes" : "si",
+	"no" : "no",
+	"show_report" : "Mostrar reporte",
+	"add_report"  : "Añadir reporte",
+	"report_date" : "Fecha del reporte",
+
+	"delete_complex_msg": "¿Está seguro que quiere borrar este Complejo Sanitario? Todos los datos, reportes y edificios del complejo se perderán.",
+	"incorrect_fields" : "Hay campos incorrectos.",
+	"fill_all_fields": "Debe llenar todos los campos.",
+	"cancel_report_msg": "No ha enviado el reporte. Los datos no se guardarán ¿Está seguro que quiere salir?",
+	"delete_building_msg" : "¿Está seguro que quiere borrar este Edificio? Todos los datos y reportes se perderán.",
+	"insert_name" : "Debe introducir un nombre al Edificio."
 }

@@ -9,6 +9,28 @@
 	"find": "Find",
 	
 	"settings_text" : "Click the button below to deploy the basic metadata for the app. You need to be superuser in order to do this.",
-	"settings_button": "Install metadata"
+	"settings_button": "Install metadata",
+
+	"general_info": "General Information",
+	"state": "State",
+	"buildings" : "Buildings",
+	"image": "Image",
+	"send": "Send",
+	"cancel" : "Cancel",
+	"actions" : "Actions",
+	"no_complex_list" : "There are no sanitary complexes in tis Organization Unit",
+	"add_new_complex" : "Add new sanitary complex",
+	"yes" : "yes",
+	"no" : "no",
+	"show_report" : "Show report",
+	"add_report"  : "Add report",
+	"report_date" : "Report date",
+
+	"delete_complex_msg": "Are you sure you want to delete the sanitary complex and its buildings? All data and reports will be lost.",
+	"incorrect_fields" : "There are incorrect fields.",
+	"fill_all_fields": "Please fill all the fields.",
+	"cancel_report_msg": "You did not send this report. The data will not be saved. Do you still want to exit?",
+	"delete_building_msg" : "Are you sure you want to delete the building? All data and reports will be lost.",
+	"insert_name" : "Please write a name for the building."
 
 }

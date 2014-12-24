@@ -34,7 +34,7 @@ hiiControllers.controller('mainController', function($scope, $translate, dhis2AP
 
 
 
-hiiControllers.controller('listController', function($scope, $location, $translate, $interval, dhis2APIService) {
+hiiControllers.controller('listController', function($scope, $location, $translate, $interval, $filter, dhis2APIService) {
 	this.init = function() {
         $scope.isComplexOrgunit = false;
 	    $scope.complexList={};
@@ -83,7 +83,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
     };
 
     this.deleteComplex = function(index){
-        var r = confirm("Are you sure you want to delete the sanitary complex and its buildings? All data and reports will be lost.");
+        var r = confirm($filter('translate')("delete_complex_msg"));
     	if(r) {
             dhis2APIService.deleteTEI($scope.complexList.tableContents[index][0]).then(function(dat) {
         		if(!dat) alert("Error!");
@@ -106,7 +106,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 
 
 
-hiiControllers.controller('basicInfoController', function($scope, $timeout, $location, $routeParams, dhis2APIService){
+hiiControllers.controller('basicInfoController', function($scope, $timeout, $location, $routeParams, $filter, dhis2APIService){
 
     this.init = function() {
         $scope.isLoading = true;
@@ -139,7 +139,7 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
         var attrs = [];
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.complexInfo.tableHeaders[i].name ,"value": $scope.editForm[i]});
         dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.complexProgramData.trackedEntity.id,$routeParams.orgUnitId,attrs).then(function(dat){
-            if(!dat) alert("There are incorrect fields!");
+            if(!dat) alert($filter('translate')("incorrect_fields"));
             else {
                 $scope.getTableContents();
                 $scope.editing = false;
@@ -172,7 +172,7 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
 
 
 
-hiiControllers.controller('reportsController', function($scope, $location, $timeout, $routeParams, dhis2APIService){
+hiiControllers.controller('reportsController', function($scope, $location, $timeout, $filter, $routeParams, dhis2APIService){
 
     this.init = function() {
         $scope.isSendingReport = false;
@@ -255,7 +255,7 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
         }
         if($scope.reportDate =='' || incomplete) {
             $scope.isSendingReport = false;
-            alert("Please fill all the fields");
+            alert($filter('translate')("fill_all_fields"));
         }
         else {
             dhis2APIService.sendEvent($scope.complexInfo.tableContents[0][0], $scope.complexProgramData.id, $scope.complexProgramData.programStages[0].id,$routeParams.orgUnitId, $scope.reportDate, values).then(function(data) {
@@ -276,7 +276,7 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
     };
 
     this.cancelReport = function() {
-        var r = confirm("You did not send this report. The data will not be saved. Do you still want to exit?");
+        var r = confirm($filter('translate')("cancel_report_msg"));
         if(r) {
             $scope.editing=false;
             if($scope.reports.length==0) $scope.selectedReport = -1;
@@ -291,7 +291,7 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
 
 
 
-hiiControllers.controller('buildingsController', function($scope, $location, $timeout, $routeParams, dhis2APIService){
+hiiControllers.controller('buildingsController', function($scope, $location, $timeout, $routeParams, $filter, dhis2APIService){
     
     this.init = function() {
         $scope.isSending= false;
@@ -387,7 +387,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
     };
 
     this.deleteBuilding = function() {
-        var r = confirm("Are you sure you want to delete the building? All data and reports will be lost.");
+        var r = confirm($filter('translate')("delete_building_msg"));
         if(r) {
             dhis2APIService.deleteTEI($scope.buildings.tableContents[$scope.buildingSelected][0]).then(function(dat) {
                 if(!dat) alert("Error!");
@@ -408,7 +408,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         if($scope.isCreating){
             if(!$scope.editForm[5]) {
                 $scope.isSending = false;
-                alert("Please put a name for the building.");
+                alert($filter('translate')("insert_name"));
             }
             else {
                 dhis2APIService.createTEI($scope.buildingProgramData.trackedEntity.id, $scope.orgUnitId, attrs).then(function(dat){
@@ -421,7 +421,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
                     }
                     else {
                         $scope.isSending= false;
-                        alert("There are incorrect fields!");
+                        alert($filter('translate')("incorrect_fields"));
                     }
                 });
             }
@@ -429,7 +429,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         else {
             dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.buildingProgramData.trackedEntity.id,$scope.orgUnitId,attrs).then(function(dat){
                 if(dat) $scope.fillBuildingList(attrs[0].value);
-                else alert("There are incorrect fields!");
+                else alert($filter('translate')("incorrect_fields"));
                 $scope.isSending = false;
             });
         }
@@ -442,7 +442,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
 });
 
 
-hiiControllers.controller('buildingReportController', function($scope, $timeout, dhis2APIService){
+hiiControllers.controller('buildingReportController', function($scope, $timeout, $filter, dhis2APIService){
 
     this.init = function() {
         $scope.isSendingReport = false;
@@ -518,7 +518,7 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
             }
         }
         if(incomplete || $scope.reportDate =='') {
-            alert('Please fill all the fields');
+            alert($filter('translate')("fill_all_fields"));
             $scope.isSendingReport= false;
         }
         else {
@@ -530,7 +530,7 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
     };
 
     this.cancelReport = function() {
-        var r = confirm("You did not send this report. The data will not be saved. Do you still want to exit?");
+        var r = confirm($filter('translate')("cancel_report_msg"));
         if(r) {
             $scope.editing=false;
             if($scope.reports.length==0) $scope.selectedReport = -1;

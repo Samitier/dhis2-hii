@@ -8,7 +8,7 @@
     <thead>
       <tr>
         <th>{{complexList.tableHeaders[5].column}}</th>
-        <th ng-hide = "isGuest()||complexList.tableContents.length==0">Acciones</th>
+        <th ng-hide = "isGuest()||complexList.tableContents.length==0">{{'actions'| translate}}</th>
       </tr>
     </thead>
     <tbody id="list">
@@ -16,8 +16,8 @@
         <td class='text-column' ng-click="listCtrl.gotoBasicInfoPanel($index)">{{urbanization[5]}}</td>
         <td ng-hide='complexList.tableContents.length==0 || isGuest()'> <img ng-click ="listCtrl.deleteComplex($index)" src ='/images/delete.png' ></td>
       </tr>
-      <tr ng-show ='complexList.tableContents.length==0 && !isComplexOrgunit'> <td> There are no Sanitary Complexes inside this Organization Unit </td></tr>
-      <tr ng-show ='isComplexOrgunit && complexList.tableContents.length==0 && !isGuest()'> <td> <button type="button" ng-click='listCtrl.createComplex()'>Add new sanitary complex</button> </td></tr>
+      <tr ng-show ='complexList.tableContents.length==0 && !isComplexOrgunit'> <td> {{'no_complex_list'| translate}} </td></tr>
+      <tr ng-show ='isComplexOrgunit && complexList.tableContents.length==0 && !isGuest()'> <td> <button type="button" ng-click='listCtrl.createComplex()'>{{'add_new_complex'| translate}}</button> </td></tr>
     </tbody>
   </table>
 </div>
