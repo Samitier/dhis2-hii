@@ -47,9 +47,12 @@
 					</div>
 				</div>
 				<div class="info-box" style='width:66%'>
-					<p class="header"> {{'image'| translate}} <img class='img-responsive' ng-hide ='isGuest()' src = "img/edit2.png" ng-click='buildingsCtrl.editImage()' height="18" width="18" style="float: right;cursor:pointer;"></p> 
-					<img ng-hide = 'imageEditing' ng-src={{"img/"+buildings[buildingSelected].attributes[6].value}} height="230" width="370"></img>
-					<input ng-show ='imageEditing' type ='file' ng-model="editForm[10]"> </input>
+					<p class="header"> {{'image'| translate}} <img class='img-responsive' ng-hide ='isGuest()' src = "img/edit2.png" ng-click='buildingsCtrl.editImage(!imageEditing)' height="18" width="18" style="float: right;cursor:pointer;"></p> 
+					<img ng-hide = "imageEditing||imagePath==''" ng-src={{imagePath}} height="100%" width="100%"></img>
+					<div ng-show ='imageEditing'>
+						<input type ='text' ng-model="editForm[11]" class= 'buttonReports'> </input>
+						<button class= 'buttonReports' ng-click='buildingsCtrl.send()'>{{'send'| translate}} </button>
+					</div>
 				</div>
 			</div>
 

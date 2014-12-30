@@ -42,6 +42,23 @@
 	"reports_help_title" : "Reports of the Sanitary Complex",
 	"reports_help_content" : "This is the reports page, where you can check all the infrastructure reports of the complex.\n\n To see older reports select one from the dropdown menu.\n\n To add new reports, click Add New Reports button, and fill the fields.\n\n To see help about data elements of the report, click the help button in the top right corner of the box.",
 	"buildings_help_title" : "Buildings of the Sanitary Complex",
-	"buildings_help_content" : "This is the building page where you can view the Buildings of a Sanitary Complex.\n\n To view the basic info and reports of a building, select one from the list.\n\n To add a new building click the plus button on the top right corner of the box."
+	"buildings_help_content" : "This is the building page where you can view the Buildings of a Sanitary Complex.\n\n To view the basic info and reports of a building, select one from the list.\n\n To add a new building click the plus button on the top right corner of the box.",
 
+	"metadata_title": "Metadata",
+	"manage_fields" : "Manage fields",
+	"sanitary_complex_title": "Sanitary Complex",
+	"building_title" : "Building",
+	"description" : "Description",
+	"name" : "Name",
+	"section_name" : "Section name",
+	"section_type" : "Section type",
+	"option_set": "Option Set",
+	"number": "Number",
+	"section_option_set": "Section Option Set",
+	"add_section" : "Add section",
+	"building_fields" : "Building Fields",
+	"complex_fields" : "Sanitary Complex Fields",
+	"confirmation_delete_fields" : "Do you really want to delete this field? This action is irreversible. For security reasons, this action will not delete the data elements nor the data values on older reports.",
+	"message_create_field1" : "Due to some technical limitations, you will have to manually add the data Elements to your program stage here:",
+	"message_create_field2" : "and create a programStageSection with the name of the field, and add those dataElements in it here:"
 }

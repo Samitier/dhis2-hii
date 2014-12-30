@@ -31,11 +31,11 @@
 					</div>
 				</div>
 				<div class="col-sm-7 info-box">
-					<p class="header"> {{'image'| translate}} <img ng-hide ='isGuest()' src = "img/edit2.png" ng-click='basicInfoCtrl.editImage()' height="18" width="18" style="float: right;cursor:pointer;"></p> 
-					<img ng-hide = 'imageEditing' ng-src={{"img/"+complexInfo.attributes[5].value}} class='img-responsive' style='max-height:500px'></img>
+					<p class="header"> {{'image'| translate}} <img ng-hide ='isGuest()' src = "img/edit2.png" ng-click='basicInfoCtrl.editImage(!imageEditing)' height="18" width="18" style="float: right;cursor:pointer;"></p> 
+					<img ng-hide = "imageEditing||imagePath==''" ng-src={{imagePath}} class='img-responsive' style='max-height:500px'></img>
 					<div ng-show ='imageEditing'>
-						<input type ='file' ng-model="editForm[10]" class= 'buttonReports'> </input>
-						<button class= 'buttonReports'>{{'send'| translate}} </button>
+						<input type ='text' ng-model="editForm[10]" class= 'buttonReports'> </input>
+						<button class= 'buttonReports' ng-click='basicInfoCtrl.send()'>{{'send'| translate}} </button>
 					</div>
 				</div>
 			</div>

@@ -1,6 +1,75 @@
-<div class="page" id="mainPage">
+<div class="page" id="mainPage" ng-init = 'settingsCtrl.init()'>
     <h3> {{'settings'| translate}} <a title="Help" href ='' ng-click='showPageHelp()'><i class="fa fa-question-circle"></i></a></h3>
-    <p id = "pSettings">{{'settings_text'| translate}}</p>
-    <button type="button" ng-click = "settingsCtrl.installMetadata()">{{'settings_button'| translate}}</button>
+   	<br>
+   	<h4> &#8226; {{'metadata_title' | translate}}</h4>
+   	<div style = "padding-left:10px">
+	   	<p id = "pSettings">{{'settings_text'| translate}}</p>
+	    <button type="button" ng-click = "settingsCtrl.installMetadata()">{{'settings_button'| translate}}</button>
+	</div>
+	<br><br>
+    <h4> &#8226; {{'manage_fields' | translate}} 
+    	<div class="btn-group btn-group-xs" role="group">
+			<button type="button" class="btn btn-default" ng-click= 'settingsCtrl.setEntity(0)' ng-class='settingsCtrl.btn1'>{{'sanitary_complex_title' | translate}}</button>
+			<button type="button" class="btn btn-default" ng-click= 'settingsCtrl.setEntity(1)' ng-class='settingsCtrl.btn2'>{{'building_title' | translate}}</button>
+		</div>
+	</h4>
+	<br>
+    <div class: "container-fluid" style = "padding-left:10px" ng-hide='entitySelected==-1'>
+	    <div class = 'row'>
+	    	<div class = 'col-md-4'>
+	    		<div class="panel panel-default">
+				  <div class="panel-heading">
+				  	<h3 class="panel-title">{{settingsCtrl.title}}
+				  		<a href ='' style='float:right'><span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click='settingsCtrl.setEditing(!isEditing)'></span></a>
+				  	</h3>
+				  </div>
+				  <div class="list-group">
+					  <a href="" class="list-group-item" ng-repeat="field in programStageData" ng-class="{active: $index == fieldSelected}" ng-click = "settingsCtrl.selectField($index)">{{field.name}} <span class="glyphicon glyphicon-trash" aria-hidden="true" style='float:right' ng-show ='$index == fieldSelected' ng-click = 'settingsCtrl.deleteField($index)'></span></a>
+				  </div>
+	    		</div>
+	    	</div>
+	    	<div class = 'col-md-4'>
+	    		
+	    		<div class="panel panel-default" ng-hide = 'fieldSelected==-1 || isEditing'>
+				  <div class="panel-heading">
+				  	<h3 class="panel-title">{{programStageData[fieldSelected].name}} </h3>
+				  </div>
+				  <div class="list-group">
+					  <a href="" class="list-group-item">{{'description' | translate}}: {{programStageData[fieldSelected].programStageDataElements[programStageData[fieldSelected].programStageDataElements.length-1].dataElement.description}}</a>
+					  <a href="" class="list-group-item" ng-repeat ="section in programStageData[fieldSelected].programStageDataElements">{{section.dataElement.name}}: {{section.dataElement.type}} {{section.dataElement.optionSet.name}}</a>
+				  </div>
+	    		</div>
+
+	    		<div class="panel panel-default" ng-show = 'isEditing'>
+				  <div class="panel-heading">
+				  	<h3 class="panel-title">{{'name' | translate}}:<input type="text" class="form-control" ng-model='editForm.name'></input> </h3>
+				  </div>
+				  <div class="list-group">
+				  	  <a href="" class="list-group-item">
+				  	  	<label class="control-label">{{'description' | translate}}:</label>
+				  	  	<input type="text" class="form-control" ng-model='editForm.description'></input>
+				  	  </a>
+					  <a href="" class="list-group-item" ng-repeat ="section in editForm.fields">
+					  	<label class="control-label">{{'section_name' | translate}}:</label>
+				  	  	<input type="text" class="form-control" ng-model ='section.name'></input><br>
+				  	  	<label class="control-label">{{'section_type' | translate}}:</label>
+				  	  	<select class="form-control" ng-model='section.type'>
+						  <option value='string'>{{'option_set' | translate}}</option>
+						  <option value='number'>{{'number' | translate}}</option>
+						</select><br>
+						<div ng-show="section.type=='string'">
+				  	  		<label class="control-label">{{'section_option_set' | translate}}:</label>
+				  	  		<select class="form-control" ng-model='section.optionSet'>
+						  		<option ng-repeat='opt in optionSets' value='{{opt.id}}'>{{opt.name}}</option>
+							</select>
+				  	  	</div>
+					  </a>
+					  <a href = '' class="list-group-item" ng-click='settingsCtrl.addSection()'><span class="glyphicon glyphicon-plus" > {{'add_section' | translate}}</span></a>
+					  <a class="list-group-item" style='text-align:right'><button type="submit" class="btn btn-default" ng-click='settingsCtrl.createField()'>{{'send' | translate}}</button></a>
+				  </div>
+	    		</div>
+	    	</div>
+	    </div>
+	</div>
 </div>
 

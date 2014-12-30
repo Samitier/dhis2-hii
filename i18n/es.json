@@ -42,5 +42,23 @@
 	"reports_help_title" : "Reportes del Complejo Sanitario",
 	"reports_help_content" : "Esta es la página de los reportes, donde podrá ver los reportes de las infrastructuras del complejo sanitario.\n\n Para ver reportes antiguos, selecciónelo del menú desplegable.\n\n Para añadir reportes nuevos, pulse Añadir Reporte y rellene los campos.\n\n Para ver la ayuda sobre los elementos del reporte, clique el botón de ayuda en la esquina superior derecha de la caja",
 	"buildings_help_title" : "Edificios del Complejo Sanitario",
-	"buildings_help_content" : "Esta es la página de los edificios de un complejo sanitario.\n\n Para ver la información general y los reportes de un edificio, seleccione uno de la lista.\n\n Para añadir un nuevo edificio, clique el símbolo más en la esquina superior derecha de la caja."
+	"buildings_help_content" : "Esta es la página de los edificios de un complejo sanitario.\n\n Para ver la información general y los reportes de un edificio, seleccione uno de la lista.\n\n Para añadir un nuevo edificio, clique el símbolo más en la esquina superior derecha de la caja.",
+
+	"metadata_title": "Metadatos",
+	"manage_fields" : "Gestionar campos",
+	"sanitary_complex_title": "Complejo Sanitario",
+	"building_title" : "Edificio",
+	"description" : "Descripción",
+	"name" : "Nombre",
+	"section_name" : "Nombre de la sección",
+	"section_type" : "Tipo de la sección",
+	"option_set": "Set de Opciones",
+	"number": "Número",
+	"section_option_set": "Set de opciones de la sección",
+	"add_section" : "Añadir Sección",
+	"building_fields" : "Campos de Edificios",
+	"complex_fields" : "Campos de Complejos Sanitarios",
+	"confirmation_delete_fields" : "¿De verdad quieres borrar este campo? Esta acción es irreversible. Por razones de seguridad, no se eliminarán los elementos de datos ni los elementos de reportes antiguos.",
+	"message_create_field1" : "Debido a limitaciones técnicas, you will have to manually add the data Elements to your program stage here:",
+	"message_create_field2" : "and create a programStageSection with the name of the field, and add those dataElements in it here:"
 }

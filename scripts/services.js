@@ -96,10 +96,24 @@ hiiServices.factory('dhis2APIService', function($http){
       },
 
       getProgramStage: function (id) {
-        var promise = $http.get('/api/programStages/'+id + '?fields=programStageSections[id,name,programStageDataElements[dataElement[id,name,description,type,optionSet[options]]]').then(function(response){
+        var promise = $http.get('/api/programStages/'+id + '?fields=programStageSections[id,name,programStageDataElements[dataElement[id,name,description,type,optionSet[name,options]]]').then(function(response){
           return response.data;
         });
         return promise;
+      },
+
+      getProgramStageData: function (id) {
+        var promise = $http.get('/api/programStages/'+id ).then(function(response){
+          return response.data;
+        });
+        return promise;
+      },
+
+      updateProgramStage: function(data) {
+        var promise = $http.post('/api/programStages/' + data.id, JSON.stringify(data)).then(function(response){
+          console.dir(response);
+        }, function(dat){console.dir(dat);});
+        return promise;  
       },
 
       getTECompletedEvents: function(program, orgunit){
@@ -118,6 +132,43 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
+      getDataElementsIdByName: function(dataElements) {
+        var promise = $http.get('/api/dataElements?fields=name,id').then(function(response){
+          var ids = [];
+          for(var i=0; i< response.data.dataElements.length;++i) {
+            for(var j=0; j < dataElements.length;++j) {
+              if(response.data.dataElements[i].name == dataElements[j].name) ids.push(response.data.dataElements[i].id);
+            }
+          }
+          return ids;
+        });
+        return promise;
+      },
+
+      deleteDataElement:function(id) {
+        var promise = $http.delete('/api/dataElements/'+id).then(function(response){
+          console.dir(response);
+          return true;
+        }, function(err){console.dir(err)});
+        return promise;
+      },
+
+      getOptionSets: function() {
+        var promise = $http.get('/api/optionSets?fields=name,id').then(function(response){
+          if(response.data)return response.data.optionSets;
+          else return [];
+        });
+        return promise;
+      },
+
+      createDataElement: function(name, type, optionSet, comment) {
+        var msg = { "name":name, "shortName":name, "description":comment, "domainType":"TRACKER", "type":type, "numberType":"number",
+                    "textType":"text", "aggregationOperator":"sum", "optionSet":{id:optionSet}};
+        var promise = $http.post('/api/dataElements/', JSON.stringify(msg)).then(function(response){
+        }, function(err) { console.dir(err)});
+        return promise;
+      },
+
       sendEvent: function(teid, prog, stage, ou, date, values) {
         var msg = { "trackedEntityInstance": teid, 
                     "program": prog,
@@ -130,7 +181,7 @@ hiiServices.factory('dhis2APIService', function($http){
             return response;
         });
         return promise;
-      }
+      },
   };
 
   return serviceFactory;
@@ -151,5 +202,62 @@ hiiServices.factory('metadataGetter', function($http){
       return promise;
     },
   };
+  return serviceFactory;
+});
+
+
+hiiServices.factory('dhis2FrontEndService', function($http, $rootScope){
+  var serviceFactory={
+    getProgramStageFrontEndId:function(programId, programStageId){
+      $http.get('/dhis-web-maintenance-program/program.action').then(function(response){
+        var htmlResponse = $(response.data);
+        var htmlList = $('#list', htmlResponse);
+        for (var i=0; i<htmlList[0].children.length;++i) {
+          if(programId == htmlList[0].children[i].dataset.uid) {
+            $http.get('/dhis-web-maintenance-program/programStage.action?id=' + htmlList[0].children[i].dataset.id).then(function(response){
+              var htmlResponse = $(response.data);
+              var htmlList = $('#list', htmlResponse);
+              for (var i=0; i<htmlList[0].children.length;++i) {
+                if(programStageId == htmlList[0].children[i].dataset.uid) {
+                  $rootScope.$broadcast('endOfIdPetition',htmlList[0].children[i].dataset.id);
+                  return true;
+                }
+              }
+            });
+          }
+        }
+      });
+      return true;
+    },
+
+    deleteProgramStageSection:function(programId, programStageId, sectionId) {
+      $http.get('/dhis-web-maintenance-program/program.action').then(function(response){
+        var htmlResponse = $(response.data);
+        var htmlList = $('#list', htmlResponse);
+        for (var i=0; i<htmlList[0].children.length;++i) {
+          if(programId == htmlList[0].children[i].dataset.uid) {
+            $http.get('/dhis-web-maintenance-program/programStage.action?id=' + htmlList[0].children[i].dataset.id).then(function(response){
+              var htmlResponse = $(response.data);
+              var htmlList = $('#list', htmlResponse);
+              for (var i=0; i<htmlList[0].children.length;++i) {
+                if(programStageId == htmlList[0].children[i].dataset.uid) {
+                  $http.get('/dhis-web-maintenance-program/programStageSectionList.action?id=' + htmlList[0].children[i].dataset.id).then(function(response){
+                    var htmlResponse = $(response.data);
+                    var htmlList = $('#list', htmlResponse);
+                    for (var i=0; i<htmlList[0].children.length;++i) {
+                      if(sectionId == htmlList[0].children[i].dataset.uid) {
+                        $.ajax({ url:'/dhis-web-maintenance-program/removeProgramStageSection.action', data:{"id": htmlList[0].children[i].dataset.id}, success:function( json ){
+                          if ( json.response == "success" ) $rootScope.$broadcast('endOfPetition',true);
+                          else $rootScope.$broadcast('endOfPetition',false);
+                        }, type:'post', dataType:'json', contentType:'application/x-www-form-urlencoded;charset=utf-8' } );
+                        break;
+                  }}});
+                  break;
+            }}});
+            break;
+        }}});
+      return true;
+    },
+  }
   return serviceFactory;
 });

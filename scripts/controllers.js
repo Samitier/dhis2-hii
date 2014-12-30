@@ -109,6 +109,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 hiiControllers.controller('basicInfoController', function($scope, $timeout, $location, $routeParams, $filter, dhis2APIService){
 
     this.init = function() {
+        $scope.imagePath = '';
         $scope.isLoading = true;
         $scope.isSending = false;
         $scope.editing=false;
@@ -126,7 +127,8 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
                 $scope.complexInfo = dat;
                 //we wait for the response (there's a delay on the server when creating a complex)
                 if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
-                else if($scope.complexInfo.tableContents[0][10] =='') $scope.imageEditing = true;
+                else if($scope.complexInfo.tableContents[0][10] !='')$scope.imagePath = 'img/' + $scope.complexInfo.tableContents[0][10]; 
+                else $scope.imagePath = '';
                 $scope.isLoading = false;
             },
             //if someone modifies the url we return to the list page 
@@ -137,12 +139,14 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
     this.send = function() {
         $scope.isSending = true;
         var attrs = [];
+        if($scope.editForm[10] != '') $scope.editForm[10]=$scope.editForm[10].split('../').join(""); //prevents from exiting the actual dir
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.complexInfo.tableHeaders[i].name ,"value": $scope.editForm[i]});
         dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.complexProgramData.trackedEntity.id,$routeParams.orgUnitId,attrs).then(function(dat){
             if(!dat) alert($filter('translate')("incorrect_fields"));
             else {
                 $scope.getTableContents();
                 $scope.editing = false;
+                $scope.imageEditing = false;
             }
             $scope.isSending = false;
         });
@@ -156,11 +160,18 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
         $scope.editing = edit;
         showError = false;
         $scope.editForm=[];
-        if($scope.editing) angular.copy($scope.complexInfo.tableContents[0], $scope.editForm);
+        if($scope.editing) {
+            $scope.imageEditing = false;
+            angular.copy($scope.complexInfo.tableContents[0], $scope.editForm);
+        }
     };
 
-    this.editImage = function() {
-        $scope.imageEditing = true;
+    this.editImage = function(edit) {
+        $scope.imageEditing = edit;
+        if(edit) {
+            angular.copy($scope.complexInfo.tableContents[0], $scope.editForm);
+            $scope.editing = false;
+        }
     };
 
     $scope.setTab = function(n) {
@@ -294,6 +305,7 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
 hiiControllers.controller('buildingsController', function($scope, $location, $timeout, $routeParams, $filter, dhis2APIService){
     
     this.init = function() {
+        $scope.imagePath = '';
         $scope.isSending= false;
         $scope.isLoading = true;
         $scope.orgUnitId = $routeParams.orgUnitId;
@@ -327,11 +339,18 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         else {
         	dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramData.id, $scope.orgUnitId, 'SELECTED').then(function(dat){
             	$scope.buildings = dat;
+                $scope.buildings.tableContents.sort(function(a,b){
+                    if (a[5] < b[5]) return -1;
+                    if (a[5] > b[5]) return 1;
+                    return 0;
+                });
             	if(selected) {
             		$scope.editing = false;
             		for(var i =0; i< $scope.buildings.tableContents.length;++i) {
             			if(selected == $scope.buildings.tableContents[i][5]) $scope.buildingSelected=i;
             		}
+                    if($scope.buildings.tableContents[$scope.buildingSelected][11] == '') $scope.imagePath ='';
+                    else $scope.imagePath = "img/"+$scope.buildings.tableContents[$scope.buildingSelected][11];
             	}
                 $scope.isLoading = false;
             },
@@ -354,7 +373,8 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         $scope.isCreating = false;
         $scope.editing = false;
         $scope.buildingSelected = index;
-        if($scope.buildings.tableContents[$scope.buildingSelected][11] =='') $scope.imageEditing = true;
+        if($scope.buildings.tableContents[$scope.buildingSelected][11] == '') $scope.imagePath ='';
+        else $scope.imagePath = "img/"+$scope.buildings.tableContents[$scope.buildingSelected][11];
     };
 
     this.addBuilding = function(){
@@ -378,12 +398,21 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         	$scope.editing = edit;
         	showError = false;
         	$scope.editForm=[];
-        	if($scope.editing) angular.copy($scope.buildings.tableContents[$scope.buildingSelected], $scope.editForm);
+        	if($scope.editing) {
+                $scope.imageEditing = false;
+                angular.copy($scope.buildings.tableContents[$scope.buildingSelected], $scope.editForm);
+            }
         }
     };
 
-    this.editImage = function() {
-        $scope.imageEditing = true;
+    this.editImage = function(edit) {
+        if(!$scope.isCreating) {
+            $scope.imageEditing = edit;
+            if(edit) {
+                angular.copy($scope.buildings.tableContents[$scope.buildingSelected], $scope.editForm);
+                $scope.editing = false;
+            }
+        }
     };
 
     this.deleteBuilding = function() {
@@ -404,6 +433,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
     this.send = function() {
         $scope.isSending = true;
         var attrs = [];
+        if($scope.editForm[11] != '' && $scope.editForm[11]) $scope.editForm[10]=$scope.editForm[10].split('../').join(""); //prevents from exiting the actual dir
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.buildings.tableHeaders[i].name ,"value": $scope.editForm[i]});
         if($scope.isCreating){
             if(!$scope.editForm[5]) {
@@ -417,6 +447,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
                             $scope.isCreating = false;
                             $scope.fillBuildingList(attrs[0].value);
                             $scope.isSending= false;
+                            $scope.imageEditing = false;
                         });
                     }
                     else {
@@ -431,6 +462,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
                 if(dat) $scope.fillBuildingList(attrs[0].value);
                 else alert($filter('translate')("incorrect_fields"));
                 $scope.isSending = false;
+                $scope.imageEditing = false;
             });
         }
     };
@@ -549,9 +581,195 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
 
 });
 
-hiiControllers.controller('settingsController', function($scope, dhis2APIService, metadataGetter){
+hiiControllers.controller('settingsController', function($rootScope, $scope, $filter, dhis2FrontEndService, dhis2APIService, metadataGetter){
+    this.init = function() {
+        $scope.entitySelected = -1; //0 sanitary complex, 1 building
+        $scope.fieldSelected = -1;
+        $scope.programStageData ={};
+        $scope.isEditing = false;
+        $scope.editForm = {};
+        dhis2APIService.getOptionSets().then(function(dat){
+            $scope.optionSets = dat;
+        });
+    };
+
     this.installMetadata = function() {
         metadataGetter.getTE().then(function(dat){console.dir(dat)});
+    };
+
+    this.setEntity = function(n) {
+        $scope.entitySelected = n;
+        if(n==1) {
+            this.title = $filter('translate')("building_fields");
+            this.btn2 = "active";this.btn1='';
+        }
+        else {
+            this.title = $filter('translate')("complex_fields");
+            this.btn1 = "active";this.btn2='';
+        }
+        $scope.getFields();
+    };
+
+    this.setEditing = function(edit) {
+        if(edit) {
+            $scope.isEditing = true;
+            $scope.editForm = {name: '', description: '', fields:[]};
+        }
+        else {
+           $scope.isEditing = false;
+           $scope.editForm = {};
+        }
     }
+
+    $scope.getFields = function() {
+        var programStage;
+        if($scope.entitySelected==1) programStage = $scope.buildingProgramData.programStages[0].id;
+        else programStage = $scope.complexProgramData.programStages[0].id;
+        dhis2APIService.getProgramStage(programStage).then(function(data) { 
+           $scope.programStageData = data.programStageSections;
+           for (var i=0; i<$scope.programStageData.length; ++i) {
+               for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
+                    var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
+                    $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
+               }
+           }
+           $scope.programStageData.sort(function(a,b){
+              if (a.name < b.name) return -1;
+              if (a.name > b.name) return 1;
+              return 0;
+           });
+        });
+    };
+
+    this.selectField = function(n) {
+        this.setEditing(false);
+        $scope.fieldSelected= n;
+    };
+
+    this.createField = function() {
+        var empty = false;
+        for(var i=0; i< $scope.editForm.fields.length && !empty;++i) {
+            if($scope.editForm.fields[i].name == '' || $scope.editForm.fields[i].type == '') empty=true;
+        }
+        if(empty || $scope.editForm.name ==''|| $scope.editForm.description =='') {
+            alert($filter('translate')("fill_all_fields"));
+        }
+        else {
+           var ids =[];
+           var dataElements = [];
+           for(var i=0; i< $scope.editForm.fields.length;++i) {
+                dataElements.push({name:$scope.editForm.name + ' ' + $scope.editForm.fields[i].name, type:$scope.editForm.fields[i].type,
+                                   optionSet:$scope.editForm.fields[i].optionSet, comment: ''});
+            }
+            dataElements.push({name: $scope.editForm.name + ' Comments', type:"string",optionSet:'', 
+                                comment: $scope.editForm.description});
+            $scope.createDataElements(dataElements, 0);
+        }
+    };
+
+    $scope.createDataElements = function(dataElements, i) {
+        dhis2APIService.createDataElement(dataElements[i].name, dataElements[i].type, dataElements[i].optionSet, dataElements[i].comment).
+            then(function(dat){
+                if(i<dataElements.length-1) $scope.createDataElements(dataElements,++i);
+                //else $scope.assignDataElementsToProgram(dataElements); <- doesn't work, the user will have to do it manually
+                else {
+                    //manual operations
+                    var program, programStage;
+                    if($scope.entitySelected==1) {
+                        program = $scope.buildingProgramData.id;
+                        programStage = $scope.buildingProgramData.programStages[0].id;
+                    }
+                    else {
+                        program = $scope.complexProgramData.id;
+                        programStage = $scope.complexProgramData.programStages[0].id;
+                    }   
+                    dhis2FrontEndService.getProgramStageFrontEndId(program, programStage);      
+                }
+        });
+    };
+
+    /*
+    //It appears you can't modify the data of a program stage via web API. I've tried everything and, or deletes the programStageSections 
+    //or you get a internal server error.
+    $scope.assignDataElementsToProgram = function(dataElements) {
+        //this won't be needed if DHIS2 reurned the id of the data element added
+        dhis2APIService.getDataElementsIdByName(dataElements).then(function(data) {
+            console.dir(data);
+            var program, programStage;
+            if($scope.entitySelected==1) {
+                program = $scope.buildingProgramData.id;
+                programStage = $scope.buildingProgramData.programStages[0].id;
+            }
+            else {
+                program = $scope.complexProgramData.id;
+                programStage = $scope.complexProgramData.programStages[0].id;
+            }
+            dhis2APIService.getProgramStageData(programStage).then(function(dat){
+                var element = angular.copy(dat.programStageDataElements[0]);
+                for(var i=0; i<data.length;++i) {
+                    element.sortOrder = i+dat.programStageDataElements.length;
+                    element.dataElement.id = data[i];
+                    element.dataElement.name = dataElements[i].name;
+                    dat.programStageDataElements.push(element);
+                }
+                console.dir(dat);
+                dhis2APIService.updateProgramStage(dat);
+            });
+        });
+    };
+    */
+    this.addSection = function() {
+        $scope.editForm.fields.push({name:'', type:'', optionSet:''});
+    }
+
+    this.deleteField = function(n) {
+        var r =  confirm($filter('translate')("confirmation_delete_fields"));
+        if(r) {
+            var program, programStage;
+            if($scope.entitySelected==1) {
+                program = $scope.buildingProgramData.id;
+                programStage = $scope.buildingProgramData.programStages[0].id;
+            }
+            else {
+                program = $scope.complexProgramData.id;
+                programStage = $scope.complexProgramData.programStages[0].id;
+            }/*
+            //This is for deleting the data elements from the program, but doing this will also unlink them to the programStageSection
+            //possible DHIS2 bug/limitation?
+            dhis2APIService.getProgramStageData(programStage).then(function(dat){
+                for(var i=0; i<dat.programStageDataElements.length;++i) {
+                    for(var j=0; j<$scope.programStageData[$scope.fieldSelected].programStageDataElements.length;++j) {
+                        if(dat.programStageDataElements[i].dataElement.id == $scope.programStageData[$scope.fieldSelected].programStageDataElements[j].dataElement.id) {
+                            dat.programStageDataElements.splice(i,1);
+                        }
+                    }
+                }
+                for(var i=0; i<dat.programStageSections.length;++i) {
+                    if(dat.programStageSections[i].id == $scope.programStageData[$scope.fieldSelected].id) {
+                       dat.programStageSections.splice(i,1);
+                    }
+                }
+                dhis2APIService.updateProgramStage(dat);
+            });*/
+            dhis2FrontEndService.deleteProgramStageSection(program, programStage, $scope.programStageData[$scope.fieldSelected].id);
+        }
+    };
+
+    $rootScope.$on('endOfIdPetition', function(event, data){
+        alert($filter('translate')("message_create_field1")+ '\n' +
+               window.location.hostname +'/dhis-web-maintenance-program/showUpdateProgramStageForm.action?id=' + data + '\n' + 
+               $filter('translate')("message_create_field2")+ '\n' +
+               window.location.hostname + '/dhis-web-maintenance-program/programStageSectionList.action?id=' + data);
+    });
+
+    $rootScope.$on('endOfPetition', function(event, data) { 
+        if(data) {
+            $scope.fieldSelected =-1;
+            $scope.getFields(); 
+        }
+        else {
+            alert('An error has ocurred.');
+        }
+    });
 });
 
