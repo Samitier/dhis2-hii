@@ -56,9 +56,16 @@
 	"number": "Número",
 	"section_option_set": "Set de opciones de la sección",
 	"add_section" : "Añadir Sección",
-	"building_fields" : "Campos de Edificios",
-	"complex_fields" : "Campos de Complejos Sanitarios",
+	"building_fields" : "Campos de Edificio",
+	"complex_fields" : "Campos de Complejo Sanitario",
 	"confirmation_delete_fields" : "¿De verdad quieres borrar este campo? Esta acción es irreversible. Por razones de seguridad, no se eliminarán los elementos de datos ni los elementos de reportes antiguos.",
-	"message_create_field1" : "Debido a limitaciones técnicas, you will have to manually add the data Elements to your program stage here:",
-	"message_create_field2" : "and create a programStageSection with the name of the field, and add those dataElements in it here:"
+
+
+	"here" : "aquí",
+	"step" : "Paso",
+	"step1.1":"Añade los elementos de datos",
+	"step1.2":"al programa",
+	"step2.1":"Crea la sección de la etapa del programa",
+	"step2.2":"y asígnale los elementos del paso 1",
+	"step3":"Cuando complete los pasos anteriores, clique"
 }

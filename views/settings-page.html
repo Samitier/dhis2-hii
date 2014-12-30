@@ -69,6 +69,18 @@
 				  </div>
 	    		</div>
 	    	</div>
+	    	<div ng-show='isAddingFields' class = 'col-md-4'style='padding-right:30px'>
+	    		<div class="alert alert-info" role="alert">
+	    			<b>{{'step'|translate}} 1:</b> {{'step1.1'|translate}}: <b> {{editForm.name}} Description</b> <b ng-repeat='fld in editForm.fields'>, {{editForm.name}} {{fld.name}}</b> {{'step1.2'|translate}} <u><a href = {{url1}} target="_blank">{{'here'|translate}}</a></u>.
+	    		</div>
+				<div class="alert alert-info" role="alert">
+					<b>{{'step'|translate}} 2:</b> {{'step2.1'|translate}}: <b>{{editForm.name}}</b> {{'step2.2'|translate}}
+					<u><a href = {{url2}} target="_blank">{{'here'|translate}}</a></u>.
+				</div>
+				<div class="alert alert-info" role="alert">
+					<b>{{'step'|translate}} 3:</b> {{'step3'|translate}} <u><a href = '' ng-click='settingsCtrl.finishAdding()' >{{'here'|translate}}</a></u>.
+				</div>
+	        </div>
 	    </div>
 	</div>
 </div>

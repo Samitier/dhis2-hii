@@ -59,6 +59,13 @@
 	"building_fields" : "Building Fields",
 	"complex_fields" : "Sanitary Complex Fields",
 	"confirmation_delete_fields" : "Do you really want to delete this field? This action is irreversible. For security reasons, this action will not delete the data elements nor the data values on older reports.",
-	"message_create_field1" : "Due to some technical limitations, you will have to manually add the data Elements to your program stage here:",
-	"message_create_field2" : "and create a programStageSection with the name of the field, and add those dataElements in it here:"
+
+	"here" : "here",
+	"step" : "Step",
+	"step1.1":"Add the data elements",
+	"step1.2":"to the program",
+	"step2.1":"Create the program stage section",
+	"step2.2":"and assign the fields of Step 1 on it",
+	"step3":"Once the other two steps are completed click"
+
 }

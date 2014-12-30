@@ -584,6 +584,7 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
 hiiControllers.controller('settingsController', function($rootScope, $scope, $filter, dhis2FrontEndService, dhis2APIService, metadataGetter){
     this.init = function() {
         $scope.entitySelected = -1; //0 sanitary complex, 1 building
+        $scope.isAddingFields = false;
         $scope.fieldSelected = -1;
         $scope.programStageData ={};
         $scope.isEditing = false;
@@ -718,6 +719,13 @@ hiiControllers.controller('settingsController', function($rootScope, $scope, $fi
         });
     };
     */
+    this.finishAdding = function() {
+        $scope.isAddingFields = false;
+        $scope.fieldSelected = -1;
+        this.setEditing(false);
+        $scope.getFields();
+    }
+
     this.addSection = function() {
         $scope.editForm.fields.push({name:'', type:'', optionSet:''});
     }
@@ -756,16 +764,15 @@ hiiControllers.controller('settingsController', function($rootScope, $scope, $fi
     };
 
     $rootScope.$on('endOfIdPetition', function(event, data){
-        alert($filter('translate')("message_create_field1")+ '\n' +
-               window.location.hostname +'/dhis-web-maintenance-program/showUpdateProgramStageForm.action?id=' + data + '\n' + 
-               $filter('translate')("message_create_field2")+ '\n' +
-               window.location.hostname + '/dhis-web-maintenance-program/programStageSectionList.action?id=' + data);
+        $scope.isAddingFields = true;
+        $scope.url1 = '/dhis-web-maintenance-program/showUpdateProgramStageForm.action?id=' + data;
+        $scope.url2 = '/dhis-web-maintenance-program/programStageSectionList.action?id=' + data;
     });
 
     $rootScope.$on('endOfPetition', function(event, data) { 
         if(data) {
-            $scope.fieldSelected =-1;
             $scope.getFields(); 
+            $scope.fieldSelected =-1;
         }
         else {
             alert('An error has ocurred.');
