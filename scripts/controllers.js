@@ -22,6 +22,10 @@ hiiControllers.controller('mainController', function($scope, $translate, dhis2AP
         return $scope.permission == 'hii-guest';
     };
 
+    $scope.isAdmin = function() {
+        return $scope.permission == 'hii-admin';
+    };
+
     //get the metadata info 
     dhis2APIService.gethiiProgramsInfo().then(function(data) {
         if(data ==null) alert("Please install the provided metadata to use this app");
@@ -218,6 +222,7 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
                     var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
                     $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
                     }
+                    $scope.programStageData[i].name = $scope.programStageData[i].name.replace('hii-','');
                 }
             });
             $scope.fillReportList();
@@ -372,6 +377,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         $scope.isBuildingSelected = true;
         $scope.isCreating = false;
         $scope.editing = false;
+        $scope.imageEditing = false;
         $scope.buildingSelected = index;
         if($scope.buildings.tableContents[$scope.buildingSelected][11] == '') $scope.imagePath ='';
         else $scope.imagePath = "img/"+$scope.buildings.tableContents[$scope.buildingSelected][11];
@@ -408,6 +414,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
     this.editImage = function(edit) {
         if(!$scope.isCreating) {
             $scope.imageEditing = edit;
+            $scope.editForm=[];
             if(edit) {
                 angular.copy($scope.buildings.tableContents[$scope.buildingSelected], $scope.editForm);
                 $scope.editing = false;
@@ -433,7 +440,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
     this.send = function() {
         $scope.isSending = true;
         var attrs = [];
-        if($scope.editForm[11] != '' && $scope.editForm[11]) $scope.editForm[10]=$scope.editForm[10].split('../').join(""); //prevents from exiting the actual dir
+        if( $scope.editForm[11]) if($scope.editForm[11] != '') $scope.editForm[10]=$scope.editForm[10].split('../').join(""); //prevents from exiting the actual dir
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.buildings.tableHeaders[i].name ,"value": $scope.editForm[i]});
         if($scope.isCreating){
             if(!$scope.editForm[5]) {
@@ -505,6 +512,7 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
                         var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
                         $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
                    }
+                   $scope.programStageData[i].name = $scope.programStageData[i].name.replace('hii-','');
                }
             });
             if($scope.buildingSelected != -1)$scope.fillReportList();
@@ -658,6 +666,7 @@ hiiControllers.controller('settingsController', function($rootScope, $scope, $fi
         else {
            var ids =[];
            var dataElements = [];
+           $scope.editForm.name ='hii-' + $scope.editForm.name;
            for(var i=0; i< $scope.editForm.fields.length;++i) {
                 dataElements.push({name:$scope.editForm.name + ' ' + $scope.editForm.fields[i].name, type:$scope.editForm.fields[i].type,
                                    optionSet:$scope.editForm.fields[i].optionSet, comment: $scope.editForm.description});
