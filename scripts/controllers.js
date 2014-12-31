@@ -660,7 +660,7 @@ hiiControllers.controller('settingsController', function($rootScope, $scope, $fi
            var dataElements = [];
            for(var i=0; i< $scope.editForm.fields.length;++i) {
                 dataElements.push({name:$scope.editForm.name + ' ' + $scope.editForm.fields[i].name, type:$scope.editForm.fields[i].type,
-                                   optionSet:$scope.editForm.fields[i].optionSet, comment: ''});
+                                   optionSet:$scope.editForm.fields[i].optionSet, comment: $scope.editForm.description});
             }
             dataElements.push({name: $scope.editForm.name + ' Comments', type:"string",optionSet:'', 
                                 comment: $scope.editForm.description});

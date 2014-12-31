@@ -4,9 +4,9 @@
     "description": "The app for reporting the state of health infrastructures.",
     "launch_path": "/index.html",
     "icons": {
-        "16": "/img/icons/icon-16.png",
-        "48": "/img/icons/icon-48.png",
-        "128": "/img/icons/icon-128.png"
+        "16": "img/icons/icon-16.png",
+        "48": "img/icons/icon-48.png",
+        "128": "img/icons/icon-128.png"
     },
     "developer": {
         "name": "ASF",
