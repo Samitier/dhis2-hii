@@ -47,7 +47,7 @@
 				  <div class="list-group">
 				  	  <a href="" class="list-group-item">
 				  	  	<label class="control-label">{{'description' | translate}}:</label>
-				  	  	<input type="text" class="form-control" ng-model='editForm.description'></input>
+				  	  	<textarea class="form-control" ng-model='editForm.description' style='resize:vertical;' rows="2"></textarea>
 				  	  </a>
 					  <a href="" class="list-group-item" ng-repeat ="section in editForm.fields">
 					  	<label class="control-label">{{'section_name' | translate}}:</label>
