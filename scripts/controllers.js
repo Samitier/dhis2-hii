@@ -641,6 +641,7 @@ hiiControllers.controller('settingsController', function($rootScope, $scope, $fi
                     var nam = $scope.programStageData[i].programStageDataElements[j].dataElement.name.replace($scope.programStageData[i].name,'');
                     $scope.programStageData[i].programStageDataElements[j].dataElement.name = nam;        
                }
+               $scope.programStageData[i].name = $scope.programStageData[i].name.replace('hii-','');
            }
            $scope.programStageData.sort(function(a,b){
               if (a.name < b.name) return -1;
@@ -678,7 +679,7 @@ hiiControllers.controller('settingsController', function($rootScope, $scope, $fi
     };
 
     $scope.createDataElements = function(dataElements, i) {
-        dhis2APIService.createDataElement(dataElements[i].name, dataElements[i].type, dataElements[i].optionSet, dataElements[i].comment).
+        dhis2APIService.createDataElement($scope.editForm.name , dataElements[i].name, dataElements[i].type, dataElements[i].optionSet, dataElements[i].comment).
             then(function(dat){
                 if(i<dataElements.length-1) $scope.createDataElements(dataElements,++i);
                 //else $scope.assignDataElementsToProgram(dataElements); <- doesn't work, the user will have to do it manually

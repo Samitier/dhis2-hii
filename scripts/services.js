@@ -161,8 +161,9 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
-      createDataElement: function(name, type, optionSet, comment) {
-        var msg = { "name":name, "shortName":name, "description":comment, "domainType":"TRACKER", "type":type, "numberType":"number",
+      createDataElement: function(sectionName, name, type, optionSet, comment) {
+        var shortName = (name.replace(sectionName, '') + sectionName).substring(0,49);
+        var msg = { "name":name, "shortName":shortName, "description":comment, "domainType":"TRACKER", "type":type, "numberType":"number",
                     "textType":"text", "aggregationOperator":"sum", "optionSet":{id:optionSet}};
         var promise = $http.post('/api/dataElements/', JSON.stringify(msg)).then(function(response){
         }, function(err) { console.dir(err)});
