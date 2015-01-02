@@ -84,7 +84,7 @@
 					<tr>
 						<td>
 						    <div ng-show = 'selectedReport !=-1'>
-	    						<div class="info-box box-report-building" ng-repeat = "sections in programStageData | orderBy:sortingPredicate2:reverse">
+	    						<div class="info-box box-report-building" ng-repeat = "sections in programStageData">
 									<p class="header"> {{sections.name}} 
 										<a title="Help" href ='' ng-click='setHelp(sections.name, sections.programStageDataElements[0].dataElement.description)' style='float:right'><i class="fa fa-question-circle"></i></a>
 									</p>

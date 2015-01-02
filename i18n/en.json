@@ -29,6 +29,7 @@
 	"delete_complex_msg": "Are you sure you want to delete the sanitary complex and its buildings? All data and reports will be lost.",
 	"incorrect_fields" : "There are incorrect fields.",
 	"fill_all_fields": "Please fill all the fields.",
+	"fill_date_field":"Please insert a date for the report",
 	"cancel_report_msg": "You did not send this report. The data will not be saved. Do you still want to exit?",
 	"delete_building_msg" : "Are you sure you want to delete the building? All data and reports will be lost.",
 	"insert_name" : "Please write a name for the building.",

@@ -29,6 +29,7 @@
 	"delete_complex_msg": "¿Está seguro que quiere borrar este Complejo Sanitario? Todos los datos, reportes y edificios del complejo se perderán.",
 	"incorrect_fields" : "Hay campos incorrectos.",
 	"fill_all_fields": "Debe llenar todos los campos.",
+	"fill_date_field": "Por favor, introduzca una fecha para el reporte",
 	"cancel_report_msg": "No ha enviado el reporte. Los datos no se guardarán ¿Está seguro que quiere salir?",
 	"delete_building_msg" : "¿Está seguro que quiere borrar este Edificio? Todos los datos y reportes se perderán.",
 	"insert_name" : "Debe introducir un nombre al Edificio.",

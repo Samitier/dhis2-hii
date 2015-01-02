@@ -61,7 +61,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 	$scope.fillList =function() {
 		//we fll the list with the programs of the childs of the orgunit selected
 		dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramData.id, 
-		$scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'DESCENDANTS').then(function(dat){
+		$scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'SELECTED').then(function(dat){
 	        $scope.complexList = dat;
 	    });
 	    //we check if the organization unit selected have children to show or hide the button of creation and for saving its name
@@ -193,7 +193,6 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
         $scope.isSendingReport = false;
         $scope.isLoading = true;
         $scope.sortingPredicate= 'eventDate';
-        $scope.sortingPredicate2= 'name';
         $scope.complexInfo = {};
         $scope.selectedReport = -1;
         $scope.reports=[];
@@ -265,13 +264,15 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
         for (var i=0; i<$scope.programStageData.length && !incomplete; ++i) {
             for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
                 var id = $scope.programStageData[i].programStageDataElements[j].dataElement.id;
-                if($scope.reportForm[id]==undefined) { incomplete=true; break;}
+                //if($scope.reportForm[id]==undefined) { incomplete=true; break;}
                 values.push({"dataElement": id, "value": $scope.reportForm[id]});
             }
         }
-        if($scope.reportDate =='' || incomplete) {
+        //if($scope.reportDate =='' || incomplete) {
+        if($scope.reportDate =='') {
             $scope.isSendingReport = false;
-            alert($filter('translate')("fill_all_fields"));
+            //alert($filter('translate')("fill_all_fields"));
+            alert($filter('translate')("fill_date_field"));
         }
         else {
             dhis2APIService.sendEvent($scope.complexInfo.tableContents[0][0], $scope.complexProgramData.id, $scope.complexProgramData.programStages[0].id,$routeParams.orgUnitId, $scope.reportDate, values).then(function(data) {
@@ -286,8 +287,10 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
         $scope.editing = false;
         $scope.selectedReport = item;
         $scope.selectedReportDataValues = [];
-        for(var i=0; i<$scope.reports[$scope.selectedReport].dataValues.length;++i) {
-            $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
+        if($scope.reports[$scope.selectedReport].dataValues) {
+            for(var i=0; i<$scope.reports[$scope.selectedReport].dataValues.length;++i) {
+                $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
+            }
         }
     };
 
@@ -430,6 +433,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
                 else {
                     $scope.fillBuildingList();
                     $scope.isBuildingSelected = false;
+                    $scope.imagePath = '';
                     $scope.buildingSelected =-1;
                 }
             });
@@ -487,7 +491,6 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
         $scope.isSendingReport = false;
         $scope.isLoadingReports = true;
         $scope.sortingPredicate= 'eventDate';
-        $scope.sortingPredicate2= 'name';
         $scope.complexInfo = {};
         $scope.selectedReport = -1;
         $scope.reports=[];
@@ -553,12 +556,14 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
         for (var i=0; i<$scope.programStageData.length && !incomplete; ++i) {
             for(var j=0; j<$scope.programStageData[i].programStageDataElements.length; ++j) {
                 var id = $scope.programStageData[i].programStageDataElements[j].dataElement.id;
-                if($scope.reportForm[id] == undefined) {incomplete = true; break;}
+                //if($scope.reportForm[id] == undefined) {incomplete = true; break;}
                 values.push({"dataElement": id, "value": $scope.reportForm[id]});
             }
         }
-        if(incomplete || $scope.reportDate =='') {
-            alert($filter('translate')("fill_all_fields"));
+        //if(incomplete || $scope.reportDate =='') { //incomplete lets us check if all fieldshave been filled
+        if($scope.reportDate =='') {
+            //alert($filter('translate')("fill_all_fields"));
+            alert($filter('translate')("fill_date_field"));
             $scope.isSendingReport= false;
         }
         else {
@@ -582,8 +587,10 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
         $scope.editing = false;
         $scope.selectedReport = item;
         $scope.selectedReportDataValues = [];
-        for(var i=0; i<$scope.reports[$scope.selectedReport].dataValues.length;++i) {
-            $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
+        if($scope.reports[$scope.selectedReport].dataValues) {
+            for(var i=0; i<$scope.reports[$scope.selectedReport].dataValues.length;++i) {
+                $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
+            }
         }
     };
 
@@ -643,11 +650,6 @@ hiiControllers.controller('settingsController', function($rootScope, $scope, $fi
                }
                $scope.programStageData[i].name = $scope.programStageData[i].name.replace('hii-','');
            }
-           $scope.programStageData.sort(function(a,b){
-              if (a.name < b.name) return -1;
-              if (a.name > b.name) return 1;
-              return 0;
-           });
         });
     };
 

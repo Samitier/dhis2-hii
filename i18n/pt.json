@@ -29,6 +29,7 @@
 	"incorrect_fields" : "Hay campos incorrectos.",
 	"delete_complex_msg": "¿Tem certeza de que deseja deletar esse Complexo de Saúde? Todos os dados, relatórios e edifícios do complexo serão removidos.",
 	"fill_all_fields": "É necessário preencher todos os campos.",
+	"fill_date_field":"É necessário preencher data do relatorio",
 	"cancel_report_msg": "Não enviou o relatório. Os dados não serão arquivados. ¿Tem certeza de que deseja sair?",
 	"delete_building_msg" : "¿Tem certeza de que deseja deletar esse Edifício? Todos os dados e relatórios serão removidos.",
 	"insert_name" : "É necessário digitar um nome para o edifício.",
