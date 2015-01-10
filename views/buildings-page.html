@@ -34,8 +34,14 @@
 						<table>
 							<form novalidate>
 						   		<tbody>
-						        	<tr ng-repeat = "i in [5,6,7,8,9,10]">
-								    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input ng-hide ='i==7||i==8' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8||i==7"  ng-model="editForm[i]"><option value ='true'>{{'yes'| translate}}</option> <option value='false'>{{'no'| translate}}</option></select> </td>
+						        	<tr ng-repeat = "i in [5,6,7,8,9,10,11,12]">
+								    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input ng-hide ='i==7||i==8||i==11||i==12' type ='text' ng-model="editForm[i]"> </input> 
+								    	<select ng-show="i==8||i==7"  ng-model="editForm[i]"><option value ='true'>{{'yes'| translate}}</option> <option value='false'>{{'no'| translate}}</option></select>				
+								    	<select ng-show="i==11"  ng-model="editForm[i]" style='width:95%'><option>301/321-01 Casas de funçao</option>
+ 										<option>301/321-02 Casas de hospedes/sociais</option>
+ 										<option>301/321-04 Lares escolares</option> <option>301/321-99 Outras habitaçoes</option>
+ 										<option>302/322-01 Instalaçoes de natureza administrativa</option><option>302/322-03 Instalaçoes de natureza escolar</option><option>302/322-04 Instalaçoes de natura hospitalar</option><option>303/322-05 Instalaçoes de natureza social</option><option>302/322-99 Outras edificaçoes de uso especifico</option><option>305/324-01 Armacens</option><option>305/324-06 Cisternas/Poços de agua</option><option>305/324-12 Parque de viaturas</option><option>305/324-99 Outras construçoes diversas</option></select> 
+									    <textarea ng-show="i==12" ng-model="editForm[i]" style='resize:vertical;' rows="2"></textarea> </td>
 						        	</tr>
 						        	<tr ng-show = 'buildingsCtrl.isEditing()'> <td></td> <td style ="text-align:right"> 
 						        		<img ng-show="isSending" src="/images/ui-anim_basic.gif">
@@ -50,7 +56,7 @@
 					<p class="header"> {{'image'| translate}} <img class='img-responsive' ng-hide ='isGuest()' src = "img/edit2.png" ng-click='buildingsCtrl.editImage(!imageEditing)' height="18" width="18" style="float: right;cursor:pointer;"></p> 
 					<img ng-hide = "imageEditing||imagePath==''" ng-src={{imagePath}} height="100%" width="100%"></img>
 					<div ng-show ='imageEditing'>
-						<input type ='text' ng-model="editForm[11]" class= 'buttonReports'> </input>
+						<input type ='text' ng-model="editForm[13]" class= 'buttonReports'> </input>
 						<button class= 'buttonReports' ng-click='buildingsCtrl.send()'>{{'send'| translate}} </button>
 					</div>
 				</div>

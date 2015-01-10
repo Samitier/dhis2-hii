@@ -12,29 +12,49 @@
     	<div ng-show ='isLoading'><img src ='/images/ajax-loader-circle.gif' ></div>
 		<div ng-hide = 'isLoading' class='container-fluid' style='margin-left:15px;'>
 			<div class='row'>
-				<div class="col-sm-4 info-box box-small">
-					<p class="header"> {{'general_info'| translate}} <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right;cursor:pointer;" ng-click= "basicInfoCtrl.setEditing(!basicInfoCtrl.isEditing())"></img></p>
-					<div class="contentTable">
-						<table>
-							<form novalidate>
-						   		<tbody>
-						        	<tr  ng-repeat = "i in [5,6,7,8,9]">
-								    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=5'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=5'> <input ng-show ='i!=8' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8"  ng-model="editForm[i]"><option value ='true'>{{'yes'| translate}}</option> <option value='false'>{{'no'| translate}}</option></select> </td>
-						        	</tr>
-						        	<tr ng-show = 'basicInfoCtrl.isEditing()'> <td></td> <td style ="text-align:right"> 
-						        		<img ng-show="isSending" src="/images/ui-anim_basic.gif">
-						        		<input ng-hide="isSending" type ='button'  value = "Send" style="overflow-y:hidden;margin-right:5px;" ng-click = "basicInfoCtrl.send()"> </input> 
-						        	</td> <tr>
-					    		</tbody>
-				    		</form>
-						</table>
+				<div class="col-sm-4">
+					<div class='info-box box-small'>
+						<p class="header"> {{'general_info'| translate}} <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right;cursor:pointer;" ng-click= "basicInfoCtrl.setEditing(!basicInfoCtrl.isEditing())"></img></p>
+						<div class="contentTable">
+							<table>
+								<form novalidate>
+							   		<tbody>
+							        	<tr  ng-repeat = "i in [5,6,7,8,9,10,11]">
+									    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=5'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=5'> <input ng-show ='i!=8 && i!=9 && i!=11' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8"  ng-model="editForm[i]"><option value ='true'>{{'yes'| translate}}</option> <option value='false'>{{'no'| translate}}</option></select> 
+									    	<select ng-show="i==9"  ng-model="editForm[i]"><option value ='300 Urbano'>300 Urbano</option> <option value='320 Rustico'>320 Rustico</option></select> 
+									    	<textarea ng-show="i==11" ng-model="editForm[i]" style='resize:vertical;' rows="2"></textarea>
+									    </td>
+							        	</tr>
+						    		</tbody>
+					    		</form>
+							</table>
+						</div>
+					</div>
+					<div class='info-box box-small'>
+						<p class="header"> {{'responsibles'| translate}} <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right;cursor:pointer;" ng-click= "basicInfoCtrl.setEditing(!basicInfoCtrl.isEditing())"></img></p>
+						<div class="contentTable">
+							<table>
+								<form novalidate>
+							   		<tbody>
+							        	<tr  ng-repeat = "i in [12,13,14]">
+									    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()'> <input type ='text' ng-model="editForm[i]"> </input> 
+									    	</td>
+							        	</tr>
+							        	<tr ng-show = 'basicInfoCtrl.isEditing()'> <td></td> <td style ="text-align:right"> 
+							        		<img ng-show="isSending" src="/images/ui-anim_basic.gif">
+							        		<input ng-hide="isSending" type ='button'  value = "Send" style="overflow-y:hidden;margin-right:5px;" ng-click = "basicInfoCtrl.send()"> </input> 
+							        	</td> <tr>
+						    		</tbody>
+					    		</form>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="col-sm-7 info-box">
 					<p class="header"> {{'image'| translate}} <img ng-hide ='isGuest()' src = "img/edit2.png" ng-click='basicInfoCtrl.editImage(!imageEditing)' height="18" width="18" style="float: right;cursor:pointer;"></p> 
 					<img ng-hide = "imageEditing||imagePath==''" ng-src={{imagePath}} class='img-responsive' style='max-height:500px'></img>
 					<div ng-show ='imageEditing'>
-						<input type ='text' ng-model="editForm[10]" class= 'buttonReports'> </input>
+						<input type ='text' ng-model="editForm[15]" class= 'buttonReports'> </input>
 						<button class= 'buttonReports' ng-click='basicInfoCtrl.send()'>{{'send'| translate}} </button>
 					</div>
 				</div>

@@ -61,7 +61,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 	$scope.fillList =function() {
 		//we fll the list with the programs of the childs of the orgunit selected
 		dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramData.id, 
-		$scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'SELECTED').then(function(dat){
+		$scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'DESCENDANTS').then(function(dat){
 	        $scope.complexList = dat;
 	    });
 	    //we check if the organization unit selected have children to show or hide the button of creation and for saving its name
@@ -131,7 +131,7 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
                 $scope.complexInfo = dat;
                 //we wait for the response (there's a delay on the server when creating a complex)
                 if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
-                else if($scope.complexInfo.tableContents[0][10] !='')$scope.imagePath = 'img/' + $scope.complexInfo.tableContents[0][10]; 
+                else if($scope.complexInfo.tableContents[0][15] !='')$scope.imagePath = '/apps/hii-images/' + $scope.complexInfo.tableContents[0][15]; 
                 else $scope.imagePath = '';
                 $scope.isLoading = false;
             },
@@ -143,7 +143,7 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
     this.send = function() {
         $scope.isSending = true;
         var attrs = [];
-        if($scope.editForm[10] != '') $scope.editForm[10]=$scope.editForm[10].split('../').join(""); //prevents from exiting the actual dir
+        if($scope.editForm[15] != '') $scope.editForm[15]=$scope.editForm[15].split('../').join(""); //prevents from exiting the actual dir
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.complexInfo.tableHeaders[i].name ,"value": $scope.editForm[i]});
         dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.complexProgramData.trackedEntity.id,$routeParams.orgUnitId,attrs).then(function(dat){
             if(!dat) alert($filter('translate')("incorrect_fields"));
@@ -357,8 +357,8 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
             		for(var i =0; i< $scope.buildings.tableContents.length;++i) {
             			if(selected == $scope.buildings.tableContents[i][5]) $scope.buildingSelected=i;
             		}
-                    if($scope.buildings.tableContents[$scope.buildingSelected][11] == '') $scope.imagePath ='';
-                    else $scope.imagePath = "img/"+$scope.buildings.tableContents[$scope.buildingSelected][11];
+                    if($scope.buildings.tableContents[$scope.buildingSelected][13] == '') $scope.imagePath ='';
+                    else $scope.imagePath = "/apps/hii-images/"+$scope.buildings.tableContents[$scope.buildingSelected][13];
             	}
                 $scope.isLoading = false;
             },
@@ -382,8 +382,8 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         $scope.editing = false;
         $scope.imageEditing = false;
         $scope.buildingSelected = index;
-        if($scope.buildings.tableContents[$scope.buildingSelected][11] == '') $scope.imagePath ='';
-        else $scope.imagePath = "img/"+$scope.buildings.tableContents[$scope.buildingSelected][11];
+        if($scope.buildings.tableContents[$scope.buildingSelected][13] == '') $scope.imagePath ='';
+        else $scope.imagePath = "img/"+$scope.buildings.tableContents[$scope.buildingSelected][13];
     };
 
     this.addBuilding = function(){
@@ -444,7 +444,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
     this.send = function() {
         $scope.isSending = true;
         var attrs = [];
-        if( $scope.editForm[11]) if($scope.editForm[11] != '') $scope.editForm[10]=$scope.editForm[10].split('../').join(""); //prevents from exiting the actual dir
+        if( $scope.editForm[13]) if($scope.editForm[13] != '') $scope.editForm[13]=$scope.editForm[13].split('../').join(""); //prevents from exiting the actual dir
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.buildings.tableHeaders[i].name ,"value": $scope.editForm[i]});
         if($scope.isCreating){
             if(!$scope.editForm[5]) {
