@@ -61,7 +61,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 	$scope.fillList =function() {
 		//we fll the list with the programs of the childs of the orgunit selected
 		dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramData.id, 
-		$scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'DESCENDANTS').then(function(dat){
+		$scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'SELECTED').then(function(dat){
 	        $scope.complexList = dat;
 	    });
 	    //we check if the organization unit selected have children to show or hide the button of creation and for saving its name
@@ -113,6 +113,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 hiiControllers.controller('basicInfoController', function($scope, $timeout, $location, $routeParams, $filter, dhis2APIService){
 
     this.init = function() {
+        $scope.builtSurface =0;
         $scope.imagePath = '';
         $scope.isLoading = true;
         $scope.isSending = false;
@@ -133,7 +134,12 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
                 if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
                 else if($scope.complexInfo.tableContents[0][15] !='')$scope.imagePath = '/apps/hii-images/' + $scope.complexInfo.tableContents[0][15]; 
                 else $scope.imagePath = '';
-                $scope.isLoading = false;
+                dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramData.id, $routeParams.orgUnitId, 'SELECTED').then(function(dat){
+                    for(var i =0; i< dat.tableContents.length;++i) {
+                        if(dat.tableContents[i][10] != '') $scope.builtSurface += parseInt(dat.tableContents[i][10]);
+                    }
+                    $scope.isLoading = false;
+                });
             },
             //if someone modifies the url we return to the list page 
             function(dat) { $location.path('/list')});
@@ -240,8 +246,8 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
                     $scope.selectedReport=i;
                 }
             } 
-            if($scope.reports.length!=0)$scope.selectReport($scope.selectedReport);
-            $scope.isLoading = false;
+            if($scope.reports.length!=0) $scope.selectReport($scope.selectedReport);
+            else $scope.isLoading = false;
         });
     }
 
@@ -292,6 +298,7 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
                 $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
             }
         }
+        $scope.isLoading = false;
     };
 
     this.cancelReport = function() {
@@ -534,7 +541,7 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
                 }
             } 
             if($scope.reports.length!=0)$scope.selectReport($scope.selectedReport);
-            $scope.isLoadingReports = false;
+            else $scope.isLoadingReports = false;
         });
     };
 
@@ -592,6 +599,7 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
                 $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
             }
         }
+        $scope.isLoadingReports = false;
     };
 
 });

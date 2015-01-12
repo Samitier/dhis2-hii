@@ -12,6 +12,7 @@
 	"settings_button": "Install metadata",
 
 	"general_info": "General Information",
+	"built_surface": "Built Surface(m2)",
 	"state": "State",
 	"buildings" : "Buildings",
 	"image": "Image",

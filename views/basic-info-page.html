@@ -19,8 +19,25 @@
 							<table>
 								<form novalidate>
 							   		<tbody>
-							        	<tr  ng-repeat = "i in [5,6,7,8,9,10,11]">
-									    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()&&i!=5'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()&&i!=5'> <input ng-show ='i!=8 && i!=9 && i!=11' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8"  ng-model="editForm[i]"><option value ='true'>{{'yes'| translate}}</option> <option value='false'>{{'no'| translate}}</option></select> 
+							   			<!--non-editable fields -->
+							   			<tr>
+							   				<td class= "leftTableContent">
+							   					{{complexInfo.tableHeaders[5].column}}
+							   				</td>
+							   				<td> 
+							   					{{complexInfo.tableContents[0][5]}}
+							   				</td>
+							   			</tr>
+							   			<tr>
+							   				<td class= "leftTableContent">
+							   					{{'built_surface'| translate}}
+							   				</td>
+							   				<td> 
+							   					{{builtSurface}}
+							   				</td>
+							   			</tr>
+							        	<tr  ng-repeat = "i in [6,7,8,9,10,11]">
+									    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()'> <input ng-show ='i!=8 && i!=9 && i!=11' type ='text' ng-model="editForm[i]"> </input> <select ng-show="i==8"  ng-model="editForm[i]"><option value ='true'>{{'yes'| translate}}</option> <option value='false'>{{'no'| translate}}</option></select> 
 									    	<select ng-show="i==9"  ng-model="editForm[i]"><option value ='300 Urbano'>300 Urbano</option> <option value='320 Rustico'>320 Rustico</option></select> 
 									    	<textarea ng-show="i==11" ng-model="editForm[i]" style='resize:vertical;' rows="2"></textarea>
 									    </td>
