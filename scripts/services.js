@@ -179,7 +179,6 @@ hiiServices.factory('dhis2APIService', function($http){
                     "status": "COMPLETED",             
                     "dataValues": values};
         var promise = $http.post('/api/events/', JSON.stringify(msg)).then (function(response) {
-          console.dir(response);
             return response;
         });
         return promise;

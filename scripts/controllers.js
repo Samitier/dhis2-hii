@@ -61,7 +61,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 	$scope.fillList =function() {
 		//we fll the list with the programs of the childs of the orgunit selected
 		dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramData.id, 
-		$scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'SELECTED').then(function(dat){
+		$scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'DESCENDANTS').then(function(dat){
 	        $scope.complexList = dat;
 	    });
 	    //we check if the organization unit selected have children to show or hide the button of creation and for saving its name
