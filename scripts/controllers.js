@@ -364,8 +364,8 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
             		for(var i =0; i< $scope.buildings.tableContents.length;++i) {
             			if(selected == $scope.buildings.tableContents[i][5]) $scope.buildingSelected=i;
             		}
-                    if($scope.buildings.tableContents[$scope.buildingSelected][13] == '') $scope.imagePath ='';
-                    else $scope.imagePath = "/apps/hii-images/"+$scope.buildings.tableContents[$scope.buildingSelected][13];
+                    if($scope.buildings.tableContents[$scope.buildingSelected][14] == '') $scope.imagePath ='';
+                    else $scope.imagePath = "/apps/hii-images/"+$scope.buildings.tableContents[$scope.buildingSelected][14];
             	}
                 $scope.isLoading = false;
             },
@@ -389,8 +389,8 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         $scope.editing = false;
         $scope.imageEditing = false;
         $scope.buildingSelected = index;
-        if($scope.buildings.tableContents[$scope.buildingSelected][13] == '') $scope.imagePath ='';
-        else $scope.imagePath = '/apps/hii-images/'+$scope.buildings.tableContents[$scope.buildingSelected][13];
+        if($scope.buildings.tableContents[$scope.buildingSelected][14] == '') $scope.imagePath ='';
+        else $scope.imagePath = '/apps/hii-images/'+$scope.buildings.tableContents[$scope.buildingSelected][14];
     };
 
     this.addBuilding = function(){
@@ -451,7 +451,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
     this.send = function() {
         $scope.isSending = true;
         var attrs = [];
-        if( $scope.editForm[13]) if($scope.editForm[13] != '') $scope.editForm[13]=$scope.editForm[13].split('../').join(""); //prevents from exiting the actual dir
+        if( $scope.editForm[14]) if($scope.editForm[14] != '') $scope.editForm[14]=$scope.editForm[14].split('../').join(""); //prevents from exiting the actual dir
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.buildings.tableHeaders[i].name ,"value": $scope.editForm[i]});
         if($scope.isCreating){
             if(!$scope.editForm[5]) {
