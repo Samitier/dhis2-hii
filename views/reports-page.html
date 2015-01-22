@@ -24,7 +24,7 @@
 				</div></td>
 			</tr>
 		   	<tr ng-show='reportsCtrl.isEditing()'> <td> <div class="info-box"> <p class="header"> {{'report_date'| translate}} :
-					<input type="text" data-provide="datepicker" data-date-format="yyyy-mm-dd" ng-model="reportDate"> </p> </div> </td>
+					<input type="text" data-provide="datepicker" data-date-start-date="today" data-date-format="yyyy-mm-dd" ng-model="reportDate"> </p> </div> </td>
 			</tr>
 			<tr><td>
 		    <div ng-show = 'selectedReport !=-1'>

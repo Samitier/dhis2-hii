@@ -390,7 +390,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         $scope.imageEditing = false;
         $scope.buildingSelected = index;
         if($scope.buildings.tableContents[$scope.buildingSelected][13] == '') $scope.imagePath ='';
-        else $scope.imagePath = "img/"+$scope.buildings.tableContents[$scope.buildingSelected][13];
+        else $scope.imagePath = '/apps/hii-images/'+$scope.buildings.tableContents[$scope.buildingSelected][13];
     };
 
     this.addBuilding = function(){
