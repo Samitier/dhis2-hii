@@ -7,7 +7,10 @@
   <table class="listTable" ng-hide = "loadingList">
     <thead>
       <tr>
-        <th>{{complexList.tableHeaders[5].column}}</th>
+        <th>{{complexList.tableHeaders[5].column}}
+          <span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true" style='padding-left:10px' ng-hide='orderInverse' ng-click='listCtrl.changeOrder(true)'></span> 
+          <span class ='glyphicon glyphicon-sort-by-alphabet-alt' ng-show='orderInverse' style='padding-left:10px' ng-click='listCtrl.changeOrder(false)'> </span>
+        </th>
         <th ng-hide = "isGuest()||complexList.tableContents.length==0">{{'actions'| translate}}</th>
       </tr>
     </thead>

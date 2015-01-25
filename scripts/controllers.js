@@ -40,6 +40,7 @@ hiiControllers.controller('mainController', function($scope, $translate, dhis2AP
 
 hiiControllers.controller('listController', function($scope, $location, $translate, $interval, $filter, dhis2APIService) {
 	this.init = function() {
+        $scope.orderInverse = false;
         $scope.isComplexOrgunit = false;
 	    $scope.complexList={};
         $scope.selectedOrgUnit;
@@ -63,6 +64,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 		dhis2APIService.getTrackedEntitiesByProgram($scope.complexProgramData.id, 
 		$scope.selectedOrgUnit.substr(1,$scope.selectedOrgUnit.length-2), 'DESCENDANTS').then(function(dat){
 	        $scope.complexList = dat;
+            if($scope.complexList.length != 0) $scope.sortList();
 	    });
 	    //we check if the organization unit selected have children to show or hide the button of creation and for saving its name
 	    dhis2APIService.getOrganizationUnitInfo($scope.selectedOrgUnit).then(function(dat) {
@@ -71,6 +73,28 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 	    	$scope.loadingList = false;
 	    });
 	};
+
+    this.changeOrder = function(order) {
+        $scope.orderInverse = order;
+        if($scope.complexList.length != 0) $scope.sortList();
+    };
+
+    $scope.sortList = function() {
+        if($scope.orderInverse) {
+            $scope.complexList.tableContents.sort(function(a,b){
+                if (a[5] < b[5]) return 1;
+                if (a[5] > b[5]) return -1;
+                return 0;
+            });
+        }
+        else {
+            $scope.complexList.tableContents.sort(function(a,b){
+                if (a[5] < b[5]) return -1;
+                if (a[5] > b[5]) return 1;
+                return 0;
+            });
+        }
+    };
 
     this.createComplex = function(){
     	var teid = $scope.complexProgramData.trackedEntity.id;
@@ -113,6 +137,7 @@ hiiControllers.controller('listController', function($scope, $location, $transla
 hiiControllers.controller('basicInfoController', function($scope, $timeout, $location, $routeParams, $filter, dhis2APIService){
 
     this.init = function() {
+        $scope.orderInverse = false;
         $scope.builtSurface =0;
         $scope.imagePath = '';
         $scope.isLoading = true;
@@ -388,6 +413,7 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
         $scope.isCreating = false;
         $scope.editing = false;
         $scope.imageEditing = false;
+        $scope.imagePath = '';
         $scope.buildingSelected = index;
         if($scope.buildings.tableContents[$scope.buildingSelected][14] == '') $scope.imagePath ='';
         else $scope.imagePath = '/apps/hii-images/'+$scope.buildings.tableContents[$scope.buildingSelected][14];

@@ -97,7 +97,7 @@
 									<div class="contentTable">
 										<table>
 					   					<tbody>
-					        			<tr ng-repeat = "element in sections.programStageDataElements">
+					        			<tr ng-repeat = "element in sections.programStageDataElements" ng-show='selectedReportDataValues[element.dataElement.id]||reportsCtrl.isEditing()'>
 							    			<td class = "leftTableContent"> {{element.dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[element.dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input ng-show="!element.dataElement.optionSet" type ='text' ng-model="reportForm[element.dataElement.id]"> </input> <select ng-show="element.dataElement.optionSet" ng-model="reportForm[element.dataElement.id]"><option ng-repeat = "option in element.dataElement.optionSet.options">{{option}}</option> </select></td>
 					        			</tr>
 				    					</tbody>
