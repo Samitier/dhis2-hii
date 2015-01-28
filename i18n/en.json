@@ -4,6 +4,7 @@
 	
 	"app_title" : "Health Infrastructure Inventory",
 	"add_complex": "Find/Add Health Complex",
+	"event_reports":"Event Reports",
 	"settings": "Settings",
 	"search_org_unit": "Search Organization Unit",
 	"find": "Find",

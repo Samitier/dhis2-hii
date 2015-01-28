@@ -7,7 +7,7 @@ hiiServices.factory('dhis2APIService', function($http){
     var serviceFactory={
 
       gethiiProgramsInfo: function(pnames) {
-        var pnames = ['Sanitary Complex hii Program', 'Building hii Program'];
+        var pnames = ['hii - Sanitary Complex Infrastructure Program', 'hii - Building Infrastructure Program'];
         var promise = $http.get('/api/programs?fields=name,id,trackedEntity[id],programTrackedEntityAttributes[trackedEntityAttribute[id,name,valueType]],programStages').then(function(response){
           result = {building:null,complex:null};
           for(var i=0; i<response.data.programs.length;++i) {
@@ -180,6 +180,13 @@ hiiServices.factory('dhis2APIService', function($http){
                     "dataValues": values};
         var promise = $http.post('/api/events/', JSON.stringify(msg)).then (function(response) {
             return response;
+        });
+        return promise;
+      },
+
+      getUsers: function() {
+        var promise = $http.get('/api/users?fields=name,id').then (function(response) {
+            return response.data.users;
         });
         return promise;
       },

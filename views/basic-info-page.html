@@ -54,7 +54,10 @@
 								<form novalidate>
 							   		<tbody>
 							        	<tr  ng-repeat = "i in [12,13,14]">
-									    	<td class= "leftTableContent"> {{complexInfo.tableHeaders[i].column}} </td> <td ng-hide='basicInfoCtrl.isEditing()'> {{complexInfo.tableContents[0][i]}}</td> <td ng-show = 'basicInfoCtrl.isEditing()'> <input type ='text' ng-model="editForm[i]"> </input> 
+									    	<td class= "leftTableContent">  {{complexInfo.tableHeaders[i].column}}  </td> <td ng-hide='basicInfoCtrl.isEditing()'> <a href ='' ng-click = 'basicInfoCtrl.gotoProfile(i)'>{{complexInfo.tableContents[0][i]}} </a></td> <td ng-show = 'basicInfoCtrl.isEditing()'>  <input type='text' list="users" ng-model="editForm[i]">
+											  <datalist id="users">
+											    <option ng-repeat='user in users' value='{{user.name}}'>
+											  </datalist>
 									    	</td>
 							        	</tr>
 							        	<tr ng-show = 'basicInfoCtrl.isEditing()'> <td></td> <td style ="text-align:right"> 

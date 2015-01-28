@@ -4,6 +4,7 @@
 	
 	"app_title" : "Inventário das infra-estruturas sanitárias",
 	"add_complex": "Pesquisa / Adicione Complexos de Saúde",
+	"event_reports":"Event Reports",
 	"settings": "Configurações",
 	"search_org_unit": "Pesquisa Unidades Organizacionais",
 	"find": "Pesquisa",

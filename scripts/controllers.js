@@ -145,6 +145,7 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
         $scope.editing=false;
         $scope.editForm = [];
         $scope.imageEditing = false;
+        $scope.users = [];
         $scope.getTableContents();
     };
 
@@ -157,7 +158,7 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
                 $scope.complexInfo = dat;
                 //we wait for the response (there's a delay on the server when creating a complex)
                 if($scope.complexInfo.tableContents.length==0) $scope.getTableContents();
-                else if($scope.complexInfo.tableContents[0][15] !='')$scope.imagePath = '/apps/hii-images/' + $scope.complexInfo.tableContents[0][15]; 
+                else if($scope.complexInfo.tableContents[0][18] !='')$scope.imagePath = '/apps/hii-images/' + $scope.complexInfo.tableContents[0][18]; 
                 else $scope.imagePath = '';
                 dhis2APIService.getTrackedEntitiesByProgram ($scope.buildingProgramData.id, $routeParams.orgUnitId, 'SELECTED').then(function(dat){
                     for(var i =0; i< dat.tableContents.length;++i) {
@@ -174,7 +175,22 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
     this.send = function() {
         $scope.isSending = true;
         var attrs = [];
-        if($scope.editForm[15] != '') $scope.editForm[15]=$scope.editForm[15].split('../').join(""); //prevents from exiting the actual dir
+        if($scope.editForm[18] != '') $scope.editForm[18]=$scope.editForm[18].split('../').join(""); //prevents from exiting the actual dir
+        for(var i=12;i<15;++i) {
+            if($scope.editForm[i] != '') {
+                for(var j=0; j<$scope.users.length;++j) {
+                    if($scope.editForm[i] == $scope.users[j].name) {
+                        $scope.editForm[i+3] = $scope.users[j].id;
+                        break;
+                    }
+                    else if(j==$scope.users.length-1) {
+                        $scope.isSending = false;
+                        alert($filter('translate')("incorrect_fields"));
+                        return 0;
+                    }
+                }
+            }
+        }
         for (var i =5; i <$scope.editForm.length;++i) attrs.push({"attribute":$scope.complexInfo.tableHeaders[i].name ,"value": $scope.editForm[i]});
         dhis2APIService.updateTEIInfo($scope.editForm[0], $scope.complexProgramData.trackedEntity.id,$routeParams.orgUnitId,attrs).then(function(dat){
             if(!dat) alert($filter('translate')("incorrect_fields"));
@@ -191,7 +207,18 @@ hiiControllers.controller('basicInfoController', function($scope, $timeout, $loc
         return $scope.editing;
     };
 
+    this.gotoProfile = function(i) {
+        if($scope.complexInfo.tableContents[0][i+3] !='') {
+            window.location = '/dhis-web-dashboard-integration/profile.action?id=' + $scope.complexInfo.tableContents[0][i+3];
+        }
+    };
+
     this.setEditing = function(edit){
+        if($scope.users.length == 0) {
+            dhis2APIService.getUsers().then(function(dat){
+                $scope.users = dat;
+            });
+        }
         $scope.editing = edit;
         showError = false;
         $scope.editForm=[];
@@ -323,6 +350,9 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
                 $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
             }
         }
+    };
+
+    $scope.hideLoadingIcon = function() {
         $scope.isLoading = false;
     };
 
@@ -420,13 +450,14 @@ hiiControllers.controller('buildingsController', function($scope, $location, $ti
     };
 
     this.addBuilding = function(){
+        $scope.imagePath = '';
         this.showInfoTab = true;
     	$scope.isCreating = true;
         $scope.isBuildingSelected = true;
         $scope.buildingSelected = $scope.buildings.length;
         $scope.editing = true;
         $scope.editForm =[];
-        for(var i=0; i< $scope.buildings.tableContents.length ;++i) {
+        for(var i=0; i< $scope.buildings.tableHeaders.length ;++i) {
         	$scope.editForm[i]='';
         }
     };
@@ -625,6 +656,9 @@ hiiControllers.controller('buildingReportController', function($scope, $timeout,
                 $scope.selectedReportDataValues[$scope.reports[$scope.selectedReport].dataValues[i].dataElement] = $scope.reports[$scope.selectedReport].dataValues[i].value;
             }
         }
+    };
+
+    $scope.hideLoadingIcon = function() {
         $scope.isLoadingReports = false;
     };
 

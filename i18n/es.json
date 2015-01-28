@@ -4,6 +4,7 @@
 	
 	"app_title" : "Inventario de Infrastructuras Sanitarias",
 	"add_complex": "Busca/Añade Complejos Sanitarios",
+	"event_reports":"Reportes de Eventos",
 	"settings": "Ajustes",
 	"search_org_unit": "Busca Unidades Organizativas",
 	"find": "Busca",

@@ -4,20 +4,22 @@
 </h3>
   <br>
   <img ng-show ="loadingList" src ='/images/ajax-loader-circle.gif' >
-  <table class="listTable" ng-hide = "loadingList">
+  <table class="listTable table table-striped table-hover" ng-hide = "loadingList">
     <thead>
       <tr>
         <th>{{complexList.tableHeaders[5].column}}
           <span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true" style='padding-left:10px' ng-hide='orderInverse' ng-click='listCtrl.changeOrder(true)'></span> 
           <span class ='glyphicon glyphicon-sort-by-alphabet-alt' ng-show='orderInverse' style='padding-left:10px' ng-click='listCtrl.changeOrder(false)'> </span>
         </th>
+        <th ng-hide = "complexList.tableContents.length==0">{{'last_report'| translate}}</th>
         <th ng-hide = "isGuest()||complexList.tableContents.length==0">{{'actions'| translate}}</th>
       </tr>
     </thead>
     <tbody id="list">
       <tr class = 'listRow' ng-repeat = "urbanization in complexList.tableContents">
         <td class='text-column' ng-click="listCtrl.gotoBasicInfoPanel($index)">{{urbanization[5]}}</td>
-        <td ng-hide='complexList.tableContents.length==0 || isGuest()'> <img ng-click ="listCtrl.deleteComplex($index)" src ='/images/delete.png' ></td>
+        <td></td>
+        <td ng-hide='complexList.tableContents.length==0 || isGuest()'> <img ng-click ="listCtrl.deleteComplex($index)" src ='/images/delete.png' width = '20px' height = '20px'></td>
       </tr>
       <tr ng-show ='complexList.tableContents.length==0 && !isComplexOrgunit'> <td> {{'no_complex_list'| translate}} </td></tr>
       <tr ng-show ='isComplexOrgunit && complexList.tableContents.length==0 && !isGuest()'> <td> <button type="button" ng-click='listCtrl.createComplex()'>{{'add_new_complex'| translate}}</button> </td></tr>
