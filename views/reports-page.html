@@ -7,20 +7,20 @@
 		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':true,'ui-tabs-active': true}"><a href="javascript:dhis2.leftBar.showAnimated()" class="ui-tabs-anchor" style="cursor: pointer">{{'state'| translate}}</a></li>
 		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':false,'ui-tabs-active': false}"><a class="ui-tabs-anchor" href="javascript:dhis2.leftBar.showAnimated()" ng-click="setTab(3)" style="cursor: pointer">{{'buildings'| translate}}</a></li>
 	</ul>
-	
+
 	<div ng-init = 'reportsCtrl.init()'>
 		<div ng-show ='isLoading'><img src ='/images/ajax-loader-circle.gif' ></div>
 		<div ng-hide = 'isLoading'>
 			<table>
 		    <tbody>
-		    <tr ng-hide='reportsCtrl.isEditing()'> 
-		    	<td> <div class="info-box"> 
-		    		<p class="header"> {{'show_report'| translate}} :  
+		    <tr ng-hide='reportsCtrl.isEditing()'>
+		    	<td> <div class="info-box">
+		    		<p class="header"> {{'show_report'| translate}} :
 			    		<select ng-model = 'reportShowing' ng-change = 'selectReport(reportShowing)'>
-						 	<option ng-repeat = "report in reports | orderBy:sortingPredicate:true" value = {{reports.indexOf(report)}}>{{report.eventDate}}</option> 
-						</select> 
+						 	<option ng-repeat = "report in reports | orderBy:sortingPredicate:true" value = {{reports.indexOf(report)}}>{{report.eventDate}}</option>
+						</select>
 						&nbsp &nbsp &nbsp <button ng-hide ='isGuest()' ng-click = 'reportsCtrl.newReport()'> {{'add_report'| translate}} </button>
-					</p> 
+					</p>
 				</div></td>
 			</tr>
 		   	<tr ng-show='reportsCtrl.isEditing()'> <td> <div class="info-box"> <p class="header"> {{'report_date'| translate}} :
@@ -29,7 +29,7 @@
 			<tr><td>
 		    <div ng-show = 'selectedReport !=-1'>
 	    		<div class="info-box box-report-complex" ng-repeat = "sections in programStageData" repeat-done='hideLoadingIcon()'>
-					<p class="header"> {{sections.name}} 
+					<p class="header"> {{sections.name}}
 						<a title="Help" href ='' ng-click='setHelp(sections.name, sections.programStageDataElements[0].dataElement.description)' style='float:right'><i class="fa fa-question-circle"></i></a>
 					</p>
 					<div class="contentTable">
@@ -44,16 +44,15 @@
 				</div>
 			</div>
 			</td></tr>
-			<tr ng-show='reportsCtrl.isEditing()'> <td style='text-align:right'> 
+			<tr ng-show='reportsCtrl.isEditing()'> <td style='text-align:right'>
 				<img ng-show="isSendingReport" src="/images/ui-anim_basic.gif">
 				<div ng-hide="isSendingReport">
 					<button class="buttonReports" ng-click = 'reportsCtrl.cancelReport()'> {{'cancel'| translate}} </button>
-					<button class="buttonReports"ng-click = 'reportsCtrl.sendReport()'> {{'send'| translate}} </button> 
+					<button class="buttonReports"ng-click = 'reportsCtrl.sendReport()'> {{'send'| translate}} </button>
 				</div>
 			</td></tr>
 			</tbody>
 			</table>
 		</div>
 	</div>
-</div> 
-
+</div>

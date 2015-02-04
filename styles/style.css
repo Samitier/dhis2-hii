@@ -23,7 +23,7 @@ div.box-report-complex
 {
     margin-top: 5px;
     width:23%;
-    min-width:230px;
+    min-width:240px;
     max-width: 365px;
 }
 
@@ -58,7 +58,7 @@ p.header
   table-layout: fixed;
 }
 
-td.leftTableContent 
+td.leftTableContent
 {
   width:35%;
   padding-right:5px;
@@ -84,7 +84,7 @@ td.leftTableContent
   table-layout: fixed;
 }
 
-.buttonReports 
+.buttonReports
 {
   margin-top:7px;
   margin-bottom:3px;

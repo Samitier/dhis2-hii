@@ -57,7 +57,7 @@
                           <td class= "leftTableContent">  {{complexInfo.tableHeaders[i].column}}  </td>
                           <td ng-hide='basicInfoCtrl.isEditing()'> {{complexInfo.tableContents[0][i]}}</td>
                           <td ng-show = 'basicInfoCtrl.isEditing()'>
-                            <select ng-model="editForm[i]"><option ng-repeat='optionSet in optionSets[i].optionSet.options'>{{optionSet}}</option></select>
+                            <select ng-model="editForm[i]" style='max-width: 160px'><option ng-repeat='optionSet in optionSets[i].optionSet.options'>{{optionSet}}</option></select>
                             </select>
                           </td>
                         </tr>
