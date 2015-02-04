@@ -1,14 +1,15 @@
 {
 	"dhis2_home" : "District Health Information Software 2",
 	"view_homepage" : "Ir a la pagina principal",
-	
+
 	"app_title" : "Inventario de Infrastructuras Sanitarias",
 	"add_complex": "Busca/Añade Complejos Sanitarios",
 	"event_reports":"Reportes de Eventos",
 	"settings": "Ajustes",
 	"search_org_unit": "Busca Unidades Organizativas",
 	"find": "Busca",
-	
+	"infrastructures":"Infrastructuras",
+
 	"settings_text" : "Aprieta el botón inferior para instalar los metadatos básicos de esta app. Necesitas ser superusuario.",
 	"settings_button": "Instala metadatos",
 

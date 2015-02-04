@@ -2,7 +2,7 @@ var hiiServices = angular.module('hiiServices', []);
 
 
 hiiServices.factory('dhis2APIService', function($http){
-    
+
 
     var serviceFactory={
 
@@ -80,7 +80,7 @@ hiiServices.factory('dhis2APIService', function($http){
       },
 
       enrollTEI : function(TEIid, programid){
-        var msg = {"trackedEntityInstance": TEIid, "program": programid, "dateOfEnrollment": "", 
+        var msg = {"trackedEntityInstance": TEIid, "program": programid, "dateOfEnrollment": "",
         "dateOfIncident": ""};
         var promise = $http.post('/api/enrollments/', JSON.stringify(msg)).then(function(response){
           return (response.data.status =="SUCCESS");
@@ -102,6 +102,13 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
+      getOptionSet(id) {
+        var promise = $http.get('/api/trackedEntityAttributes/'+id + '?fields=optionSet[options]').then(function(response){
+          return response.data;
+        });
+        return promise;
+      },
+
       getProgramStageData: function (id) {
         var promise = $http.get('/api/programStages/'+id ).then(function(response){
           return response.data;
@@ -113,7 +120,7 @@ hiiServices.factory('dhis2APIService', function($http){
         var promise = $http.post('/api/programStages/' + data.id, JSON.stringify(data)).then(function(response){
           console.dir(response);
         }, function(dat){console.dir(dat);});
-        return promise;  
+        return promise;
       },
 
       getTECompletedEvents: function(program, orgunit){
@@ -171,12 +178,12 @@ hiiServices.factory('dhis2APIService', function($http){
       },
 
       sendEvent: function(teid, prog, stage, ou, date, values) {
-        var msg = { "trackedEntityInstance": teid, 
+        var msg = { "trackedEntityInstance": teid,
                     "program": prog,
                     "programStage":stage,
                     "orgUnit": ou,
                     "eventDate": date,
-                    "status": "COMPLETED",             
+                    "status": "COMPLETED",
                     "dataValues": values};
         var promise = $http.post('/api/events/', JSON.stringify(msg)).then (function(response) {
             return response;

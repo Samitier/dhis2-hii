@@ -1,14 +1,15 @@
 {
 	"dhis2_home" : "District Health Information Software 2",
 	"view_homepage" : "Vai para a página inicial",
-	
+
 	"app_title" : "Inventário das infra-estruturas sanitárias",
 	"add_complex": "Pesquisa / Adicione Complexos de Saúde",
 	"event_reports":"Event Reports",
 	"settings": "Configurações",
 	"search_org_unit": "Pesquisa Unidades Organizacionais",
 	"find": "Pesquisa",
-	
+	"infrastructures":"Infraestructuras",
+
 	"settings_text" : "Pressiona o botão abaixo para instalar os metadados básicos desta app. Você precisa ser superusuário.",
 	"settings_button": "Instale metadados",
 
@@ -36,7 +37,7 @@
 	"delete_building_msg" : "¿Tem certeza de que deseja deletar esse Edifício? Todos os dados e relatórios serão removidos.",
 	"insert_name" : "É necessário digitar um nome para o edifício.",
 	"list_help_title"	: "Lista de Complexos de Saúde",
-	"list_help_content"	: "Selecione uma unidade organizacional do árvore para ver todos os Complexo de Saúde contidos na mesma.\n\n Para visualizar os detalhes de um Complexo de Saúde, selecione-o na lista. \n\n Para deletar um Complexo de Saúde, clique no botão da lixeira. \n\n Para criar um novo Complexo de Saúde, selecione a Unidade Organizacional e depois clique no botão Criar Complexo da Saúde.",	   
+	"list_help_content"	: "Selecione uma unidade organizacional do árvore para ver todos os Complexo de Saúde contidos na mesma.\n\n Para visualizar os detalhes de um Complexo de Saúde, selecione-o na lista. \n\n Para deletar um Complexo de Saúde, clique no botão da lixeira. \n\n Para criar um novo Complexo de Saúde, selecione a Unidade Organizacional e depois clique no botão Criar Complexo da Saúde.",
 	"settings_help_title" : "Configurações",
 	"settings_help_content" : "Esta é a página para instalar os metadados e alterar os elementos de dados dos relatórios.\n\n Para instalar os metadados deve ter privilégios de superusuário.",
 	"basic_info_help_title" : "Informação geral do Complexo de Saúde",

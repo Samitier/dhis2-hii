@@ -9,7 +9,8 @@
     <h2>{{'app_title'| translate}}</h2>
     <ul>
         <li><a href='#/list'>{{'add_complex'| translate}}</a></li>
-        <li><a href='/dhis-web-event-reports/app/index.html'>{{'event_reports'| translate}}</a></li>
+        <li><a href='/dhis-web-event-reports/app/index.html'>Event Reports</a></li>
+        <li><a href='/dhis-web-event-visualizer/app/index.html'>Event Visualizer</a></li>
         <li><a href='#/settings'>{{'settings'| translate}}</a></li>
     </ul>
     <br>
@@ -19,7 +20,7 @@
             jQuery("#searchSpan").toggle();
             jQuery("#searchField").focus();
           });
-          
+
           jQuery("#searchField").autocomplete({
               source: "/dhis-web-commons/ouwt/getOrganisationUnitsByName.action",
               select: function(event,ui) {
@@ -44,5 +45,5 @@
       </div>
       <img id="ouwt_loader" src="/images/ajax-loader-bar.gif"/>
     </div>
-  </div>    
+  </div>
 </div>

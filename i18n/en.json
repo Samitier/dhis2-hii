@@ -1,13 +1,14 @@
 {
 	"dhis2_home" : "District Health Information Software 2",
 	"view_homepage" : "View homepage",
-	
+
 	"app_title" : "Health Infrastructure Inventory",
 	"add_complex": "Find/Add Health Complex",
 	"event_reports":"Event Reports",
 	"settings": "Settings",
 	"search_org_unit": "Search Organization Unit",
 	"find": "Find",
+	"infrastructures":"Infrastructures",
 	
 	"settings_text" : "Click the button below to deploy the basic metadata for the app. You need to be superuser in order to do this.",
 	"settings_button": "Install metadata",
