@@ -8,7 +8,7 @@
 		<li class="ui-state-default ui-corner-top" ng-class="{'ui-state-active':true,'ui-tabs-active': true}"><a href="javascript:dhis2.leftBar.showAnimated()" class="ui-tabs-anchor" style="cursor: pointer">{{'buildings'| translate}}</a></li>
 	</ul>
 	<div ng-show ='isLoading'><img src ='/images/ajax-loader-circle.gif' ></div>
-    <div ng-hide = 'isLoading'> 
+    <div ng-hide = 'isLoading'>
 		<div class="info-box" style='width: 16%;min-width:120px;'>
 			<p class="header"> {{'buildings'| translate}}  <img class='buttonPlus' ng-hide ='isGuest()' ng-click ="buildingsCtrl.addBuilding()" src ='/images/add.png' ></p>
 			<table class="listTable">
@@ -25,9 +25,9 @@
 		<div class = info-box ng-show="isBuildingSelected" style='width: 81%'>
 			<div ng-if="buildingsCtrl.isBasicInfoTab()">
 				<h3 style="text-align: center; cursor:pointer;">
-					<a ng-click ="buildingsCtrl.setBasicInfoTab(true)"> <b>{{'general_info'| translate}}</b> </a> &#8226; 
+					<a ng-click ="buildingsCtrl.setBasicInfoTab(true)"> <b>{{'general_info'| translate}}</b> </a> &#8226;
 					<a ng-click ="buildingsCtrl.setBasicInfoTab(false)" ng-hide= 'isCreating'>{{'state'| translate}}</a>
-				</h3> 
+				</h3>
 				<div class="info-box" style='width:30%;min-width:190px'>
 					<p class="header"> {{'general_info'| translate}} <img ng-hide ='isGuest()' src = "img/edit2.png" height="18" width="18" style="float: right;cursor:pointer;" ng-click= "buildingsCtrl.setEditing(!buildingsCtrl.isEditing())"></img></p>
 					<div class="contentTable">
@@ -35,15 +35,15 @@
 							<form novalidate>
 						   		<tbody>
 						        	<tr ng-repeat = "i in [5,6,7,8,9,10,11,12,13]">
-								    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input ng-hide ='i==7||i==8||i==11||i==13' type ='text' ng-model="editForm[i]"> </input> 
-								    	<select ng-show="i==8||i==7"  ng-model="editForm[i]"><option value ='true'>{{'yes'| translate}}</option> <option value='false'>{{'no'| translate}}</option></select>				
-								    	<select ng-show="i==11"  ng-model="editForm[i]" style='width:95%'><option>301/321-01 Casas de funçao</option>
+								    	<td class= "leftTableContent"> {{buildings.tableHeaders[i].column}} </td> <td ng-hide='buildingsCtrl.isEditing()'> {{buildings.tableContents[buildingSelected][i]}}</td> <td ng-show = 'buildingsCtrl.isEditing()'> <input ng-hide ='i==7||i==8||i==11||i==13' class='boxForm' type ='text' ng-model="editForm[i]"> </input>
+								    	<select ng-show="i==8||i==7"  class='boxForm' ng-model="editForm[i]"><option value ='true'>{{'yes'| translate}}</option> <option value='false'>{{'no'| translate}}</option></select>
+								    	<select ng-show="i==11"  class='boxForm' ng-model="editForm[i]" ><option>301/321-01 Casas de funçao</option>
  										<option>301/321-02 Casas de hospedes/sociais</option>
  										<option>301/321-04 Lares escolares</option> <option>301/321-99 Outras habitaçoes</option>
- 										<option>302/322-01 Instalaçoes de natureza administrativa</option><option>302/322-03 Instalaçoes de natureza escolar</option><option>302/322-04 Instalaçoes de natura hospitalar</option><option>303/322-05 Instalaçoes de natureza social</option><option>302/322-99 Outras edificaçoes de uso especifico</option><option>305/324-01 Armacens</option><option>305/324-06 Cisternas/Poços de agua</option><option>305/324-12 Parque de viaturas</option><option>305/324-99 Outras construçoes diversas</option></select> 
-									    <textarea ng-show="i==13" ng-model="editForm[i]" style='resize:vertical;' rows="2"></textarea> </td>
+ 										<option>302/322-01 Instalaçoes de natureza administrativa</option><option>302/322-03 Instalaçoes de natureza escolar</option><option>302/322-04 Instalaçoes de natura hospitalar</option><option>303/322-05 Instalaçoes de natureza social</option><option>302/322-99 Outras edificaçoes de uso especifico</option><option>305/324-01 Armacens</option><option>305/324-06 Cisternas/Poços de agua</option><option>305/324-12 Parque de viaturas</option><option>305/324-99 Outras construçoes diversas</option></select>
+									    <textarea ng-show="i==13" ng-model="editForm[i]" class='boxForm' style='resize:vertical;' rows="2"></textarea> </td>
 						        	</tr>
-						        	<tr ng-show = 'buildingsCtrl.isEditing()'> <td></td> <td style ="text-align:right"> 
+						        	<tr ng-show = 'buildingsCtrl.isEditing()'> <td></td> <td style ="text-align:right">
 						        		<img ng-show="isSending" src="/images/ui-anim_basic.gif">
 						        		<input ng-hide='isSending' type ='button'  value = "Send" style="overflow-y:hidden;margin-right:5px;" ng-click = "buildingsCtrl.send()"> </input>
 						        	</td> <tr>
@@ -53,7 +53,7 @@
 					</div>
 				</div>
 				<div class="info-box" style='width:66%'>
-					<p class="header"> {{'image'| translate}} <img class='img-responsive' ng-hide ='isGuest()' src = "img/edit2.png" ng-click='buildingsCtrl.editImage(!imageEditing)' height="18" width="18" style="float: right;cursor:pointer;"></p> 
+					<p class="header"> {{'image'| translate}} <img class='img-responsive' ng-hide ='isGuest()' src = "img/edit2.png" ng-click='buildingsCtrl.editImage(!imageEditing)' height="18" width="18" style="float: right;cursor:pointer;"></p>
 					<img ng-hide = "imageEditing||imagePath==''" ng-src={{imagePath}} height="100%" width="100%"></img>
 					<div ng-show ='imageEditing'>
 						<input type ='text' ng-model="editForm[14]" class= 'buttonReports'> </input>
@@ -65,40 +65,45 @@
 
 			<div ng-if="!buildingsCtrl.isBasicInfoTab()" ng-controller = "buildingReportController as reportsCtrl" ng-init='reportsCtrl.init()'>
 				<div ng-show ='isLoadingReports'><img src ='/images/ajax-loader-circle.gif' ></div>
-    			<div ng-hide = 'isLoadingReports'> 
+    			<div ng-hide = 'isLoadingReports'>
 					<h3 style="text-align: center; cursor:pointer;">
-						<a ng-click ="buildingsCtrl.setBasicInfoTab(true)"> {{'general_info'| translate}} </a> &#8226; 
+						<a ng-click ="buildingsCtrl.setBasicInfoTab(true)"> {{'general_info'| translate}} </a> &#8226;
 						<a ng-click ="buildingsCtrl.setBasicInfoTab(false)" ng-hide= 'isCreating'><b>{{'state'| translate}}</b></a>
-					</h3> 
+					</h3>
 					<table>
 				    <tbody>
-				    <tr ng-hide='reportsCtrl.isEditing()'> 
-				    	<td> <div class="info-box"> 
-				    		<p class="header"> {{'show_report'| translate}} :  
+				    <tr ng-hide='reportsCtrl.isEditing()'>
+				    	<td> <div class="info-box">
+				    		<p class="header"> {{'show_report'| translate}} :
 					    		<select ng-model = 'reportShowing' ng-change = 'selectReport(reportShowing)'>
-								 	<option ng-repeat = "report in reports | orderBy:sortingPredicate:true" value = {{reports.indexOf(report)}}>{{report.eventDate}}</option> 
-								</select> 
+								 	<option ng-repeat = "report in reports | orderBy:sortingPredicate:true" value = {{reports.indexOf(report)}}>{{report.eventDate}}</option>
+								</select>
 								&nbsp &nbsp &nbsp <button ng-hide ='isGuest()' ng-click = 'reportsCtrl.newReport()'> {{'add_report'| translate}} </button>
-							</p> 
+							</p>
 						</div> </td>
 					</tr>
-				   	<tr ng-show='reportsCtrl.isEditing()'> 
+				   	<tr ng-show='reportsCtrl.isEditing()'>
 				   		<td> <div class="info-box"> <p class="header"> {{'report_date'| translate}} :
-							<input type="text" data-provide="datepicker" data-date-start-date="today" data-date-format="yyyy-mm-dd" ng-model="reportDate"> </p> </div> 
+							<input type="text" data-provide="datepicker" data-date-autoclose="true" data-date-start-date="today" data-date-format="yyyy-mm-dd" ng-model="reportDate"> </p> </div>
 						</td>
 					</tr>
 					<tr>
 						<td>
 						    <div ng-show = 'selectedReport !=-1'>
 	    						<div class="info-box box-report-building" ng-repeat = "sections in programStageData" repeat-done='hideLoadingIcon()'>
-									<p class="header"> {{sections.name}} 
+									<p class="header"> {{sections.name}}
 										<a title="Help" href ='' ng-click='setHelp(sections.name, sections.programStageDataElements[0].dataElement.description)' style='float:right'><i class="fa fa-question-circle"></i></a>
 									</p>
 									<div class="contentTable">
 										<table>
 					   					<tbody>
 					        			<tr ng-repeat = "element in sections.programStageDataElements" ng-show='selectedReportDataValues[element.dataElement.id]||reportsCtrl.isEditing()'>
-							    			<td class = "leftTableContent"> {{element.dataElement.name}} </td> <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[element.dataElement.id]}} </td> <td ng-show = 'reportsCtrl.isEditing()'> <input ng-show="!element.dataElement.optionSet" type ='text' ng-model="reportForm[element.dataElement.id]"> </input> <select ng-show="element.dataElement.optionSet" ng-model="reportForm[element.dataElement.id]"><option ng-repeat = "option in element.dataElement.optionSet.options">{{option}}</option> </select></td>
+							    			<td class = "leftTableContent"> {{element.dataElement.name}} </td>
+                        <td ng-hide = 'reportsCtrl.isEditing()'> {{selectedReportDataValues[element.dataElement.id]}} </td>
+                        <td ng-show = 'reportsCtrl.isEditing()'>
+                          <textarea ng-show="!element.dataElement.optionSet" class='boxForm'ng-model="reportForm[element.dataElement.id]" style='resize:vertical;' rows="2"></textarea> 
+                          <select ng-show="element.dataElement.optionSet" class='boxForm' ng-model="reportForm[element.dataElement.id]"><option ng-repeat = "option in element.dataElement.optionSet.options">{{option}}</option> </select>
+                        </td>
 					        			</tr>
 				    					</tbody>
 										</table>
@@ -107,11 +112,11 @@
 							</div>
 						</td>
 					</tr>
-					<tr ng-show='reportsCtrl.isEditing()'> <td style='text-align:right'> 
+					<tr ng-show='reportsCtrl.isEditing()'> <td style='text-align:right'>
 						<img ng-show="isSendingReport" src="/images/ui-anim_basic.gif">
 						<div ng-hide="isSendingReport">
 							<button class="buttonReports" ng-click = 'reportsCtrl.cancelReport()'> {{'cancel'| translate}} </button>
-							<button class="buttonReports"ng-click = 'reportsCtrl.sendReport()'> {{'send'| translate}} </button> 
+							<button class="buttonReports"ng-click = 'reportsCtrl.sendReport()'> {{'send'| translate}} </button>
 						</div>
 					</td></tr>
 					</tbody>
@@ -120,5 +125,4 @@
 			</div>
 		</div>
 	</div>
-</div> 
-
+</div>

@@ -102,7 +102,7 @@ hiiServices.factory('dhis2APIService', function($http){
         return promise;
       },
 
-      getOptionSet(id) {
+      getOptionSet: function(id) {
         var promise = $http.get('/api/trackedEntityAttributes/'+id + '?fields=optionSet[options]').then(function(response){
           return response.data;
         });
