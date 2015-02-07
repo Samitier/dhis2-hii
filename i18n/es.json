@@ -9,6 +9,8 @@
 	"search_org_unit": "Busca Unidades Organizativas",
 	"find": "Busca",
 	"infrastructures":"Infrastructuras",
+	"last_report": "Último reporte",
+
 
 	"settings_text" : "Aprieta el botón inferior para instalar los metadatos básicos de esta app. Necesitas ser superusuario.",
 	"settings_button": "Instala metadatos",
@@ -73,5 +75,12 @@
 	"step2.2":"y asígnale los elementos del paso 1",
 	"step3":"Cuando complete los pasos anteriores, clique",
 
-	"responsibles":"Responsables"
+	"responsibles":"Responsables",
+
+	"about_hii":"Acerca de hii",
+	"about_text1":"Esta aplicación está siendo coordinada por la ONG",
+	"about_text2":"y desarrollada por la",
+	"about_text3":"con el financiamiento de",
+	"about_text4":"y en completa colaboración con",
+	"about_text5":"Para más información y actualizaciones, por favor visite la web del proyecto"
 }

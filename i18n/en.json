@@ -9,7 +9,8 @@
 	"search_org_unit": "Search Organization Unit",
 	"find": "Find",
 	"infrastructures":"Infrastructures",
-	
+	"last_report": "Last report",
+
 	"settings_text" : "Click the button below to deploy the basic metadata for the app. You need to be superuser in order to do this.",
 	"settings_button": "Install metadata",
 
@@ -62,7 +63,7 @@
 	"add_section" : "Add section",
 	"building_fields" : "Building Fields",
 	"complex_fields" : "Sanitary Complex Fields",
-	"confirmation_delete_fields" : "Do you really want to delete this field? This action is irreversible. For security reasons, this action will not delete the data elements nor the data values on older reports.",
+	"confirmation_delete_fields" : "Do you really want to delete this field? This action is irreversible. For security reasons, this action will not delete the data elements or the data values on older reports.",
 
 	"here" : "here",
 	"step" : "Step",
@@ -72,6 +73,13 @@
 	"step2.2":"and assign the fields of Step 1 on it",
 	"step3":"Once the other two steps are completed click",
 
-	"responsibles":"Responsibles"
+	"responsibles":"Responsibles",
 
+	"about_hii":"About hii",
+
+	"about_text1":"This application is being Coordinated by the ONG",
+	"about_text2":"and developed by the",
+	"about_text3":"with the funding of",
+	"about_text4":"and with the fully and grateful colaboration of the",
+	"about_text5":"For more info and System updates, please check the project website"
 }

@@ -9,6 +9,8 @@
 	"search_org_unit": "Pesquisa Unidades Organizacionais",
 	"find": "Pesquisa",
 	"infrastructures":"Infraestructuras",
+	"last_report": "Último relatório",
+
 
 	"settings_text" : "Pressiona o botão abaixo para instalar os metadados básicos desta app. Você precisa ser superusuário.",
 	"settings_button": "Instale metadados",
@@ -61,7 +63,7 @@
 	"add_section" : "Adicionar Seção",
 	"building_fields" : "Campos do Edificio",
 	"complex_fields" : "Campos do Complexo de Saúde",
-	"confirmation_delete_fields" : "Do you really want to delete this field? This action is irreversible. For security reasons, this action will not delete the data elements nor the data values on older reports.",
+	"confirmation_delete_fields" : "Você realmente quer apagar este campo? Esta acção é irreversível. Por razões de segurança, esta acção não irá excluir os elementos de dados, nem os valores de dados em relatórios mais velhos.",
 
 	"here" : "aqui",
 	"step" : "Passo",
@@ -71,5 +73,12 @@
 	"step2.2":"e atribui os campos do Passo 1 aí",
 	"step3":"Quando completa tudo clica",
 
-	"responsibles":"Responsáveis"
+	"responsibles":"Responsáveis",
+
+	"about_hii":"Acerca de hii",
+	"about_text1":"Esta aplicação está sendo coordenado pela ONG",
+	"about_text2":"e desenvolvido pela",
+	"about_text3":"com o financiamento da",
+	"about_text4":"com a  plena e grata colaboração do",
+	"about_text5":"Para mais informações e actualizações do sistema, consulte o website do projecto"
 }

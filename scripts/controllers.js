@@ -302,12 +302,12 @@ hiiControllers.controller('reportsController', function($scope, $location, $time
                     $scope.programStageData[i].name = $scope.programStageData[i].name.replace('hii-','');
                 }
             });
+            $scope.isLoading = true;
             $scope.fillReportList();
         }
     };
 
     $scope.fillReportList = function() {
-        $scope.isLoading = true;
         dhis2APIService.getTECompletedEvents($scope.complexProgramData.id, $routeParams.orgUnitId).then(function(dat){
             $scope.reports = dat; //we have to sort this for date from newest to oldest
             var max='0';
@@ -698,7 +698,11 @@ hiiControllers.controller('settingsController', function($rootScope, $scope, $fi
     };
 
     this.installMetadata = function() {
+        metadataGetter.getUserRoles().then(function(dat){console.dir(dat)});
+        metadataGetter.getOptionSets().then(function(dat){console.dir(dat)});
         metadataGetter.getTE().then(function(dat){console.dir(dat)});
+        metadataGetter.getTEAttributes().then(function(dat){console.dir});
+        metadataGetter.getPrograms().then(function(dat){console.dir(dat)});
     };
 
     this.setEntity = function(n) {

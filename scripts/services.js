@@ -216,6 +216,24 @@ hiiServices.factory('metadataGetter', function($http){
       });
       return promise;
     },
+    getOptionSets: function() {
+      var promise = $http.get('metadata/optionSets.json').then(function(response){
+        return response;
+      });
+      return promise;
+    },
+    getUserRoles: function() {
+      var promise = $http.get('metadata/userRoles.json').then(function(response){
+        return response;
+      });
+      return promise;
+    },
+    getPrograms: function() {
+      var promise = $http.get('metadata/programs.json').then(function(response){
+        return response;
+      });
+      return promise;
+    },
   };
   return serviceFactory;
 });

@@ -7,7 +7,7 @@
 	    <button type="button" ng-click = "settingsCtrl.installMetadata()">{{'settings_button'| translate}}</button>
 	</div>
 	<br><br>
-    <h4> &#8226; {{'manage_fields' | translate}} 
+    <h4> &#8226; {{'manage_fields' | translate}}
     	<div class="btn-group btn-group-xs" role="group">
 			<button type="button" class="btn btn-default" ng-click= 'settingsCtrl.setEntity(0)' ng-class='settingsCtrl.btn1'>{{'sanitary_complex_title' | translate}}</button>
 			<button type="button" class="btn btn-default" ng-click= 'settingsCtrl.setEntity(1)' ng-class='settingsCtrl.btn2'>{{'building_title' | translate}}</button>
@@ -29,7 +29,7 @@
 	    		</div>
 	    	</div>
 	    	<div class = 'col-md-4'>
-	    		
+
 	    		<div class="panel panel-default" ng-hide = 'fieldSelected==-1 || isEditing'>
 				  <div class="panel-heading">
 				  	<h3 class="panel-title">{{programStageData[fieldSelected].name}} </h3>
@@ -83,5 +83,19 @@
 	        </div>
 	    </div>
 	</div>
+  <br>
+  <h4> &#8226; {{'about_hii' | translate}}</h4>
+  <h6 style = 'margin-left: 10px'>Current version dhis2-hii 1.0</h6>
+  <br>
+  <p id = "pSettings" style='width: 70%; text-align: justify;margin-left: 10px;'>
+    {{'about_text1'| translate}} <a href ='http://asfes.org/'> Arquitectos Sin Fronteras</a>, {{'about_text2'| translate}}
+    <a href ='http://www.fib.upc.edu/en.html'> Facultat d'Informàtica de Barcelona </a> &
+    <a href ='http://www.upc.edu/?set_language=en'>Universitat Politècnica de Catalunya </a>,
+    {{'about_text3'| translate}} <a href =''> Agència Catalana de Cooperació al Desenvolupament </a>,
+    <a href ='http://web.gencat.cat/en/generalitat/index.html'> Govenment of Catalonia </a> & <a href ='http://www.upc.edu/ccd/'> Centre de Coperació per al Desenvolupament - UPC </a>,
+    {{'about_text4'| translate}} <a href ='http://www.misau.gov.mz/'> Healh Ministry of the Republic of Mozambique </a> & Direcçao Provincial de Saúde de Inhambane.
+  </p>
+  <p id ="pSettings" style='width: 80%; margin-left: 10px;'>
+    {{'about_text5'| translate}} <a href = 'http://dhis2-hii.asfes.org/'> http://dhis2-hii.asfes.org/ </a>
+  </p>
 </div>
-
